@@ -1,7 +1,9 @@
 <script lang="ts" setup></script>
 
 <template>
-	<nut-button type="info">点我</nut-button>
+	<div>
+		<nut-button type="info">点我</nut-button>
+	</div>
 </template>
 
 <style lang="scss"></style>
