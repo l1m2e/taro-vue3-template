@@ -1,3 +1,5 @@
+import path from 'path'
+const r = p => path.resolve(__dirname, '..', p)
 const config = {
   projectName: 'taro-vue3-template',
   date: '2022-8-24',
@@ -18,6 +20,9 @@ const config = {
     ],
     options: {
     }
+  },
+  alias: {
+    '@': r('src')
   },
   framework: 'vue3',
   compiler: 'webpack5',

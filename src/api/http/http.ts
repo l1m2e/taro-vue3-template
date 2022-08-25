@@ -1,0 +1,98 @@
+import Taro from '@tarojs/taro'
+
+interface Response {
+  code: number
+  msg?: string
+}
+export interface HttpResponse extends Response {
+  data?: object | string
+}
+
+export interface DownloadResponse extends Response {
+  tempFilePath?: string
+}
+
+export interface UploadResponse extends Response {
+  data?: object | string
+}
+let token: string = ''
+const Request = (
+  method:
+    | 'GET'
+    | 'POST'
+    | 'PUT'
+    | 'DELETE'
+    | 'CONNECT'
+    | 'HEAD'
+    | 'OPTIONS'
+    | 'TRACE',
+  url: string,
+  data?: string | object,
+): Promise<HttpResponse> => {
+  return new Promise((resolve, reject) => {
+    Taro.request({
+      method,
+      url,
+      data,
+      header: { 'Content-Type': 'application/json', token },
+      success: (res: Taro.request.SuccessCallbackResult) => {
+        resolve(res.data as HttpResponse)
+      },
+      fail: (err: TaroGeneral.CallbackResult) => {
+        const resp: HttpResponse = { code: -1, msg: err.errMsg }
+        reject(resp)
+      },
+    })
+  })
+}
+
+const GET = (url: string, data?: string | object) => Request('GET', url, data)
+const POST = (url: string, data?: string | object) => Request('POST', url, data)
+const PUT = (url: string, data?: string | object) => Request('PUT', url, data)
+const DELETE = (url: string, data?: string | object) => Request('DELETE', url, data)
+
+const DownloadFile = (url: string, header?: {}): Promise<DownloadResponse> => {
+  return new Promise((resolve, reject) => {
+    Taro.downloadFile({
+      url,
+      header,
+      success: (res: Taro.downloadFile.FileSuccessCallbackResult) => {
+        resolve({
+          code: res.statusCode,
+          tempFilePath: res.tempFilePath,
+        })
+      },
+      fail: (err: TaroGeneral.CallbackResult) => {
+        const resp: DownloadResponse = { code: -1, msg: err.errMsg }
+        reject(resp)
+      },
+    })
+  })
+}
+
+const UploadFile = (
+  url: string,
+  filePath: string,
+  name: string,
+  header?: { 'content-type': 'multipart/form-data' },
+  formData?: Object
+): Promise<UploadResponse> => {
+  return new Promise((resolve, reject) => {
+    Taro.uploadFile({
+      url,
+      filePath,
+      name,
+      header,
+      formData,
+      success: (res: Taro.uploadFile.SuccessCallbackResult) => {
+        resolve({ code: res.statusCode, data: res.data })
+      },
+      fail: (err: TaroGeneral.CallbackResult) => {
+        const resp: UploadResponse = { code: -1, msg: err.errMsg }
+        reject(resp)
+      },
+    })
+  })
+}
+
+export { Request, GET, POST, PUT, DELETE, DownloadFile, UploadFile }
