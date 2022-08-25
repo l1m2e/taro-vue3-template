@@ -3,7 +3,7 @@ const r = p => path.resolve(__dirname, '..', p)
 const config = {
   projectName: 'taro-vue3-template',
   date: '2022-8-24',
-  designWidth: 375,
+  designWidth: 750,
   deviceRatio: {
     640: 2.34 / 2,
     750: 1,

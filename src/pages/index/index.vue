@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { testDelete, testPost, testGet } from '@/api'
-import Taro from '@tarojs/taro'
 const get = async () => {
 	const res = await testGet({ test: 1 })
 	console.log(res)
