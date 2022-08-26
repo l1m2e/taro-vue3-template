@@ -9,7 +9,8 @@ import {
   CellGroup,
   Toast,
   OverLay,
-  Popup
+  Popup,
+  Image
 } from '@nutui/nutui-taro'
 
 const setNutUi = (app: App) => {
@@ -24,6 +25,7 @@ const setNutUi = (app: App) => {
     .use(Toast)
     .use(OverLay)
     .use(Popup)
+    .use(Image)
 }
 
 export default setNutUi

@@ -10,7 +10,6 @@
 	},
 	"scripts": {
 		"build:weapp": "taro build --type weapp",
-		"build:minweapp": "taro build --type weapp --env production",
 		"build:swan": "taro build --type swan",
 		"build:alipay": "taro build --type alipay",
 		"build:tt": "taro build --type tt",
@@ -20,7 +19,7 @@
 		"build:jd": "taro build --type jd",
 		"build:quickapp": "taro build --type quickapp",
 		"dev": "npm run build:weapp -- --watch",
-		"dev:weapp": "npm run build:swan -- --watch",
+		"dev:min": "taro build --type weapp --watch --env production",
 		"dev:alipay": "npm run build:alipay -- --watch",
 		"dev:tt": "npm run build:tt -- --watch",
 		"dev:h5": "npm run build:h5 -- --watch",
