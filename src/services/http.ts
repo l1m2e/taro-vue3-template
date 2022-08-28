@@ -15,17 +15,10 @@ export interface DownloadResponse extends Response {
 export interface UploadResponse extends Response {
   data?: object | string
 }
+
 let token: string = ''
 const Request = (
-  method:
-    | 'GET'
-    | 'POST'
-    | 'PUT'
-    | 'DELETE'
-    | 'CONNECT'
-    | 'HEAD'
-    | 'OPTIONS'
-    | 'TRACE',
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' | 'OPTIONS' | 'TRACE',
   url: string,
   data?: string | object,
 ): Promise<HttpResponse> => {
@@ -50,7 +43,6 @@ const GET = (url: string, data?: string | object) => Request('GET', url, data)
 const POST = (url: string, data?: string | object) => Request('POST', url, data)
 const PUT = (url: string, data?: string | object) => Request('PUT', url, data)
 const DELETE = (url: string, data?: string | object) => Request('DELETE', url, data)
-
 const DownloadFile = (url: string, header?: {}): Promise<DownloadResponse> => {
   return new Promise((resolve, reject) => {
     Taro.downloadFile({
@@ -69,7 +61,6 @@ const DownloadFile = (url: string, header?: {}): Promise<DownloadResponse> => {
     })
   })
 }
-
 const UploadFile = (
   url: string,
   filePath: string,

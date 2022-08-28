@@ -1,4 +1,4 @@
-import { URL, GET, POST, DELETE } from './http'
+import { URL, GET, POST, DELETE } from '@/services'
 
 const testGet = (data: string | object | undefined) => GET(URL('api/get'), data)
 const testPost = (data: string | object | undefined) => POST(URL('api/post'), data)

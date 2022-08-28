@@ -1,7 +1,29 @@
 <script lang="ts" setup>
+import Taro from '@tarojs/taro'
 definePageConfig({
 	navigationBarTitleText: '授权'
 })
+Taro.login({
+	success(res) {
+		if (res.code) {
+			//发起网络请求
+			console.log(res.code)
+		} else {
+			console.log('登录失败！' + res.errMsg)
+		}
+	}
+})
+
+const getUserInfo = () => {
+	Taro.getUserProfile({
+		desc: '用于完善用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+		success: res => {
+			Taro.setStorageSync('userName', res.userInfo.nickName)
+			Taro.setStorageSync('sex', res.userInfo.gender)
+			Taro.setStorageSync('buddha', res.userInfo.avatarUrl)
+		}
+	})
+}
 </script>
 
 <template>
@@ -13,7 +35,7 @@ definePageConfig({
 			<p class="h2">莱拓智能不会将你的信息提供给第三方</p>
 		</div>
 		<div class="button">
-			<nut-button block type="info" size="large">授权</nut-button>
+			<nut-button block type="info" @click="getUserInfo" size="large">授权</nut-button>
 		</div>
 	</div>
 </template>
