@@ -1,8 +1,9 @@
 export default defineAppConfig({
   pages: [
-    'pages/login/index',
     'pages/home/index',
     'pages/user/index',
+    'pages/login/authorization/index',
+    'pages/login/bindPhone/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -19,13 +20,13 @@ export default defineAppConfig({
       pagePath: "pages/home/index",
       iconPath: "./assets/tab-bar/home.png",
       selectedIconPath: "./assets/tab-bar/home-active.png",
-      text: "首页"
+      text: ""
     },
     {
       pagePath: "pages/user/index",
       iconPath: "./assets/tab-bar/user.png",
       selectedIconPath: "./assets/tab-bar/user-active.png",
-      text: "个人"
+      text: ""
     }]
   }
 })

@@ -10,7 +10,9 @@ import {
   Toast,
   OverLay,
   Popup,
-  Image
+  Image,
+  Notify,
+  Avatar
 } from '@nutui/nutui-taro'
 
 const setNutUi = (app: App) => {
@@ -26,6 +28,8 @@ const setNutUi = (app: App) => {
     .use(OverLay)
     .use(Popup)
     .use(Image)
+    .use(Notify)
+    .use(Avatar)
 }
 
 export default setNutUi

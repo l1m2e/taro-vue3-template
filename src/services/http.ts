@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import { isStatusCode } from './httpStatusCode'
 
 interface Response {
   code: number
@@ -16,20 +17,25 @@ export interface UploadResponse extends Response {
   data?: object | string
 }
 
+const isDev = process.env.NODE_ENV !== 'production'
+const baseUrl = isDev ? 'http://192.168.88.108:8080' : 'http://192.168.88.108:8080'
+
 let token: string = ''
 const Request = (
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' | 'OPTIONS' | 'TRACE',
   url: string,
   data?: string | object,
-): Promise<HttpResponse> => {
+): Promise<any> => {
   return new Promise((resolve, reject) => {
     Taro.request({
       method,
-      url,
+      url: `${baseUrl}${url}`,
       data,
-      header: { 'Content-Type': 'application/json', token },
+      header: { 'Content-Type': 'application/json;charset=UTF-8', token, 'Accept': 'application/json' },
+      dataType: 'json',
       success: (res: Taro.request.SuccessCallbackResult) => {
-        resolve(res.data as HttpResponse)
+        isStatusCode(res.statusCode)
+        resolve(res)
       },
       fail: (err: TaroGeneral.CallbackResult) => {
         const resp: HttpResponse = { code: -1, msg: err.errMsg }

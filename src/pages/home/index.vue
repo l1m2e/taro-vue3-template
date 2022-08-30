@@ -1,27 +1,25 @@
 <script lang="ts" setup>
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
+import useSilentLogin from '@/hook/useSilentLogin'
 definePageConfig({
 	navigationBarTitleText: '首页'
 })
-// const login = () => {
-// 	Taro.navigateTo({
-// 		url: '/pages/login/index'
-// 	})
-// }
+
+useDidShow(() => {
+	isAuthorization()
+})
+
+const isAuthorization = () => {
+	//判断是否有token 如果没有调起静默登录
+	const isToken = Taro.getStorageSync('token')
+	if (!isToken) {
+		useSilentLogin(true)
+	}
+}
 </script>
 
 <template>
-	<div>
-		<nut-button
-			type="info"
-			@click="
-				Taro.navigateTo({
-					url: '/pages/login/index'
-				})
-			"
-			>点击我授权登录</nut-button
-		>
-	</div>
+	<div>主页会调起静默登录</div>
 </template>
 
 <style lang="scss"></style>

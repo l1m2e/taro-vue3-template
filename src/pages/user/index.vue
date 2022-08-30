@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 definePageConfig({
-	navigationBarTitleText: '我的'
+	navigationBarTitleText: '我的',
+	navigationBarBackgroundColor: '#2c68ff',
+	navigationBarTextStyle: 'white'
 })
 </script>
 
