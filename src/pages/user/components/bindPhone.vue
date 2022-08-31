@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import Taro from '@tarojs/taro'
 import { reactive } from 'vue'
-import { getPhoneApi } from '@/api'
+// import { bindPhoneApi } from '@/api'
 definePageConfig({
 	navigationBarTitleText: '授权'
 })
+
 const msg = reactive({
 	show: false,
 	desc: '',
@@ -17,19 +18,24 @@ const NUmessage = (type: string = 'primary', desc: string = '成功') => {
 }
 
 const name = Taro.getStorageSync('userName')
-const avatar = Taro.getStorageSync('buddha')
+const avatar = Taro.getStorageSync('avatar')
+
 const getPhoneNumber = async (e: any) => {
 	if (e.detail.code) {
-		const { data: res } = await getPhoneApi({ code: e.detail.code, openid: Taro.getStorageSync('openid') })
-		if (res.token) {
-			Taro.setStorageSync('token', res.token)
-			NUmessage('success', '绑定成功')
-			Taro.switchTab({
-				url: '/pages/home/index'
-			})
-		} else {
-			NUmessage('danger', '绑定失败 请联系管理员')
-		}
+		// Taro.login({
+		// 	async success(v) {
+		// 		const { data: res } = await bindPhoneApi({ code: e.detail.code, openCode: v.code })
+		// 		if (res.token) {
+		// 			Taro.setStorageSync('token', res.token)
+		// 			NUmessage('success', '绑定成功')
+		// 			Taro.switchTab({
+		// 				url: '/pages/home/index'
+		// 			})
+		// 		} else {
+		// 			NUmessage('danger', '绑定失败 请联系管理员')
+		// 		}
+		// 	}
+		// })
 	} else {
 		NUmessage('danger', '使用本程序需要授权')
 	}
@@ -43,8 +49,8 @@ const getPhoneNumber = async (e: any) => {
 			<nut-avatar size="large" :icon="avatar"> </nut-avatar>
 		</div>
 		<div>
-			<p class="h1">欢迎,{{ name }}</p>
-			<p class="h1">莱托智能需要绑定你的手机号</p>
+			<p class="h1">你好,{{ name }}</p>
+			<p class="h1">莱托智能需要你的授权</p>
 			<p class="h2">莱拓智能不会将你的信息提供给第三方</p>
 		</div>
 		<div class="button">

@@ -1,9 +1,11 @@
 export interface ILogin {
   code: string
+  encryptedData: string
+  iv: string
 }
-export interface IGetPhone {
+export interface IBindPhone {
   code: string
-  openid: string
+  openCode: string
 }
 export interface IGetUserInfo {
   sessionKey: string

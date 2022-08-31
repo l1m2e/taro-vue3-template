@@ -71,6 +71,13 @@ export function isStatusCode(code: number) {
         duration: 2000
       })
       break;
+    case 502:
+      Taro.showToast({
+        title: `服务器无响应`,
+        icon: 'error',
+        duration: 2000
+      })
+      break;
     case 503:
       Taro.showToast({
         title: `服务器维护中`,

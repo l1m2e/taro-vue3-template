@@ -1,9 +1,8 @@
 export default defineAppConfig({
   pages: [
-    'pages/home/index',
     'pages/user/index',
-    'pages/login/authorization/index',
-    'pages/login/bindPhone/index',
+    'pages/home/index',
+    'pages/user/components/bindPhone'
   ],
   window: {
     backgroundTextStyle: 'light',

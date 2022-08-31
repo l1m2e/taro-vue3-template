@@ -12,7 +12,10 @@ import {
   Popup,
   Image,
   Notify,
-  Avatar
+  Avatar,
+  Layout,
+  Row,
+  Col
 } from '@nutui/nutui-taro'
 
 const setNutUi = (app: App) => {
@@ -30,6 +33,9 @@ const setNutUi = (app: App) => {
     .use(Image)
     .use(Notify)
     .use(Avatar)
+    .use(Layout)
+    .use(Row)
+    .use(Col)
 }
 
 export default setNutUi
