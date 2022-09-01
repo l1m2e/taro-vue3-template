@@ -15,7 +15,10 @@ import {
   Avatar,
   Layout,
   Row,
-  Col
+  Col,
+  Form,
+  FormItem,
+  Picker,
 } from '@nutui/nutui-taro'
 
 const setNutUi = (app: App) => {
@@ -36,6 +39,9 @@ const setNutUi = (app: App) => {
     .use(Layout)
     .use(Row)
     .use(Col)
+    .use(Form)
+    .use(FormItem)
+    .use(Picker)
 }
 
 export default setNutUi

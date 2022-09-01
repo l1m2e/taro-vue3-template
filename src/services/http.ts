@@ -20,7 +20,6 @@ export interface UploadResponse extends Response {
 const isDev = process.env.NODE_ENV !== 'production'
 const baseUrl = isDev ? 'http://192.168.88.108:8080' : 'http://192.168.88.108:8080'
 
-let token: string = ''
 const Request = (
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' | 'OPTIONS' | 'TRACE',
   url: string,
@@ -31,10 +30,10 @@ const Request = (
       method,
       url: `${baseUrl}${url}`,
       data,
-      header: { 'Content-Type': 'application/json;charset=UTF-8', token, 'Accept': 'application/json' },
+      header: { 'Content-Type': 'application/json;charset=UTF-8', "token": Taro.getStorageSync('token'), 'Accept': 'application/json' },
       dataType: 'json',
       success: (res: Taro.request.SuccessCallbackResult) => {
-        isStatusCode(res.statusCode)
+        isStatusCode(res)
         resolve(res)
       },
       fail: (err: TaroGeneral.CallbackResult) => {

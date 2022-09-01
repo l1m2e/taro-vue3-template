@@ -7,15 +7,14 @@ definePageConfig({
 	navigationBarBackgroundColor: '#fafafa',
 	backgroundColor: '#fafafa'
 })
-
+useDidShow(() => {
+	isToken.value = Taro.getStorageSync('token')
+})
 const avatar = ref(Taro.getStorageSync('avatar'))
 const isToken = ref(Taro.getStorageSync('token'))
 const userName = ref(Taro.getStorageSync('userName'))
 
 let code = ''
-useDidShow(() => {
-	// getCode()
-})
 const getCode = () => {
 	Taro.login({
 		success(e) {
@@ -43,6 +42,10 @@ const login = () => {
 			// 已经登录过 返回token
 			if (res.token) {
 				Taro.setStorageSync('token', res.token)
+				isToken.value = true
+				if (res.message) {
+					//绑定用户信息逻辑
+				}
 				return
 			}
 			// 未登录过跳转绑定手机号
@@ -55,20 +58,30 @@ const login = () => {
 
 const menuList = [
 	{
-		icon: '../../assets/tab-bar/home-active.png',
+		icon: require('../../assets/user/user.png'),
 		text: '个人信息管理',
 		link: ''
 	},
 	{
-		icon: '../../assets/user/set.png',
+		icon: require('../../assets/user/set.png'),
 		text: '设置',
 		link: ''
 	}
 ]
+const tipDialog = ref(false)
+//登出
+const logoutButton = () => {
+	tipDialog.value = true
+}
+const logout = () => {
+	Taro.removeStorageSync('token')
+	isToken.value = false
+}
 </script>
 
 <template>
 	<div class="user">
+		<nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" />
 		<nut-row class="user-card" v-if="isToken">
 			<nut-col :span="6" class="avatar">
 				<nut-avatar size="large" :icon="avatar"> </nut-avatar>
@@ -88,9 +101,10 @@ const menuList = [
 				<nut-col :span="17">
 					<span>{{ item.text }}</span>
 				</nut-col>
-				<nut-col class="menu-item-right" :span="4"> <nut-icon name="right" size="16"></nut-icon></nut-col>
+				<nut-col class="menu-item-right" :span="4"> <nut-icon name="right" size="14"></nut-icon></nut-col>
 			</nut-row>
 		</div>
+		<div class="logout" v-if="isToken" @click="logoutButton"><span>退出账号</span></div>
 	</div>
 </template>
 
@@ -158,8 +172,21 @@ page {
 				font-size: 30px;
 			}
 		}
+
 		.menu-item:first-child {
 			margin-top: 0;
+		}
+	}
+	.logout {
+		@include center;
+		width: 95%;
+		height: 70px;
+		background-color: white;
+		margin: 0 auto;
+		margin-top: 30px;
+		border-radius: 20px;
+		span {
+			font-size: 30px;
 		}
 	}
 }

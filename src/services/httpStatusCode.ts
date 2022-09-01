@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
-export function isStatusCode(code: number) {
-  switch (code) {
+export function isStatusCode(data: any) {
+  const { statusCode, data: res } = data
+  switch (statusCode) {
     case 400:
       Taro.showToast({
         title: `服务器不理解客户端的请求，未做任何处理`,
@@ -14,6 +15,13 @@ export function isStatusCode(code: number) {
         icon: 'error',
         duration: 2000
       })
+      console.log(res)
+      if (res.message) {
+        if (res.message === 'token过期') {
+          console.log('进入判断')
+          Taro.removeStorageSync('token')
+        }
+      }
       break;
     case 403:
       Taro.showToast({

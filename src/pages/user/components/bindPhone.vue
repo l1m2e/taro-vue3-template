@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import Taro from '@tarojs/taro'
 import { reactive } from 'vue'
-// import { bindPhoneApi } from '@/api'
+import { bindPhoneApi } from '@/api'
 definePageConfig({
 	navigationBarTitleText: '授权'
 })
@@ -22,20 +22,20 @@ const avatar = Taro.getStorageSync('avatar')
 
 const getPhoneNumber = async (e: any) => {
 	if (e.detail.code) {
-		// Taro.login({
-		// 	async success(v) {
-		// 		const { data: res } = await bindPhoneApi({ code: e.detail.code, openCode: v.code })
-		// 		if (res.token) {
-		// 			Taro.setStorageSync('token', res.token)
-		// 			NUmessage('success', '绑定成功')
-		// 			Taro.switchTab({
-		// 				url: '/pages/home/index'
-		// 			})
-		// 		} else {
-		// 			NUmessage('danger', '绑定失败 请联系管理员')
-		// 		}
-		// 	}
-		// })
+		Taro.login({
+			async success(v) {
+				const { data: res } = await bindPhoneApi({ code: e.detail.code, openCode: v.code })
+				if (res.token) {
+					Taro.setStorageSync('token', res.token)
+					NUmessage('success', '绑定成功')
+					Taro.switchTab({
+						url: '/pages/home/index'
+					})
+				} else {
+					NUmessage('danger', '绑定失败 请联系管理员')
+				}
+			}
+		})
 	} else {
 		NUmessage('danger', '使用本程序需要授权')
 	}

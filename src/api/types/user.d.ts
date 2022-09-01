@@ -13,3 +13,8 @@ export interface IGetUserInfo {
   iv: string
   openid: string
 }
+export interface IBindUserInfo {
+  name: string
+  cardId: string
+  type: string
+}
