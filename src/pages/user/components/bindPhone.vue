@@ -54,8 +54,8 @@ const getPhoneNumber = async (e: any) => {
 			<p class="h2">莱拓智能不会将你的信息提供给第三方</p>
 		</div>
 		<div class="button">
-			<nut-button block type="success" open-type="getPhoneNumber" size="large" @getphonenumber="getPhoneNumber">
-				绑定
+			<nut-button block type="info" open-type="getPhoneNumber" size="large" @getphonenumber="getPhoneNumber">
+				授权
 			</nut-button>
 		</div>
 	</div>

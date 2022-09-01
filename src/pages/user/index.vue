@@ -52,6 +52,19 @@ const login = () => {
 		}
 	})
 }
+
+const menuList = [
+	{
+		icon: '../../assets/tab-bar/home-active.png',
+		text: '个人信息管理',
+		link: ''
+	},
+	{
+		icon: '../../assets/user/set.png',
+		text: '设置',
+		link: ''
+	}
+]
 </script>
 
 <template>
@@ -70,7 +83,13 @@ const login = () => {
 			<nut-button type="success" @click="login">登 录</nut-button>
 		</nut-row>
 		<div class="menu">
-			<div class="menu-item"></div>
+			<nut-row class="menu-item" v-for="item in menuList" key="item.text">
+				<nut-col class="menu-item-icon" :span="3"> <image :src="item.icon"></image></nut-col>
+				<nut-col :span="17">
+					<span>{{ item.text }}</span>
+				</nut-col>
+				<nut-col class="menu-item-right" :span="4"> <nut-icon name="right" size="16"></nut-icon></nut-col>
+			</nut-row>
 		</div>
 	</div>
 </template>
@@ -111,12 +130,36 @@ page {
 	.menu {
 		background-color: white;
 		width: 95%;
-		margin: 40px auto;
+		margin-top: 20px;
 		border-radius: 30px;
 		padding: 40px;
+		margin: 0 auto;
+		box-sizing: border-box;
 		.menu-item {
 			width: 100%;
-			height: 30px;
+			height: 70px;
+			margin-top: 20px;
+			display: flex;
+			align-items: center;
+			.menu-item-icon {
+				display: flex;
+				align-items: center;
+			}
+			.menu-item-right {
+				display: flex;
+				justify-content: flex-end;
+			}
+			image {
+				object-fit: cover;
+				width: 50px;
+				height: 50px;
+			}
+			span {
+				font-size: 30px;
+			}
+		}
+		.menu-item:first-child {
+			margin-top: 0;
 		}
 	}
 }
