@@ -3,7 +3,7 @@ import { computed, reactive, ref } from 'vue'
 import { bindUserInfoApi } from '@/api'
 definePageConfig({
 	navigationBarTitleText: '绑定用户信息',
-	navigationBarBackgroundColor: '#ffffff'
+	navigationBarBackgroundColor: '#f7f8fa'
 })
 const msg = reactive({
 	show: false,

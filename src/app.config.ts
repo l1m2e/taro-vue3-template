@@ -1,9 +1,10 @@
 export default defineAppConfig({
   pages: [
-    'pages/user/components/bindUserInfo',
-    'pages/user/index',
     'pages/home/index',
+    'pages/user/index',
+    'pages/user/components/userInfo',
     'pages/user/components/bindPhone',
+    'pages/user/components/bindUserInfo',
   ],
   window: {
     backgroundTextStyle: 'light',

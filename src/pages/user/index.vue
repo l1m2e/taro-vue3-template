@@ -4,8 +4,7 @@ import { loginApi } from '@/api'
 import { ref } from 'vue'
 definePageConfig({
 	navigationBarTitleText: '我的',
-	navigationBarBackgroundColor: '#fafafa',
-	backgroundColor: '#fafafa'
+	navigationBarBackgroundColor: '#fafafa'
 })
 useDidShow(() => {
 	isToken.value = Taro.getStorageSync('token')
@@ -38,20 +37,25 @@ const login = () => {
 				encryptedData: user.encryptedData,
 				iv: user.iv
 			}
-			const { data: res } = await loginApi(parmas)
+			const { data: res, statusCode } = await loginApi(parmas)
 			// 已经登录过 返回token
 			if (res.token) {
 				Taro.setStorageSync('token', res.token)
 				isToken.value = true
 				if (res.message) {
 					//绑定用户信息逻辑
+					Taro.navigateTo({
+						url: '/pages/user/components/bindUserInfo'
+					})
 				}
 				return
 			}
-			// 未登录过跳转绑定手机号
-			Taro.navigateTo({
-				url: '/pages/user/components/bindPhone'
-			})
+			if (statusCode === 401) {
+				// 未登录过且用户跳转了绑定手机号
+				Taro.navigateTo({
+					url: '/pages/user/components/bindPhone'
+				})
+			}
 		}
 	})
 }
@@ -59,8 +63,8 @@ const login = () => {
 const menuList = [
 	{
 		icon: require('../../assets/user/user.png'),
-		text: '个人信息管理',
-		link: ''
+		text: '个人信息',
+		link: '/pages/user/components/userInfo'
 	},
 	{
 		icon: require('../../assets/user/set.png'),
@@ -68,8 +72,14 @@ const menuList = [
 		link: ''
 	}
 ]
-const tipDialog = ref(false)
+const onMenu = (link: string) => {
+	Taro.navigateTo({
+		url: link
+	})
+}
+
 //登出
+const tipDialog = ref(false)
 const logoutButton = () => {
 	tipDialog.value = true
 }
@@ -92,11 +102,11 @@ const logout = () => {
 			</nut-col>
 		</nut-row>
 		<nut-row class="user-card user-card-on-login" v-else>
-			<!-- <span>登录</span> -->
 			<nut-button type="success" @click="login">登 录</nut-button>
 		</nut-row>
 		<div class="menu">
 			<nut-row class="menu-item" v-for="item in menuList" key="item.text">
+				<div class="menu-item-mask" @click="onMenu(item.link)"></div>
 				<nut-col class="menu-item-icon" :span="3"> <image :src="item.icon"></image></nut-col>
 				<nut-col :span="17">
 					<span>{{ item.text }}</span>
@@ -146,15 +156,26 @@ page {
 		width: 95%;
 		margin-top: 20px;
 		border-radius: 30px;
-		padding: 40px;
+		padding: 40px 0 40px 0;
 		margin: 0 auto;
 		box-sizing: border-box;
+		@include shadow-1;
 		.menu-item {
 			width: 100%;
 			height: 70px;
 			margin-top: 20px;
 			display: flex;
 			align-items: center;
+			position: relative;
+			box-sizing: border-box;
+			padding: 0 40px 0 40px;
+			.menu-item-mask {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
 			.menu-item-icon {
 				display: flex;
 				align-items: center;
@@ -185,9 +206,14 @@ page {
 		margin: 0 auto;
 		margin-top: 30px;
 		border-radius: 20px;
+		@include shadow-1;
 		span {
-			font-size: 30px;
+			font-size: 27px;
 		}
+	}
+	.logout:active,
+	.menu-item:active {
+		background-color: #fafafa;
 	}
 }
 </style>

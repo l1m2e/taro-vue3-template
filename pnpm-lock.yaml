@@ -29,6 +29,7 @@ specifiers:
   babel-plugin-import: ^1.13.3
   babel-preset-taro: 3.5.4
   css-loader: 3.4.2
+  dayjs: ^1.11.5
   eslint: ^8.12.0
   eslint-config-taro: 3.5.4
   eslint-plugin-vue: ^8.0.0
@@ -57,6 +58,7 @@ dependencies:
   '@tarojs/shared': 3.5.4
   '@tarojs/taro': 3.5.4_vue@3.2.37
   '@tarojs/taro-h5': 3.5.4_vue@3.2.37
+  dayjs: 1.11.5
   vue: 3.2.37
 
 devDependencies:
@@ -2564,6 +2566,10 @@ packages:
       '@types/node': 18.7.12
     dev: true
 
+  /@types/unist/2.0.6:
+    resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
+    dev: true
+
   /@types/vinyl/2.0.6:
     resolution: {integrity: sha512-ayJ0iOCDNHnKpKTgBG6Q6JOnHTj9zFta+3j2b8Ejza0e4cvRyMn0ZoLEmbPrTHe5YYRlDYPvPWVdV4cTaRyH7g==}
     dependencies:
@@ -3701,7 +3707,7 @@ packages:
       babel-plugin-transform-react-jsx-to-rn-stylesheet: 3.5.4
       babel-plugin-transform-taroapi: 3.5.4
       core-js: 3.24.1
-      metro-react-native-babel-preset: 0.67.0
+      metro-react-native-babel-preset: 0.67.0_@babel+core@7.18.13
     transitivePeerDependencies:
       - '@types/react'
       - '@types/webpack'
@@ -5011,6 +5017,10 @@ packages:
       whatwg-mimetype: 2.3.0
       whatwg-url: 7.1.0
     dev: true
+
+  /dayjs/1.11.5:
+    resolution: {integrity: sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==}
+    dev: false
 
   /de-indent/1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
@@ -8947,8 +8957,10 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
-  /metro-react-native-babel-preset/0.67.0:
+  /metro-react-native-babel-preset/0.67.0_@babel+core@7.18.13:
     resolution: {integrity: sha512-tgTG4j0SKwLHbLRELMmgkgkjV1biYkWlGGKOmM484/fJC6bpDikdaFhfjsyE+W+qt7I5szbCPCickMTNQ+zwig==}
+    peerDependencies:
+      '@babel/core': '*'
     dependencies:
       '@babel/core': 7.18.13
       '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.18.13
@@ -12757,6 +12769,7 @@ packages:
   /unified/6.2.0:
     resolution: {integrity: sha512-1k+KPhlVtqmG99RaTbAv/usu85fcSRu3wY8X+vnsEhIxNP5VbVIDiXnLqyKIG+UMdyTg0ZX9EI6k2AfjJkHPtA==}
     dependencies:
+      '@types/unist': 2.0.6
       bail: 1.0.5
       extend: 3.0.2
       is-plain-obj: 1.1.0

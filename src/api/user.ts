@@ -1,13 +1,14 @@
 import { GET, POST } from '@/services'
-import { ILogin, IBindPhone, IGetUserInfo, IBindUserInfo } from './types'
+import { ILogin, IBindPhone, IBindUserInfo } from './types'
 
 const loginApi = (data: ILogin) => GET('/user/login', data)
 const bindPhoneApi = (data: IBindPhone) => GET('/user/bindPhone', data)
-const getUserInfoApi = (data: IGetUserInfo) => GET('/user/getUserInfo', data)
-const bindUserInfoApi = (data: IBindUserInfo) => POST('/school/bindUserInfo', data)
+const bindUserInfoApi = (data: IBindUserInfo) => POST('/user/bindSchoolUser', data)
+const getUserInfoApi = () => GET('/user/UserInfo')
+
 export {
   loginApi,
   bindPhoneApi,
-  getUserInfoApi,
-  bindUserInfoApi
+  bindUserInfoApi,
+  getUserInfoApi
 }

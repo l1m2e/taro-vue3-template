@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import status401 from './status/status401';
 export function isStatusCode(data: any) {
   const { statusCode, data: res } = data
   switch (statusCode) {
@@ -15,13 +16,7 @@ export function isStatusCode(data: any) {
         icon: 'error',
         duration: 2000
       })
-      console.log(res)
-      if (res.message) {
-        if (res.message === 'token过期') {
-          console.log('进入判断')
-          Taro.removeStorageSync('token')
-        }
-      }
+      status401(res)
       break;
     case 403:
       Taro.showToast({
