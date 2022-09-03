@@ -1,16 +1,35 @@
 <script setup lang="ts">
 import getNowWeek from '@/utils/getNowWeek'
 import { ref } from 'vue'
+import Taro, { useReady } from '@tarojs/taro'
 import dayjs from 'dayjs'
 const weekList = getNowWeek()
 const now = ref(dayjs().format('YYYY-MM-DD'))
+const lineLeft = ref()
+let weekNum = dayjs().day()
+function fn(date: any, e: any) {
+	lineLeft.value = `${e.offsetLeft}px`
+	now.value = date
+	console.log(now.value)
+}
+const flag = ref(false)
+useReady(() => {
+	Taro.createSelectorQuery()
+		.selectAll('.item')
+		.boundingClientRect(function(rects) {
+			lineLeft.value = rects[weekNum].left + 'px'
+			flag.value = true
+		})
+		.exec()
+})
 </script>
 <template>
 	<div class="select-day">
-		<div :class="item.date === now ? 'item onclick' : 'item'" v-for="item in weekList">
+		<div :class="item.date === now ? 'item onclick' : 'item'" @click="fn(item.date, $event.target)" v-for="item in weekList">
 			<div class="week">{{ item.week }}</div>
 			<div class="date">{{ item.date.substring(8) }}</div>
 		</div>
+		<div class="line" v-if="flag"></div>
 	</div>
 </template>
 <style lang="scss">
@@ -19,8 +38,9 @@ const now = ref(dayjs().format('YYYY-MM-DD'))
 	height: 120px;
 	box-sizing: border-box;
 	padding: 0px 20px 0 20px;
-	@include center;
+	position: relative;
 
+	@include center;
 	.item {
 		flex: 1;
 		height: 100px;
@@ -29,7 +49,6 @@ const now = ref(dayjs().format('YYYY-MM-DD'))
 		flex-direction: column;
 		margin-left: 5px;
 		margin-right: 5px;
-
 		.week {
 			width: 100%;
 			height: 30px;
@@ -45,8 +64,17 @@ const now = ref(dayjs().format('YYYY-MM-DD'))
 			text-align: center;
 		}
 	}
+	.line {
+		transition: all 0.6s;
+		position: absolute;
+		bottom: 0px;
+		left: v-bind(lineLeft);
+		width: 95px;
+		height: 7px;
+		border-radius: 50px;
+		background-color: #48b583;
+	}
 	.onclick {
-		border-bottom: 6px #48b583 solid;
 		div {
 			color: #48b583 !important;
 		}

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import divday from '@/components/select-day/index.vue'
-// import Taro, { useDidShow } from '@tarojs/taro'
-// import useSilentLogin from '@/hook/useSilentLogin'
+// import Taro, { useDidShow, useReady } from '@tarojs/taro'
+
 definePageConfig({
 	navigationBarTitleText: '首页'
 })

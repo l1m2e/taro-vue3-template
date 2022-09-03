@@ -7,6 +7,10 @@ interface IWeekData {
 export default function getStartEnd() {
   const arr: IWeekData[] = [
     {
+      week: '日',
+      date: ''
+    },
+    {
       week: '一',
       date: ''
     },
@@ -26,13 +30,10 @@ export default function getStartEnd() {
     }, {
       week: '六',
       date: ''
-    }, {
-      week: '日',
-      date: ''
     },
   ]
   arr.forEach((item, index) => {
-    item.date = dayjs().startOf('week').add(index + 1, 'day').format('YYYY-MM-DD')
+    item.date = dayjs().startOf('week').add(index, 'day').format('YYYY-MM-DD')
   })
   return arr
 }
