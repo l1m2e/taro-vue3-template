@@ -19,7 +19,7 @@ import {
   Form,
   FormItem,
   Picker,
-  Divider
+  Divider,
 } from '@nutui/nutui-taro'
 
 const setNutUi = (app: App) => {

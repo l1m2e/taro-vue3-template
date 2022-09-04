@@ -8,7 +8,8 @@ export default function getStartEnd() {
   const arr: IWeekData[] = [
     {
       week: '日',
-      date: ''
+      date: '',
+
     },
     {
       week: '一',
