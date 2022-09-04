@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import todaySelect from '@/components/select-day/index.vue'
+import dayjs from 'dayjs'
 import { ref } from 'vue'
 definePageConfig({
 	navigationBarTitleText: '课程表'
@@ -13,7 +14,7 @@ const fn = e => {
 	console.log('获取index', e)
 	num.value = e
 }
-const num = ref(0)
+const num = ref(dayjs().day())
 </script>
 
 <template>
