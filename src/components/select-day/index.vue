@@ -3,32 +3,21 @@ import getNowWeek from '@/utils/getNowWeek'
 import { ref, watch } from 'vue'
 import Taro, { useReady } from '@tarojs/taro'
 import dayjs from 'dayjs'
+
 const props = defineProps(['swiperIndex'])
 const emit = defineEmits(['index'])
+
 const weekList = getNowWeek()
 const now = ref(dayjs().format('YYYY-MM-DD'))
 const lineLeft = ref()
 let weekNum = dayjs().day()
-watch(
-	() => props.swiperIndex,
-	v => {
-		now.value = weekList[v].date
-		console.log('侦听器', now.value)
-		Taro.createSelectorQuery()
-			.selectAll('.item')
-			.boundingClientRect(function(rects) {
-				lineLeft.value = rects[v].left + 'px'
-				flag.value = true
-			})
-			.exec()
-	}
-)
-function fn(date: any, e: any, index: number) {
+const flag = ref(false)
+
+const fn = (date: any, e: any, index: number) => {
 	lineLeft.value = `${e.target.offsetLeft}px`
 	now.value = date
 	emit('index', index)
 }
-const flag = ref(false)
 useReady(() => {
 	Taro.createSelectorQuery()
 		.selectAll('.item')
@@ -38,6 +27,19 @@ useReady(() => {
 		})
 		.exec()
 })
+watch(
+	() => props.swiperIndex,
+	v => {
+		now.value = weekList[v].date
+		Taro.createSelectorQuery()
+			.selectAll('.item')
+			.boundingClientRect(function(rects) {
+				lineLeft.value = rects[v].left + 'px'
+				flag.value = true
+			})
+			.exec()
+	}
+)
 </script>
 <template>
 	<div class="select-day">

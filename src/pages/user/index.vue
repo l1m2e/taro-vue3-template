@@ -141,7 +141,7 @@ page {
 	}
 	.text {
 		flex-direction: column;
-		align-items: start;
+		align-items: flex-start;
 		.name {
 			font-size: 40px;
 			font-weight: bold;

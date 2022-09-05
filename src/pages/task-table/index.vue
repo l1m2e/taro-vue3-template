@@ -2,6 +2,7 @@
 import todaySelect from '@/components/select-day/index.vue'
 import dayjs from 'dayjs'
 import { ref } from 'vue'
+import steps from './components/steps.vue'
 definePageConfig({
 	navigationBarTitleText: '课程表'
 })
@@ -35,8 +36,59 @@ const num = ref(dayjs().day())
 		<todaySelect @index="fn" :swiperIndex="num"></todaySelect>
 		<div class="task-today">
 			<swiper :current="num" @change="swiperChange">
-				<swiper-item>0</swiper-item>
-				<swiper-item>1</swiper-item>
+				<swiper-item class="swiper-item">
+					<div>
+						<nut-steps direction="vertical" progress-dot current="2">
+							<nut-step title="已完成" content="您的订单已经打包完成，商品已发出">2</nut-step>
+							<nut-step title="进行中" content="您的订单正在配送途中">1</nut-step>
+							<nut-step title="未开始">
+								3
+								<template v-slot:content>
+									<p>收货地址为：</p>
+									<p>北京市经济技术开发区科创十一街18号院京东大厦</p>
+								</template>
+							</nut-step>
+						</nut-steps>
+					</div>
+				</swiper-item>
+				<swiper-item class="swiper-item">
+					<div class="content">
+						<steps :activate="true"></steps>
+						<steps :end="true"></steps>
+						<!-- <nut-steps direction="vertical" progress-dot current="1">
+							<nut-step title="09:17-10:02">
+								<template v-slot:content>
+									<div class="card"></div>
+								</template>
+							</nut-step>
+							<nut-step title="已完成">
+								<template v-slot:content>
+									<div class="card"></div>
+								</template>
+							</nut-step>
+							<nut-step title="已完成">
+								<template v-slot:content>
+									<div class="card"></div>
+								</template>
+							</nut-step>
+							<nut-step title="已完成">
+								<template v-slot:content>
+									<div class="card"></div>
+								</template>
+							</nut-step>
+							<nut-step title="已完成">
+								<template v-slot:content>
+									<div class="card"></div>
+								</template>
+							</nut-step>
+							<nut-step title="已完成">
+								<template v-slot:content>
+									<div class="card"></div>
+								</template>
+							</nut-step>
+						</nut-steps> -->
+					</div>
+				</swiper-item>
 				<swiper-item>2</swiper-item>
 				<swiper-item>3</swiper-item>
 				<swiper-item>4</swiper-item>
@@ -96,9 +148,24 @@ const num = ref(dayjs().day())
 	.task-today {
 		width: 700%;
 		height: calc(100vh - 200px - 120px);
+		overflow: hidden;
 		swiper {
-			// background-color: #49b583;
 			height: 100%;
+			.swiper-item {
+				overflow-y: auto;
+				.content {
+					width: 100vw;
+					box-sizing: border-box;
+					padding: 40px;
+					.card {
+						width: 600px;
+						height: 200px;
+						border-radius: 25px;
+						background-color: #7f86ff;
+						margin-bottom: 30px;
+					}
+				}
+			}
 		}
 	}
 }
