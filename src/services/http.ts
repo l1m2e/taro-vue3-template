@@ -18,7 +18,7 @@ export interface UploadResponse extends Response {
 }
 
 const isDev = process.env.NODE_ENV !== 'production'
-const baseUrl = isDev ? 'http://192.168.88.114:8080' : 'http://192.168.88.108:8080'
+const baseUrl = isDev ? 'http://192.168.88.123:8080' : 'http://192.168.88.108:8080'
 
 const Request = (
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' | 'OPTIONS' | 'TRACE',

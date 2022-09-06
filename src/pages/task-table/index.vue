@@ -7,11 +7,11 @@ definePageConfig({
 	navigationBarTitleText: '课程表'
 })
 
-const swiperChange = e => {
+const swiperChange = (e: any) => {
 	console.log(e.detail.current)
 	num.value = e.detail.current
 }
-const fn = e => {
+const getIndex = (e: number) => {
 	console.log('获取index', e)
 	num.value = e
 }
@@ -33,7 +33,7 @@ const num = ref(dayjs().day())
 				</div>
 			</div>
 		</div>
-		<todaySelect @index="fn" :swiperIndex="num"></todaySelect>
+		<todaySelect @index="getIndex" :swiperIndex="num"></todaySelect>
 		<div class="task-today">
 			<swiper :current="num" @change="swiperChange">
 				<swiper-item class="swiper-item">
@@ -53,43 +53,17 @@ const num = ref(dayjs().day())
 				</swiper-item>
 				<swiper-item class="swiper-item">
 					<div class="content">
-						<steps :activate="true"></steps>
+						<steps activate="unfinished"></steps>
 						<steps :end="true"></steps>
-						<!-- <nut-steps direction="vertical" progress-dot current="1">
-							<nut-step title="09:17-10:02">
-								<template v-slot:content>
-									<div class="card"></div>
-								</template>
-							</nut-step>
-							<nut-step title="已完成">
-								<template v-slot:content>
-									<div class="card"></div>
-								</template>
-							</nut-step>
-							<nut-step title="已完成">
-								<template v-slot:content>
-									<div class="card"></div>
-								</template>
-							</nut-step>
-							<nut-step title="已完成">
-								<template v-slot:content>
-									<div class="card"></div>
-								</template>
-							</nut-step>
-							<nut-step title="已完成">
-								<template v-slot:content>
-									<div class="card"></div>
-								</template>
-							</nut-step>
-							<nut-step title="已完成">
-								<template v-slot:content>
-									<div class="card"></div>
-								</template>
-							</nut-step>
-						</nut-steps> -->
 					</div>
 				</swiper-item>
-				<swiper-item>2</swiper-item>
+				<swiper-item class="swiper-item">
+					<div class="content">
+						<steps activate="completed"></steps>
+						<steps activate="ongoing"></steps>
+						<steps activate="unfinished" :end="true"></steps>
+					</div>
+				</swiper-item>
 				<swiper-item>3</swiper-item>
 				<swiper-item>4</swiper-item>
 				<swiper-item>5</swiper-item>

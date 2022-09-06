@@ -1,8 +1,33 @@
 <script lang="ts" setup>
-defineProps<{
-	activate?: boolean
-	end?: boolean
-}>()
+import { computed } from 'vue'
+
+type State = 'unfinished' | 'ongoing' | 'completed'
+const props = withDefaults(
+	defineProps<{
+		activate?: State
+		end?: boolean
+	}>(),
+	{
+		activate: 'unfinished',
+		end: false
+	}
+)
+
+const stateText = computed(() => {
+	let temp = ''
+	switch (props.activate) {
+		case 'completed':
+			temp = '已完成'
+			break
+		case 'ongoing':
+			temp = '进行中'
+			break
+		case 'unfinished':
+			temp = '未进行'
+			break
+	}
+	return temp
+})
 </script>
 
 <template>
@@ -13,19 +38,35 @@ defineProps<{
 		</div>
 		<div class="line-box">
 			<nut-icon
-				:name="activate ? 'check-checked' : 'check-normal'"
-				:class="activate ? 'round-activate' : 'round'"
+				:name="activate === 'ongoing' ? 'check-checked' : 'check-normal'"
+				:class="activate === 'ongoing' ? 'round-activate' : 'round'"
 				color="#7f86ff"
 			></nut-icon>
 			<div class="line" v-if="!end"></div>
 		</div>
 		<div class="steps-content">
-			<div :class="activate ? 'steps-content-card-activate' : 'steps-content-card'">
-				<div class="course">JavaScript程序设计</div>
-				<div class="location"><span>教学楼A栋</span></div>
-				<div class="classroom"><nut-icon name="location2" size="12"></nut-icon> <span>&nbsp;101</span></div>
-				<div class="teacherName"><nut-icon name="my2" size="12"></nut-icon><span>&nbsp;杨老师</span></div>
-				<span class="state">上课中</span>
+			<div :class="`steps-content-card-${activate}`">
+				<div class="steps-title">
+					<nut-icon size="18" name="success"></nut-icon>
+					<span>{{ stateText }}</span>
+				</div>
+				<div class="steps-text-box">
+					<div class="course">课程名称</div>
+					<div class="steps-location">
+						<div class="steps-location-box">
+							<div class="steps-location-icon"><nut-icon name="location2" size="14"></nut-icon></div>
+							<span class="steps-location-text">教学楼-101</span>
+						</div>
+						<div class="steps-location-box">
+							<div class="steps-location-icon"><nut-icon name="my2" size="14"></nut-icon></div>
+							<span class="steps-location-text">老师</span>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="location"><span>教学楼A栋</span></div> -->
+				<!-- <div class="classroom"><nut-icon name="location2" size="12"></nut-icon> <span>&nbsp;101</span></div> -->
+				<!-- <div class="teacherName"><nut-icon name="my2" size="12"></nut-icon><span>&nbsp;杨老师</span></div> -->
+				<!-- <span class="state">{{ stateText }}</span> -->
 			</div>
 		</div>
 	</div>
@@ -63,6 +104,7 @@ defineProps<{
 		.round-activate {
 			font-size: 30px;
 			margin-bottom: 8px;
+			margin-top: 8px;
 		}
 		.line {
 			width: 1px;
@@ -74,54 +116,91 @@ defineProps<{
 	.steps-content {
 		height: 100%;
 		width: 100%;
-		.steps-content-card-activate {
+		@mixin steps-content-card($color, $shadow) {
 			position: relative;
 			width: 100%;
 			height: 90%;
-			padding: 40px;
 			box-sizing: border-box;
-			border-radius: 25px;
-			background-color: #7f86ff;
-			box-shadow: 0px 12px 24px 0px #7f86ff4d;
+			border-radius: 15px;
 			color: white;
+			overflow: hidden;
+			background-color: white;
+			box-shadow: 0px 12px 40px 0px $shadow;
 		}
-		.steps-content-card {
-			position: relative;
-			padding: 40px;
-			box-sizing: border-box;
+		@mixin steps-title($color) {
 			width: 100%;
-			height: 90%;
-			border-radius: 25px;
-			background-color: #e9fffe;
-		}
-		.state {
-			color: #545ceb;
-			position: absolute;
-			bottom: 60px;
-			right: 30px;
-			font-size: 50px;
-			transform: rotate(-30deg);
-		}
-		.course {
-			font-size: 32px;
-		}
-		.location {
-			margin-top: 10px;
-			font-size: 26px;
+			height: 70px;
 			@include center;
 			justify-content: flex-start;
+			color: white;
+			padding: 0 20px;
+			background-color: $color;
+			span {
+				margin-left: 20px;
+			}
 		}
-		.classroom {
-			margin-top: 10px;
-			font-size: 26px;
+		@mixin steps-location($icon, $bg) {
+			width: 100%;
+			height: 100px;
 			@include center;
-			justify-content: flex-start;
+			justify-content: space-between;
+			.steps-location-box {
+				flex: 1;
+				height: 100%;
+				@include center;
+				justify-content: flex-start;
+				.steps-location-text {
+					font-size: 28px;
+				}
+				.steps-location-icon {
+					width: 45px;
+					height: 45px;
+					background-color: $bg;
+					margin-right: 20px;
+					border-radius: 5px;
+					@include center;
+					color: $icon;
+				}
+			}
 		}
-		.teacherName {
-			margin-top: 30px;
-			font-size: 26px;
-			@include center;
-			justify-content: flex-start;
+		.steps-content-card-ongoing {
+			@include steps-content-card(#7f86ff, #7f85ff30);
+			.steps-title {
+				@include steps-title(#7f86ff);
+			}
+			.steps-location {
+				@include steps-location(#7f86ff, #7f85ff7e);
+			}
+		}
+		.steps-content-card-unfinished {
+			@include steps-content-card(#ffbd69, #ffbd6930);
+			.steps-title {
+				@include steps-title(#ffbd69);
+			}
+			.steps-location {
+				@include steps-location(#ffbd69, #ffbd697e);
+			}
+		}
+		.steps-content-card-completed {
+			@include steps-content-card(#49b583, #49b58330);
+			.steps-title {
+				@include steps-title(#49b583);
+			}
+			.steps-location {
+				@include steps-location(#49b583, #49b5837e);
+			}
+		}
+		.steps-text-box {
+			width: 100%;
+			height: calc(100% - 70px);
+			background-color: white;
+			color: black;
+			box-sizing: border-box;
+			padding: 30px;
+			.course {
+				font-size: 32px;
+				font-weight: 600px;
+			}
 		}
 	}
 }
