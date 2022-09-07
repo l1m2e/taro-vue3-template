@@ -3,10 +3,11 @@ import todaySelect from '@/components/select-day/index.vue'
 import dayjs from 'dayjs'
 import { ref } from 'vue'
 import steps from './components/steps.vue'
+import { getWeekCourseApi } from '@/api'
 definePageConfig({
-	navigationBarTitleText: '课程表'
+	navigationBarTitleText: '课程表',
+	navigationBarBackgroundColor: '#fafafa'
 })
-
 const swiperChange = (e: any) => {
 	console.log(e.detail.current)
 	num.value = e.detail.current
@@ -15,14 +16,47 @@ const getIndex = (e: number) => {
 	console.log('获取index', e)
 	num.value = e
 }
-const num = ref(dayjs().day())
+const num = ref(dayjs().day()) // 今天星期几 从 0 开始
+const month = dayjs().format('YYYY-MM')
+const weekList = ref()
+const getWeekCourse = async () => {
+	const param = {
+		className: '班级名称1',
+		time: dayjs().format('YYYY-MM-DD'),
+		// time: '2022-08-31',
+		interfaceNum: '45-2'
+	}
+	const { data: res } = await getWeekCourseApi(param)
+	weekList.value = res.weekCourse
+	setWeekCourse()
+	console.log(weekList.value)
+}
+const setWeekCourse = () => {
+	weekList.value.forEach((item: any) => {
+		let now: any = +dayjs()
+		console.log(now)
+		item.forEach((e: any) => {
+			if (now < e.endTime) {
+				if (now > e.startTime) {
+					e.activate = 'ongoing'
+				} else {
+					e.activate = 'unfinished'
+				}
+			} else {
+				e.activate = 'completed'
+			}
+		})
+	})
+}
+
+getWeekCourse()
 </script>
 
 <template>
 	<div class="task">
 		<div class="title">
 			<div class="left">
-				<span class="item1">2022-06</span>
+				<span class="item1">{{ month }}</span>
 				<span class="item2">十一周</span>
 			</div>
 			<div class="right">
@@ -36,44 +70,20 @@ const num = ref(dayjs().day())
 		<todaySelect @index="getIndex" :swiperIndex="num"></todaySelect>
 		<div class="task-today">
 			<swiper :current="num" @change="swiperChange">
-				<swiper-item class="swiper-item">
-					<div>
-						<nut-steps direction="vertical" progress-dot current="2">
-							<nut-step title="已完成" content="您的订单已经打包完成，商品已发出">2</nut-step>
-							<nut-step title="进行中" content="您的订单正在配送途中">1</nut-step>
-							<nut-step title="未开始">
-								3
-								<template v-slot:content>
-									<p>收货地址为：</p>
-									<p>北京市经济技术开发区科创十一街18号院京东大厦</p>
-								</template>
-							</nut-step>
-						</nut-steps>
-					</div>
-				</swiper-item>
-				<swiper-item class="swiper-item">
+				<swiper-item class="swiper-item" v-for="item in weekList">
 					<div class="content">
-						<steps activate="unfinished"></steps>
-						<steps :end="true"></steps>
+						<steps :data="day" :activate="day.activate" v-for="(day, i) in item" :end="i === item.length - 1 ? true : false"></steps>
 					</div>
 				</swiper-item>
-				<swiper-item class="swiper-item">
-					<div class="content">
-						<steps activate="completed"></steps>
-						<steps activate="ongoing"></steps>
-						<steps activate="unfinished" :end="true"></steps>
-					</div>
-				</swiper-item>
-				<swiper-item>3</swiper-item>
-				<swiper-item>4</swiper-item>
-				<swiper-item>5</swiper-item>
-				<swiper-item>6</swiper-item>
 			</swiper>
 		</div>
 	</div>
 </template>
 
 <style lang="scss">
+page {
+	background-color: #fafafa;
+}
 .task {
 	.title {
 		width: 100%;

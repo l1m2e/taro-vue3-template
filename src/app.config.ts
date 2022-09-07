@@ -2,9 +2,9 @@ export default defineAppConfig({
   pages: [
     'pages/task-table/index',
     'pages/user/index',
-    'pages/user/components/bindUserInfo',
     'pages/home/index',
     'pages/user/components/userInfo',
+    'pages/user/components/bindUserInfo',
     'pages/user/components/bindPhone',
   ],
   window: {

@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-
+import dayjs from 'dayjs'
 type State = 'unfinished' | 'ongoing' | 'completed'
 const props = withDefaults(
 	defineProps<{
 		activate?: State
 		end?: boolean
+		data: any
 	}>(),
 	{
 		activate: 'unfinished',
@@ -23,18 +24,35 @@ const stateText = computed(() => {
 			temp = '进行中'
 			break
 		case 'unfinished':
-			temp = '未进行'
+			temp = '未开始'
 			break
 	}
 	return temp
 })
+const icon = computed(() => {
+	let temp = 'success'
+	switch (props.activate) {
+		case 'completed':
+			temp = 'success'
+			break
+		case 'ongoing':
+			temp = 'more-x'
+			break
+		case 'unfinished':
+			temp = 'clock'
+			break
+	}
+	return temp
+})
+const startTime = dayjs(parseInt(props.data.startTime)).format('HH:mm')
+const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 </script>
 
 <template>
 	<div class="steps">
 		<div class="time">
-			<div class="start">09:30</div>
-			<div class="end">10:30</div>
+			<div class="start">{{ startTime }}</div>
+			<div class="end">{{ endTime }}</div>
 		</div>
 		<div class="line-box">
 			<nut-icon
@@ -47,15 +65,15 @@ const stateText = computed(() => {
 		<div class="steps-content">
 			<div :class="`steps-content-card-${activate}`">
 				<div class="steps-title">
-					<nut-icon size="18" name="success"></nut-icon>
+					<nut-icon size="18" :name="icon"></nut-icon>
 					<span>{{ stateText }}</span>
 				</div>
 				<div class="steps-text-box">
-					<div class="course">课程名称</div>
+					<div class="course">{{ data.courseName }}</div>
 					<div class="steps-location">
 						<div class="steps-location-box">
 							<div class="steps-location-icon"><nut-icon name="location2" size="14"></nut-icon></div>
-							<span class="steps-location-text">教学楼-101</span>
+							<span class="steps-location-text">教学楼-1011</span>
 						</div>
 						<div class="steps-location-box">
 							<div class="steps-location-icon"><nut-icon name="my2" size="14"></nut-icon></div>
@@ -80,7 +98,6 @@ const stateText = computed(() => {
 	.time {
 		width: 80px;
 		height: 100%;
-		background-color: white;
 		.start {
 			font-size: 30px;
 		}
@@ -143,6 +160,7 @@ const stateText = computed(() => {
 			width: 100%;
 			height: 100px;
 			@include center;
+			margin-top: 10px;
 			justify-content: space-between;
 			.steps-location-box {
 				flex: 1;
@@ -150,14 +168,14 @@ const stateText = computed(() => {
 				@include center;
 				justify-content: flex-start;
 				.steps-location-text {
-					font-size: 28px;
+					font-size: 26px;
 				}
 				.steps-location-icon {
-					width: 45px;
-					height: 45px;
+					width: 55px;
+					height: 55px;
 					background-color: $bg;
 					margin-right: 20px;
-					border-radius: 5px;
+					border-radius: 10px;
 					@include center;
 					color: $icon;
 				}
@@ -173,7 +191,7 @@ const stateText = computed(() => {
 			}
 		}
 		.steps-content-card-unfinished {
-			@include steps-content-card(#ffbd69, #ffbd6930);
+			@include steps-content-card(#ffbd69, #ffbe691e);
 			.steps-title {
 				@include steps-title(#ffbd69);
 			}
@@ -198,7 +216,7 @@ const stateText = computed(() => {
 			box-sizing: border-box;
 			padding: 30px;
 			.course {
-				font-size: 32px;
+				font-size: 34px;
 				font-weight: 600px;
 			}
 		}

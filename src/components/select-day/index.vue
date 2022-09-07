@@ -10,22 +10,16 @@ const emit = defineEmits(['index'])
 const weekList = getNowWeek()
 const now = ref(dayjs().format('YYYY-MM-DD'))
 const lineLeft = ref()
-let weekNum = dayjs().day()
+// let weekNum = dayjs().day()
 const flag = ref(false)
 
-const fn = (date: any, e: any, index: number) => {
+const onDay = (date: any, e: any, index: number) => {
 	lineLeft.value = `${e.target.offsetLeft}px`
 	now.value = date
 	emit('index', index)
 }
 useReady(() => {
-	Taro.createSelectorQuery()
-		.selectAll('.item')
-		.boundingClientRect(function(rects) {
-			lineLeft.value = rects[weekNum].left + 'px'
-			flag.value = true
-		})
-		.exec()
+	flag.value = true
 })
 watch(
 	() => props.swiperIndex,
@@ -47,7 +41,7 @@ watch(
 			:class="item.date === now ? 'item onclick' : 'item'"
 			v-for="(item, index) in weekList"
 			key="item.date"
-			@click="fn(item.date, $event, index)"
+			@click="onDay(item.date, $event, index)"
 		>
 			<div class="week">{{ item.week }}</div>
 			<div class="date">{{ item.date.substring(8) }}</div>
