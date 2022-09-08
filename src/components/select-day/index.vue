@@ -6,11 +6,11 @@ import dayjs from 'dayjs'
 
 const props = defineProps(['swiperIndex'])
 const emit = defineEmits(['index'])
-
-const weekList = getNowWeek()
-const now = ref(dayjs().format('YYYY-MM-DD'))
+const date = dayjs().format('YYYY-MM-DD')
+const weekList = getNowWeek(date)
+const now = ref(date)
 const lineLeft = ref()
-// let weekNum = dayjs().day()
+let weekNum = dayjs().day() === 0 ? 6 : dayjs().day() - 1
 const flag = ref(false)
 
 const onDay = (date: any, e: any, index: number) => {
@@ -19,7 +19,15 @@ const onDay = (date: any, e: any, index: number) => {
 	emit('index', index)
 }
 useReady(() => {
-	flag.value = true
+	setTimeout(() => {
+		Taro.createSelectorQuery()
+			.selectAll('.item')
+			.boundingClientRect(function(rects) {
+				lineLeft.value = rects[weekNum].left + 'px'
+				flag.value = true
+			})
+			.exec()
+	}, 200)
 })
 watch(
 	() => props.swiperIndex,

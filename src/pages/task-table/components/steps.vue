@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { ref } from 'vue'
 import dayjs from 'dayjs'
+
 type State = 'unfinished' | 'ongoing' | 'completed'
 const props = withDefaults(
 	defineProps<{
@@ -14,36 +15,26 @@ const props = withDefaults(
 	}
 )
 
-const stateText = computed(() => {
-	let temp = ''
-	switch (props.activate) {
-		case 'completed':
-			temp = '已完成'
-			break
-		case 'ongoing':
-			temp = '进行中'
-			break
-		case 'unfinished':
-			temp = '未开始'
-			break
-	}
-	return temp
-})
-const icon = computed(() => {
-	let temp = 'success'
-	switch (props.activate) {
-		case 'completed':
-			temp = 'success'
-			break
-		case 'ongoing':
-			temp = 'more-x'
-			break
-		case 'unfinished':
-			temp = 'clock'
-			break
-	}
-	return temp
-})
+const stateText = ref('')
+const icon = ref('')
+const lineColor = ref('')
+switch (props.activate) {
+	case 'completed':
+		stateText.value = '已完成'
+		icon.value = 'success'
+		lineColor.value = '#49b583'
+		break
+	case 'ongoing':
+		stateText.value = '进行中'
+		icon.value = 'more-x'
+		lineColor.value = '#7f86ff'
+		break
+	case 'unfinished':
+		stateText.value = '未开始'
+		icon.value = 'clock'
+		lineColor.value = '#ffbd69'
+		break
+}
 const startTime = dayjs(parseInt(props.data.startTime)).format('HH:mm')
 const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 </script>
@@ -58,7 +49,7 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 			<nut-icon
 				:name="activate === 'ongoing' ? 'check-checked' : 'check-normal'"
 				:class="activate === 'ongoing' ? 'round-activate' : 'round'"
-				color="#7f86ff"
+				:color="lineColor"
 			></nut-icon>
 			<div class="line" v-if="!end"></div>
 		</div>
@@ -73,18 +64,14 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 					<div class="steps-location">
 						<div class="steps-location-box">
 							<div class="steps-location-icon"><nut-icon name="location2" size="14"></nut-icon></div>
-							<span class="steps-location-text">教学楼-1011</span>
+							<span class="steps-location-text">{{ data.classDevicePosition }}-{{ data.classDeviceName }}</span>
 						</div>
 						<div class="steps-location-box">
 							<div class="steps-location-icon"><nut-icon name="my2" size="14"></nut-icon></div>
-							<span class="steps-location-text">老师</span>
+							<span class="steps-location-text">{{ data.teacherName }}</span>
 						</div>
 					</div>
 				</div>
-				<!-- <div class="location"><span>教学楼A栋</span></div> -->
-				<!-- <div class="classroom"><nut-icon name="location2" size="12"></nut-icon> <span>&nbsp;101</span></div> -->
-				<!-- <div class="teacherName"><nut-icon name="my2" size="12"></nut-icon><span>&nbsp;杨老师</span></div> -->
-				<!-- <span class="state">{{ stateText }}</span> -->
 			</div>
 		</div>
 	</div>
@@ -125,9 +112,9 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 		}
 		.line {
 			width: 1px;
-			border-right: 1px solid #7f86ff;
+			border-right: 1px solid v-bind(lineColor);
 			height: 100%;
-			background-color: #7f86ff;
+			background-color: v-bind(lineColor);
 		}
 	}
 	.steps-content {
