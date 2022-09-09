@@ -4,7 +4,7 @@ interface IWeekData {
   week: string
   date: string
 }
-export default function getStartEnd(date) {
+export default function getWeekList(date: string) {
   const arr: IWeekData[] = [
     {
       week: '一',
@@ -36,6 +36,7 @@ export default function getStartEnd(date) {
     },
   ]
   arr.forEach((item, index) => {
+    // 本地化
     if (index === 6) {
       let temp = +dayjs(date).startOf('week').add(index, 'day')
       item.date = dayjs(temp + 24 * 60 * 60 * 1000).format('YYYY-MM-DD')

@@ -3,13 +3,14 @@ import dayjs from 'dayjs'
 import { ref, onBeforeUnmount } from 'vue'
 import todaySelect from '@/components/select-day/index.vue'
 import steps from './components/steps.vue'
-import { getWeekCourseApi } from '@/api'
+import { getWeekCourseApi, getformatWeekApi } from '@/api'
 import { changeTextToCN } from '@/utils/changeTextToCN'
 import getNowWeek from '@/utils/getNowWeek'
 definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
 })
+//日视图
 const swiperChange = (e: any) => {
 	console.log(e.detail.current)
 	num.value = e.detail.current
@@ -32,23 +33,27 @@ const getWeekCourse = async () => {
 	weekList.value = res.weekCourse
 	week.value = changeTextToCN(res.weekNum)
 	setWeekCourse()
-	console.log(weekList.value)
+	console.log(res)
 }
 const setWeekCourse = () => {
-	weekList.value.forEach((item: any) => {
-		let now: any = +dayjs()
-		item.forEach((e: any) => {
-			if (now < e.endTime) {
-				if (now > e.startTime) {
-					e.activate = 'ongoing'
+	try {
+		weekList.value.forEach((item: any) => {
+			let now: any = +dayjs()
+			item.forEach((e: any) => {
+				if (now < e.endTime) {
+					if (now > e.startTime) {
+						e.activate = 'ongoing'
+					} else {
+						e.activate = 'unfinished'
+					}
 				} else {
-					e.activate = 'unfinished'
+					e.activate = 'completed'
 				}
-			} else {
-				e.activate = 'completed'
-			}
+			})
 		})
-	})
+	} catch (error) {
+		console.log('接口炸了')
+	}
 }
 getWeekCourse()
 const timeOut = setInterval(() => {
@@ -60,6 +65,34 @@ onBeforeUnmount(() => {
 const date = ref(dayjs().format('YYYY-MM-DD'))
 const viewSwitch = ref(false)
 const weekDateArr = getNowWeek(date.value)
+//周视图
+// const colorArr = [
+// 	{ backgroundColor: '#ccc', textColor: '#49b583' },
+// 	{ backgroundColor: '#ccc', textColor: '#ff4171' },
+// 	{ backgroundColor: '#ccc', textColor: '#e85ec0' },
+// 	{ backgroundColor: '#ccc', textColor: '#ffbd69' },
+// 	{ backgroundColor: '#ccc', textColor: '#2c68ff' }
+// ]
+const weekListFormat = ref()
+const getFormatWeek = async () => {
+	const param = {
+		className: '班级名称1',
+		time: dayjs().format('YYYY-MM-DD'),
+		interfaceNum: '45-4'
+	}
+	const { data: res } = await getformatWeekApi(param)
+	weekListFormat.value = res
+	// let flag = true
+	// let tempArr = []
+	// weekListFormat.value.forEach(item => {
+	// 	item.forEach(element => {
+	// 		tempArr.forEach(value => {
+	// 			element.name == value.name || element.name === '' ? (flag = false) : ''
+	// 		})
+	// 	})
+	// })
+}
+getFormatWeek()
 </script>
 
 <template>
@@ -95,6 +128,16 @@ const weekDateArr = getNowWeek(date.value)
 				<div class="week-title-item" v-for="item in weekDateArr">
 					<span class="week-title-text">周{{ item.week }}</span>
 					<span class="week-title-date">{{ dayjs(item.date).format('MM/DD') }}</span>
+				</div>
+			</div>
+			<div class="week-body" v-for="(item, index) in weekListFormat">
+				<div class="week-body-item" v-for="(v, i) in item">
+					<div v-if="i === 0" class="week-body-index">
+						<span>{{ index + 1 }}</span>
+						<span>{{ v.startTime }}</span>
+						<span>{{ v.startTime }}</span>
+					</div>
+					<div v-else class="week-body-course">{{ v.name }}</div>
 				</div>
 			</div>
 		</div>
@@ -200,8 +243,49 @@ page {
 				}
 			}
 			.week-title-item:nth-child(1) {
-				max-width: 40px;
+				max-width: 55px;
 			}
+		}
+		.week-body {
+			display: flex;
+			.week-body-item {
+				flex: 1;
+				border-left: 1px solid #ebebeb;
+				border-top: 1px solid #ebebeb;
+				height: 115px;
+				@include center;
+				.week-body-index {
+					@include center;
+					height: 100%;
+					flex-direction: column;
+					span:nth-child(1) {
+						font-size: 22px;
+					}
+					span:nth-child(2) {
+						margin-top: 10px;
+						font-size: 17px;
+						color: #7e7e7e;
+					}
+					span:nth-child(3) {
+						font-size: 17px;
+						color: #7e7e7e;
+					}
+				}
+				.week-body-course {
+					width: 90%;
+					height: 90%;
+					background-color: #49b58320;
+					font-size: 20px;
+					@include center;
+					border-radius: 10px;
+				}
+			}
+			.week-body-item:nth-child(1) {
+				max-width: 55px;
+			}
+		}
+		.week-body:last-child {
+			border-bottom: #ebebeb 1px solid;
 		}
 	}
 }
