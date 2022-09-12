@@ -6,6 +6,7 @@ import steps from './components/steps.vue'
 import { getWeekCourseApi, getformatWeekApi } from '@/api'
 import { changeTextToCN } from '@/utils/changeTextToCN'
 import getNowWeek from '@/utils/getNowWeek'
+import testData from './test'
 definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
@@ -21,7 +22,7 @@ const getIndex = (e: number) => {
 }
 const num = ref(dayjs().day() === 0 ? 6 : dayjs().day() - 1)
 const month = dayjs().format('YYYY-MM')
-const weekList = ref()
+const weekList: any = ref([])
 const week = ref()
 const getWeekCourse = async () => {
 	const param = {
@@ -36,24 +37,20 @@ const getWeekCourse = async () => {
 	console.log(res)
 }
 const setWeekCourse = () => {
-	try {
-		weekList.value.forEach((item: any) => {
-			let now: any = +dayjs()
-			item.forEach((e: any) => {
-				if (now < e.endTime) {
-					if (now > e.startTime) {
-						e.activate = 'ongoing'
-					} else {
-						e.activate = 'unfinished'
-					}
+	weekList.value.forEach((item: any) => {
+		let now: any = +dayjs()
+		item.forEach((e: any) => {
+			if (now < e.endTime) {
+				if (now > e.startTime) {
+					e.activate = 'ongoing'
 				} else {
-					e.activate = 'completed'
+					e.activate = 'unfinished'
 				}
-			})
+			} else {
+				e.activate = 'completed'
+			}
 		})
-	} catch (error) {
-		console.log('接口炸了')
-	}
+	})
 }
 getWeekCourse()
 const timeOut = setInterval(() => {
@@ -66,31 +63,42 @@ const date = ref(dayjs().format('YYYY-MM-DD'))
 const viewSwitch = ref(false)
 const weekDateArr = getNowWeek(date.value)
 //周视图
-// const colorArr = [
-// 	{ backgroundColor: '#ccc', textColor: '#49b583' },
-// 	{ backgroundColor: '#ccc', textColor: '#ff4171' },
-// 	{ backgroundColor: '#ccc', textColor: '#e85ec0' },
-// 	{ backgroundColor: '#ccc', textColor: '#ffbd69' },
-// 	{ backgroundColor: '#ccc', textColor: '#2c68ff' }
-// ]
+const colorArr = [
+	{ backgroundColor: '#49B5835D', textColor: '#02AA5C' },
+	{ backgroundColor: '#ff41715D', textColor: '#F81F55' },
+	{ backgroundColor: '#0293C85D', textColor: '#0293C8' },
+	{ backgroundColor: '#ffbd695D', textColor: '#F79514' },
+	{ backgroundColor: '#2c68ff5D', textColor: '#0C4EF5' }
+]
 const weekListFormat = ref()
+const setColor = (data: any) => {
+	let index = 0
+	const obj = {}
+	data.forEach(item => {
+		item.forEach(v => {
+			if (!obj[v.name] && v.name !== '' && v.name) {
+				obj[v.name] = colorArr[index]
+				v.textColor = colorArr[index].textColor
+				v.backgroundColor = colorArr[index].backgroundColor
+				index++
+				index = index >= colorArr.length ? 0 : index
+			} else if (v.name !== '' && v.name) {
+				v.textColor = obj[v.name].textColor
+				v.backgroundColor = obj[v.name].backgroundColor
+			}
+		})
+	})
+}
 const getFormatWeek = async () => {
-	const param = {
-		className: '班级名称1',
-		time: dayjs().format('YYYY-MM-DD'),
-		interfaceNum: '45-4'
-	}
-	const { data: res } = await getformatWeekApi(param)
-	weekListFormat.value = res
-	// let flag = true
-	// let tempArr = []
-	// weekListFormat.value.forEach(item => {
-	// 	item.forEach(element => {
-	// 		tempArr.forEach(value => {
-	// 			element.name == value.name || element.name === '' ? (flag = false) : ''
-	// 		})
-	// 	})
-	// })
+	// const param = {
+	// 	className: '班级名称1',
+	// 	time: dayjs().format('YYYY-MM-DD'),
+	// 	interfaceNum: '45-4'
+	// }
+	// // const { data: res } = await getformatWeekApi(param)
+	weekListFormat.value = testData
+	setColor(weekListFormat.value)
+	console.log(weekListFormat.value)
 }
 getFormatWeek()
 </script>
@@ -135,9 +143,9 @@ getFormatWeek()
 					<div v-if="i === 0" class="week-body-index">
 						<span>{{ index + 1 }}</span>
 						<span>{{ v.startTime }}</span>
-						<span>{{ v.startTime }}</span>
+						<span>{{ v.endTime }}</span>
 					</div>
-					<div v-else class="week-body-course">{{ v.name }}</div>
+					<div v-else class="week-body-course" :style="{ backgroundColor: v.backgroundColor, color: v.textColor }">{{ v.name }}</div>
 				</div>
 			</div>
 		</div>
@@ -252,7 +260,7 @@ page {
 				flex: 1;
 				border-left: 1px solid #ebebeb;
 				border-top: 1px solid #ebebeb;
-				height: 115px;
+				height: 150px;
 				@include center;
 				.week-body-index {
 					@include center;
@@ -274,10 +282,10 @@ page {
 				.week-body-course {
 					width: 90%;
 					height: 90%;
-					background-color: #49b58320;
-					font-size: 20px;
+					font-size: 18px;
 					@include center;
 					border-radius: 10px;
+					font-weight: 700;
 				}
 			}
 			.week-body-item:nth-child(1) {
