@@ -20,6 +20,8 @@ import {
   FormItem,
   Picker,
   Divider,
+  Tabs,
+  TabPane
 
 } from '@nutui/nutui-taro'
 
@@ -45,6 +47,8 @@ const setNutUi = (app: App) => {
     .use(FormItem)
     .use(Picker)
     .use(Divider)
+    .use(Tabs)
+    .use(TabPane)
 }
 
 export default setNutUi

@@ -6,7 +6,6 @@ import steps from './components/steps.vue'
 import { getWeekCourseApi, getformatWeekApi } from '@/api'
 import { changeTextToCN } from '@/utils/changeTextToCN'
 import getNowWeek from '@/utils/getNowWeek'
-import testData from './test'
 definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
@@ -60,7 +59,7 @@ onBeforeUnmount(() => {
 	clearInterval(timeOut)
 })
 const date = ref(dayjs().format('YYYY-MM-DD'))
-const viewSwitch = ref(false)
+const viewSwitch = ref(true)
 const weekDateArr = getNowWeek(date.value)
 //周视图
 const colorArr = [
@@ -90,13 +89,13 @@ const setColor = (data: any) => {
 	})
 }
 const getFormatWeek = async () => {
-	// const param = {
-	// 	className: '班级名称1',
-	// 	time: dayjs().format('YYYY-MM-DD'),
-	// 	interfaceNum: '45-4'
-	// }
-	// // const { data: res } = await getformatWeekApi(param)
-	weekListFormat.value = testData
+	const param = {
+		className: '班级名称1',
+		time: dayjs().format('YYYY-MM-DD'),
+		interfaceNum: '45-4'
+	}
+	const { data: res } = await getformatWeekApi(param)
+	weekListFormat.value = res
 	setColor(weekListFormat.value)
 	console.log(weekListFormat.value)
 }
@@ -134,18 +133,20 @@ getFormatWeek()
 			<div class="week-title">
 				<div class="week-title-item"></div>
 				<div class="week-title-item" v-for="item in weekDateArr">
-					<span class="week-title-text">周{{ item.week }}</span>
+					<span class="week-title-text">{{ item.week }}</span>
 					<span class="week-title-date">{{ dayjs(item.date).format('MM/DD') }}</span>
 				</div>
 			</div>
-			<div class="week-body" v-for="(item, index) in weekListFormat">
-				<div class="week-body-item" v-for="(v, i) in item">
-					<div v-if="i === 0" class="week-body-index">
-						<span>{{ index + 1 }}</span>
-						<span>{{ v.startTime }}</span>
-						<span>{{ v.endTime }}</span>
+			<div class="week-box">
+				<div class="week-body" v-for="(item, index) in weekListFormat">
+					<div class="week-body-item" v-for="(v, i) in item">
+						<div v-if="i === 0" class="week-body-index">
+							<span>{{ index + 1 }}</span>
+							<span>{{ v.startTime }}</span>
+							<span>{{ v.endTime }}</span>
+						</div>
+						<div v-else class="week-body-course" :style="{ backgroundColor: v.backgroundColor, color: v.textColor }">{{ v.name }}</div>
 					</div>
-					<div v-else class="week-body-course" :style="{ backgroundColor: v.backgroundColor, color: v.textColor }">{{ v.name }}</div>
 				</div>
 			</div>
 		</div>
@@ -156,13 +157,13 @@ getFormatWeek()
 page {
 	background-color: #fafafa;
 }
+
 .task {
 	.title {
+		display: flex;
+		box-sizing: border-box;
 		width: 100%;
 		height: 200px;
-		box-sizing: border-box;
-		// background-color: red;
-		display: flex;
 		padding: 0 40px;
 		.left,
 		.right {
@@ -170,16 +171,16 @@ page {
 		}
 		.right {
 			display: flex;
-			justify-content: flex-end;
 			align-items: center;
+			justify-content: flex-end;
 			div {
 				width: 80%;
 				height: 100px;
-				background-color: #49b583;
-				border-radius: 30px;
-				@include center;
 				color: white;
-				box-shadow: 0px 20px 40px #49b58351;
+				border-radius: 30px;
+				background-color: #49b583;
+				box-shadow: 0 20px 40px #49b58351;
+				@include center;
 				image {
 					width: 42px;
 					height: 42px;
@@ -193,13 +194,13 @@ page {
 			@extend .right;
 			div {
 				background-color: #7f86ff;
-				box-shadow: 0px 20px 40px #7f85ff51;
+				box-shadow: 0 20px 40px #7f85ff51;
 			}
 		}
 		.left {
 			display: flex;
-			justify-content: center;
 			flex-direction: column;
+			justify-content: center;
 			.item1 {
 				color: #7e7e7e;
 			}
@@ -208,29 +209,31 @@ page {
 			}
 		}
 	}
+
 	.task-today {
+		overflow: hidden;
 		width: 700%;
 		height: calc(100vh - 200px - 120px);
-		overflow: hidden;
 		swiper {
 			height: 100%;
 			.swiper-item {
 				overflow-y: auto;
 				.content {
-					width: 100vw;
 					box-sizing: border-box;
+					width: 100vw;
 					padding: 40px;
 					.card {
 						width: 600px;
 						height: 200px;
+						margin-bottom: 30px;
 						border-radius: 25px;
 						background-color: #7f86ff;
-						margin-bottom: 30px;
 					}
 				}
 			}
 		}
 	}
+
 	.week-view {
 		width: 100%;
 		height: 100%;
@@ -238,9 +241,9 @@ page {
 			display: flex;
 			.week-title-item {
 				flex: 1;
+				flex-direction: column;
 				height: 50px;
 				@include center;
-				flex-direction: column;
 				.week-title-text {
 					font-size: 20px;
 					color: #7e7e7e;
@@ -254,46 +257,53 @@ page {
 				max-width: 55px;
 			}
 		}
-		.week-body {
-			display: flex;
-			.week-body-item {
-				flex: 1;
-				border-left: 1px solid #ebebeb;
-				border-top: 1px solid #ebebeb;
-				height: 150px;
-				@include center;
-				.week-body-index {
+
+		.week-box {
+			overflow: hidden;
+			overflow-y: scroll;
+			width: 100%;
+			height: calc(100vh - 250px);
+			.week-body {
+				display: flex;
+				.week-body-item {
+					flex: 1;
+					height: 150px;
+					border-top: 1px solid #ebebeb;
+					border-left: 1px solid #ebebeb;
 					@include center;
-					height: 100%;
-					flex-direction: column;
-					span:nth-child(1) {
-						font-size: 22px;
+					.week-body-index {
+						flex-direction: column;
+						height: 100%;
+						@include center;
+						span:nth-child(1) {
+							font-size: 22px;
+						}
+						span:nth-child(2) {
+							font-size: 17px;
+							margin-top: 10px;
+							color: #7e7e7e;
+						}
+						span:nth-child(3) {
+							font-size: 17px;
+							color: #7e7e7e;
+						}
 					}
-					span:nth-child(2) {
-						margin-top: 10px;
-						font-size: 17px;
-						color: #7e7e7e;
-					}
-					span:nth-child(3) {
-						font-size: 17px;
-						color: #7e7e7e;
+					.week-body-course {
+						font-size: 18px;
+						font-weight: 700;
+						width: 90%;
+						height: 90%;
+						border-radius: 10px;
+						@include center;
 					}
 				}
-				.week-body-course {
-					width: 90%;
-					height: 90%;
-					font-size: 18px;
-					@include center;
-					border-radius: 10px;
-					font-weight: 700;
+				.week-body-item:nth-child(1) {
+					max-width: 55px;
 				}
 			}
-			.week-body-item:nth-child(1) {
-				max-width: 55px;
+			.week-body:last-child {
+				border-bottom: #ebebeb 1px solid;
 			}
-		}
-		.week-body:last-child {
-			border-bottom: #ebebeb 1px solid;
 		}
 	}
 }

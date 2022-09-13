@@ -1,6 +1,9 @@
 <script lang="ts" setup>
-definePageConfig({ navigationBarTitleText: '签到', navigationBarBackgroundColor: '#fafafa' })
 import Taro from '@tarojs/taro'
+definePageConfig({
+	navigationBarTitleText: '签到',
+	navigationBarBackgroundColor: '#fafafa'
+})
 Taro.connectSocket({
 	url: 'ws://192.168.5.168:8080/IClassWebsocket/stuname'
 })
