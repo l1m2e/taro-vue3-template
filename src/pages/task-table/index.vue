@@ -6,10 +6,13 @@ import steps from './components/steps.vue'
 import { getWeekCourseApi, getformatWeekApi } from '@/api'
 import { changeTextToCN } from '@/utils/changeTextToCN'
 import getNowWeek from '@/utils/getNowWeek'
+import Mask from '@/components/mask/index.vue'
 definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
 })
+//遮罩
+const maskShow = ref(true)
 //日视图
 const swiperChange = (e: any) => {
 	console.log(e.detail.current)
@@ -34,6 +37,7 @@ const getWeekCourse = async () => {
 	week.value = changeTextToCN(res.weekNum)
 	setWeekCourse()
 	console.log(res)
+	maskShow.value = false
 }
 const setWeekCourse = () => {
 	weekList.value.forEach((item: any) => {
@@ -104,6 +108,7 @@ getFormatWeek()
 
 <template>
 	<div class="task">
+		<Mask :show="maskShow"></Mask>
 		<div class="title">
 			<div class="left">
 				<span class="item1">{{ month }}</span>
