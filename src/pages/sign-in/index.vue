@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 // import Taro from '@tarojs/taro'
+import { ws } from '@/services/scoket'
 import { ref } from 'vue'
 import { getSignToDayApi } from '@/api'
 import Mask from '@/components/mask/index.vue'
@@ -7,6 +8,7 @@ definePageConfig({
 	navigationBarTitleText: '签到',
 	navigationBarBackgroundColor: '#fafafa'
 })
+const signToNowList = ref([])
 const getSignToDay = async () => {
 	const params = {
 		cardID: '20004',
@@ -14,11 +16,22 @@ const getSignToDay = async () => {
 		interfaceNum: '47-6'
 	}
 	const res = await getSignToDayApi(params)
+	signToNowList.value = res.data
 	flag.value = false
 	console.log('%cindex.vue line:15 res', 'color: white; background-color: #007acc;', res)
 }
 const flag = ref(true)
 getSignToDay()
+// const stuSginScoket = new ws('/IClassWebsocket/Student/20004')
+// stuSginScoket.onMessage(e => {
+// 	console.log(e)
+// })
+// stuSginScoket.send('hellow')
+
+// setTimeout(() => {
+// 	stuSginScoket.send('hellowsaghe')
+// }, 1000)
+//'ws://192.168.5.168:8080/IClassWebsocket/stuname'
 // Taro.connectSocket({
 // 	url: 'ws://192.168.5.168:8080/IClassWebsocket/stuname'
 // })
@@ -39,14 +52,16 @@ getSignToDay()
 // }
 </script>
 <template>
-	<div class="card">
-		<div class="h1">计算机等级</div>
-		<div class="h2">12:00 ~ 13:00</div>
-		<div class="h2">还有 30 分钟签到结束</div>
-		<div class="teacher">杨老师</div>
-		<!-- <div class="button">签到</div> -->
-		<nut-button type="info" class="button">签到</nut-button>
-		<Mask :show="flag"></Mask>
+	<div>
+		<div class="card" v-for="item in signToNowList">
+			<div class="h1">计算机等级</div>
+			<div class="h2">12:00 ~ 13:00</div>
+			<div class="h2">还有 30 分钟签到结束</div>
+			<div class="teacher">杨老师</div>
+			<!-- <div class="button">签到</div> -->
+			<nut-button type="info" class="button">签到</nut-button>
+			<Mask :show="flag"></Mask>
+		</div>
 	</div>
 </template>
 

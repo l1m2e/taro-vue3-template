@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { isStatusCode } from './httpStatusCode'
 
 const isDev = process.env.NODE_ENV !== 'production'
-const baseUrl = isDev ? 'http://192.168.88.123:8080' : 'http://192.168.88.108:8080'
+const baseUrl = isDev ? 'http://192.168.88.123:8086' : 'http://192.168.88.108:8080'
 
 interface Response {
 	code: number
@@ -66,6 +66,7 @@ const DownloadFile = (url: string, header?: {}): Promise<DownloadResponse> => {
 		})
 	})
 }
+
 const UploadFile = (
 	url: string,
 	filePath: string,

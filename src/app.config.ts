@@ -1,8 +1,8 @@
 export default defineAppConfig({
 	pages: [
-		'pages/task-table/index',
-		'pages/sign-in/index',
 		'pages/user/index',
+		'pages/sign-in/index',
+		'pages/task-table/index',
 		'pages/user/components/bindUserInfo',
 		'pages/home/index',
 		'pages/appointment/index',
