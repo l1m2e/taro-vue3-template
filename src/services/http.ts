@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { isStatusCode } from './httpStatusCode'
 
 const isDev = process.env.NODE_ENV !== 'production'
-const baseUrl = isDev ? 'http://192.168.88.123:8086' : 'http://192.168.88.108:8080'
+const baseUrl = isDev ? 'http://192.168.88.123:8080' : 'http://192.168.88.108:8080'
 
 interface Response {
 	code: number
@@ -20,11 +20,7 @@ export interface UploadResponse extends Response {
 	data?: object | string
 }
 
-const Request = (
-	method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' | 'OPTIONS' | 'TRACE',
-	url: string,
-	data?: string | object
-): Promise<any> => {
+const Request = (method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' | 'OPTIONS' | 'TRACE', url: string, data?: string | object): Promise<any> => {
 	return new Promise((resolve, reject) => {
 		Taro.request({
 			method,
@@ -67,13 +63,7 @@ const DownloadFile = (url: string, header?: {}): Promise<DownloadResponse> => {
 	})
 }
 
-const UploadFile = (
-	url: string,
-	filePath: string,
-	name: string,
-	header?: { 'content-type': 'multipart/form-data' },
-	formData?: Object
-): Promise<UploadResponse> => {
+const UploadFile = (url: string, filePath: string, name: string, header?: { 'content-type': 'multipart/form-data' }, formData?: Object): Promise<UploadResponse> => {
 	return new Promise((resolve, reject) => {
 		Taro.uploadFile({
 			url,

@@ -1,5 +1,6 @@
 export default defineAppConfig({
 	pages: [
+		'pages/rent-classroom/index',
 		'pages/user/index',
 		'pages/sign-in/index',
 		'pages/task-table/index',
@@ -7,7 +8,8 @@ export default defineAppConfig({
 		'pages/home/index',
 		'pages/appointment/index',
 		'pages/user/components/userInfo',
-		'pages/user/components/bindPhone'
+		'pages/user/components/bindPhone',
+		'pages/rent-classroom/components/add-rent'
 	],
 	window: {
 		backgroundTextStyle: 'light',

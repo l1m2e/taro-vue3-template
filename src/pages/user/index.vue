@@ -2,6 +2,9 @@
 import Taro, { useDidShow } from '@tarojs/taro'
 import { loginApi } from '@/api'
 import { ref } from 'vue'
+import { useUserStore } from '@/store'
+import { storeToRefs } from 'pinia'
+
 definePageConfig({
 	navigationBarTitleText: '我的',
 	navigationBarBackgroundColor: '#fafafa'
@@ -18,10 +21,13 @@ const getCode = () => {
 	Taro.login({
 		success(e) {
 			code = e.code
-			console.log(e.code)
 		}
 	})
 }
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
+
 const login = () => {
 	getCode()
 	Taro.getUserProfile({
@@ -42,7 +48,7 @@ const login = () => {
 			if (res.token) {
 				Taro.setStorageSync('token', res.token)
 				isToken.value = true
-				if (res.message) {
+				if (res.role === '游客') {
 					//绑定用户信息逻辑
 					Taro.navigateTo({
 						url: '/pages/user/components/bindUserInfo'
@@ -94,7 +100,7 @@ const logout = () => {
 		<nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" />
 		<nut-row class="user-card" v-if="isToken">
 			<nut-col :span="6" class="avatar">
-				<nut-avatar size="large" :icon="avatar"> </nut-avatar>
+				<nut-avatar size="large" :icon="avatar"></nut-avatar>
 			</nut-col>
 			<nut-col :span="18" class="text">
 				<p class="name">{{ userName ? userName : '用户' }}</p>
@@ -107,11 +113,11 @@ const logout = () => {
 		<div class="menu">
 			<nut-row class="menu-item" v-for="item in menuList" key="item.text">
 				<div class="menu-item-mask" @click="onMenu(item.link)"></div>
-				<nut-col class="menu-item-icon" :span="3"> <image :src="item.icon"></image></nut-col>
+				<nut-col class="menu-item-icon" :span="3"><image :src="item.icon"></image></nut-col>
 				<nut-col :span="17">
 					<span>{{ item.text }}</span>
 				</nut-col>
-				<nut-col class="menu-item-right" :span="4"> <nut-icon name="right" size="14"></nut-icon></nut-col>
+				<nut-col class="menu-item-right" :span="4"><nut-icon name="right" size="14"></nut-icon></nut-col>
 			</nut-row>
 		</div>
 		<div class="logout" v-if="isToken" @click="logoutButton"><span>退出账号</span></div>

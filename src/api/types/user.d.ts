@@ -1,14 +1,14 @@
 export interface ILogin {
-  code: string
-  encryptedData: string
-  iv: string
+	code: string
+	encryptedData: string
+	iv: string
 }
 export interface IBindPhone {
-  code: string
-  openCode: string
+	code: string
+	openCode: string
 }
 export interface IBindUserInfo {
-  name: string
-  cardId: string
-  type: string
+	name: string
+	studentId: string
+	type: string
 }

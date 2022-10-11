@@ -1,40 +1,47 @@
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue'
 import { bindUserInfoApi } from '@/api'
+
 definePageConfig({
 	navigationBarTitleText: '绑定用户信息',
 	navigationBarBackgroundColor: '#f7f8fa'
 })
+
 const msg = reactive({
 	show: false,
 	desc: '',
 	type: 'primary'
 })
+
 const NUmessage = (type: string = 'primary', desc: string = '成功') => {
 	msg.desc = desc
 	msg.type = type
 	msg.show = true
 }
+
 const show = ref(false)
 const columns = ref([
 	{ text: '老师', value: '老师', role: 'Teacher' },
 	{ text: '学生', value: '学生', role: 'Student' }
 ])
+
 const desc = ref('学生')
 const confirm = ({ selectedValue, selectedOptions }) => {
 	console.log(selectedOptions)
 	desc.value = selectedValue.join(',')
 }
+
 const identity = computed(() => (desc.value === '老师' ? '工号' : '学号'))
 const formData = reactive({
 	name: '',
 	id: ''
 })
+
 const tipDialog = ref(false)
 const onOk = async () => {
 	const params = {
 		name: formData.name,
-		cardId: formData.id,
+		studentId: formData.id,
 		type: desc.value === '老师' ? 'Teacher' : 'Student'
 	}
 	const { data: res, statusCode } = await bindUserInfoApi(params)
@@ -79,7 +86,7 @@ const onButton = () => {
 				<input v-model="formData.id" class="nut-input-text" :placeholder="`请输入${identity}`" type="text" />
 			</nut-form-item>
 		</nut-form>
-		<nut-picker v-model:visible="show" :columns="columns" title="身份选择" @confirm="confirm"> </nut-picker>
+		<nut-picker v-model:visible="show" :columns="columns" title="身份选择" @confirm="confirm"></nut-picker>
 		<div class="button">
 			<nut-button @click="onButton" type="info">提交</nut-button>
 		</div>
