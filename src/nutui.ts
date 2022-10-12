@@ -24,7 +24,8 @@ import {
 	TabPane,
 	Calendar,
 	Input,
-	TextArea
+	TextArea,
+	Checkbox
 } from '@nutui/nutui-taro'
 
 const setNutUi = (app: App) => {
@@ -54,6 +55,7 @@ const setNutUi = (app: App) => {
 		.use(Calendar)
 		.use(Input)
 		.use(TextArea)
+		.use(Checkbox)
 }
 
 export default setNutUi
