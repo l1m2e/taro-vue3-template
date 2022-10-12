@@ -1,4 +1,4 @@
 import { GET } from '@/services'
-import { IgetSignToDayApi } from './types'
+import { IgetSignToDay } from './types'
 // 获取当天签到信息
-export const getSignToDayApi = (data: IgetSignToDayApi) => GET('/Interact/getAtn', data)
+export const getSignToDayApi = (data: IgetSignToDay) => GET('/Interact/getAtn', data)
