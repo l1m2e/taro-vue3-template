@@ -1,5 +1,5 @@
 import { GET, POST } from '@/services'
-import { ILogin, IBindPhone, IBindUserInfo } from './types'
+import type { ILogin, IBindPhone, IBindUserInfo } from './types'
 
 export const loginApi = (data: ILogin) => GET('/user/login', data)
 export const bindPhoneApi = (data: IBindPhone) => GET('/user/bindPhone', data)

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { getFloorApi, getClassListApi, getCourseListApi } from '@/api'
+import { getFloorApi, getClassListApi, getCourseListApi, addRentClassroomApi } from '@/api'
 import { changeTextToCN } from '@/utils/changeTextToCN'
 import dayjs from 'dayjs'
 definePageConfig({
-	navigationBarTitleText: '申请借用'
-	// navigationBarBackgroundColor: '#fafafa'
+	navigationBarTitleText: '申请借用',
+	navigationBarBackgroundColor: '#fafafa'
 })
 
 const from = reactive({
@@ -22,53 +22,63 @@ const dateDialog = ref(false) // 日期对话框是否显示
 const floorDialog = ref(false) // 楼层选择器对话框是否显示
 const classDialog = ref(false) // 教室选择器是否显示
 const startTimeDialog = ref(false) // 开始时间选择器是否显示
-const sectionDialog = ref(false) //节次选择器是否显示
+const sectionDialog = ref(false) // 选择器是否显示
 
 const dateValue = ref() //日期对话框 选中的值
 const floorList = ref<any[]>([]) //楼层选择器数组
 const classList = ref<any[]>([]) //教室选择器数组
 const startTimeList = ref<any[]>([]) // 开始时间选择器数组
-const sectionList = ref<any[]>([]) //节次选择器数组
+const sectionList = ref<any[]>([]) // 时间结束选择器数组
+
+const cleanFrom = (type: string = 'all') => {
+	switch (type) {
+		case 'all':
+			from.deviceName = '' // 清空教室名称
+			from.startTime = '' //清空开始时间表单
+			from.endTime = '' // 清空结束时间表单
+			classList.value.length = 0 // 清空教室选择器数组
+			startTimeList.value.length = 0 // 清空开始时间选择器数组
+			sectionList.value.length = 0 //清空结束时间选择器数组
+			break
+		case 'class':
+			from.startTime = ''
+			from.endTime = ''
+			break
+		case 'startTime':
+			from.endTime = ''
+			sectionList.value.length = 0
+			break
+	}
+}
 
 //日期选择触发
 const selectDate = (e: Array<string>) => {
 	dateValue.value = e[3]
-	//清空操作
-	from.startTime = ''
-	from.endTime = ''
-	from.deviceName = ''
-	from.classMAC = ''
-	startTimeList.value.length = 0
-	sectionList.value.length = 0
+	cleanFrom()
 	getFloorList()
 }
+
 //楼层选择触发
 const selectFloor = ({ selectedValue }) => {
 	from.classPostion = selectedValue[0]
-	//清空操作
-	from.deviceName = ''
-	from.startTime = ''
-	from.endTime = ''
-	classList.value.length = 0
-	startTimeList.value.length = 0
-	sectionList.value.length = 0
+	cleanFrom()
 	getClassList()
 }
 //教室选择触发
 const selectClass = ({ selectedOptions }) => {
-	from.startTime = ''
-	from.endTime = ''
+	cleanFrom('class')
 	from.deviceName = selectedOptions[0].ClassDeviceName
 	from.classMAC = selectedOptions[0].ClassDeviceMac
 	getCourseList()
 }
 //开始时间选择触发
 const selectStartTime = ({ selectedOptions }) => {
-	from.endTime = ''
+	cleanFrom('startTime')
 	from.startTime = selectedOptions[0].beginTime
 	sectionList.value = screenSection(selectedOptions[0].CurIndex)
+	console.log('[ selectedOptions[0].CurIndex) ] >', selectedOptions[0].CurIndex)
 }
-//选择结束时间触发 节次
+//选择结束时间触发
 const selectEndTime = ({ selectedOptions }) => {
 	from.endTime = selectedOptions[0].endTime
 }
@@ -78,11 +88,13 @@ const courseListList = ref() //所有课程信息数组
 const screenSection = (id: string) => {
 	//先筛掉被选中时间段之前的课程
 	const tempArr: Array<any> = courseListList.value.filter((item: any) => parseInt(item.CurIndex) >= parseInt(id))
+	console.log('%c [ tempArr ]-90', 'font-size:13px; background:pink; color:#bf2c9f;', tempArr)
 	const index = tempArr.findIndex((item: any) => item.CourseName !== '')
 	if (index === -1) {
 		//如果找不到 那么就都是没问题的全部一起返回
 		return tempArr
 	}
+	console.log('[ tempArr.slice(0, index) ] >', tempArr.slice(0, index))
 	return tempArr.slice(0, index)
 }
 
@@ -130,7 +142,35 @@ const getCourseList = async () => {
 	}
 }
 // api --- end
-const checkboxArr = ref([false, false, false, false, false, false])
+const switchList = ref([
+	{ switch: false, name: '系统权限' },
+	{ switch: false, name: '灯光权限' },
+	{ switch: false, name: '空调权限' },
+	{ switch: false, name: '窗帘权限' },
+	{ switch: false, name: '风扇权限' }
+])
+
+const submit = async () => {
+	// if (dateValue.value !== '' || from.deviceName !== '' || from.classPostion !== '' || from.reason !== '') {
+	// 	return console.log('[ 请将参数填写完整 ] >')
+	// }
+	const startTime = +dayjs(`${dateValue.value} ${from.startTime}`)
+	const endTime = +dayjs(`${dateValue.value} ${from.endTime}`)
+	const openBit: Array<number> = []
+	switchList.value.forEach((item: any) => {
+		if (item.switch) {
+			openBit.push(1)
+		} else {
+			openBit.push(0)
+		}
+	})
+	from.openBit = openBit.toString().replace(/,/g, '')
+
+	const res = await addRentClassroomApi({ ...from, startTime, endTime })
+	if (res.statusCode == 200) {
+		console.log('[ 添加成功 ] >')
+	}
+}
 </script>
 
 <template>
@@ -138,14 +178,14 @@ const checkboxArr = ref([false, false, false, false, false, false])
 		<!-- 日期选择器 -->
 		<nut-calendar v-model:visible="dateDialog" :default-value="dateValue" @choose="selectDate"></nut-calendar>
 		<!-- 楼层选择器 -->
-		<nut-picker v-model:visible="floorDialog" :columns="floorList" title="楼层选择" @confirm="selectFloor"></nut-picker>
+		<nut-picker v-model:visible="floorDialog" :columns="floorList" title="楼层选择" @confirm="selectFloor" :three-dimensional="false"></nut-picker>
 		<!-- 教室选择器 -->
-		<nut-picker v-model:visible="classDialog" :columns="classList" title="教室选择" @confirm="selectClass"></nut-picker>
+		<nut-picker v-model:visible="classDialog" :columns="classList" title="教室选择" @confirm="selectClass" :three-dimensional="false"></nut-picker>
 		<!-- 开始时间选择器 -->
-		<nut-picker v-model:visible="startTimeDialog" :columns="startTimeList" title="选择开始时间" @confirm="selectStartTime"></nut-picker>
-		<!-- 节次选择器/结束时间选择器 -->
-		<nut-picker v-model:visible="sectionDialog" :columns="sectionList" title="选择节次" @confirm="selectEndTime"></nut-picker>
-		<span>基本信息</span>
+		<nut-picker v-model:visible="startTimeDialog" :columns="startTimeList" title="选择开始时间" @confirm="selectStartTime" :three-dimensional="false"></nut-picker>
+		<!--  选择器/结束时间选择器 -->
+		<nut-picker v-model:visible="sectionDialog" :columns="sectionList" title="选择 " @confirm="selectEndTime" :three-dimensional="false"></nut-picker>
+		<!-- <span>基本信息</span> -->
 		<nut-form>
 			<nut-form-item label="借用日期">
 				<input class="nut-input-text" v-model="dateValue" @click="dateDialog = true" :disabled="true" placeholder="请选择日期" type="text" />
@@ -159,21 +199,20 @@ const checkboxArr = ref([false, false, false, false, false, false])
 			<nut-form-item label="开始时间">
 				<input class="nut-input-text" v-model="from.startTime" @click="startTimeDialog = true" :disabled="true" placeholder="请选择时间" type="text" />
 			</nut-form-item>
-			<nut-form-item label="节次">
-				<input class="nut-input-text" v-model="from.endTime" @click="sectionDialog = true" :disabled="true" placeholder="请选择节次" type="text" />
+			<nut-form-item label="结束事件">
+				<input class="nut-input-text" v-model="from.endTime" @click="sectionDialog = true" :disabled="true" placeholder="请选择 " type="text" />
+			</nut-form-item>
+			<nut-form-item :label="item.name" v-for="item in switchList">
+				<div class="switch-box">
+					<nut-switch v-model="item.switch" style="float: left;" />
+				</div>
 			</nut-form-item>
 			<nut-form-item label="理由">
 				<nut-textarea placeholder="请填写申请理由" v-model="from.reason" type="text" />
 			</nut-form-item>
-			<nut-form-item label="复选框">
-				<nut-checkbox v-model="checkboxArr[0]">复选框</nut-checkbox>
-				<nut-checkbox v-model="checkboxArr[1]">复选框</nut-checkbox>
-				<nut-checkbox v-model="checkboxArr[2]">复选框</nut-checkbox>
-				<nut-checkbox v-model="checkboxArr[3]">复选框</nut-checkbox>
-				<nut-checkbox v-model="checkboxArr[4]">复选框</nut-checkbox>
-			</nut-form-item>
+
 			<nut-cell>
-				<nut-button type="primary" style="margin-right: 10px" size="small">提交</nut-button>
+				<nut-button type="primary" style="margin-right: 10px" size="small" @click="submit">提交</nut-button>
 				<nut-button size="small">重置表单</nut-button>
 			</nut-cell>
 		</nut-form>
@@ -186,6 +225,12 @@ const checkboxArr = ref([false, false, false, false, false, false])
 		color: #9da7ae;
 		margin-top: 30px;
 		margin-left: 20px;
+	}
+	.switch-box {
+		width: 100%;
+		height: 100%;
+		@include center;
+		justify-content: flex-end;
 	}
 }
 </style>

@@ -13,7 +13,7 @@ function fn2() {
 }
 function fn3() {
 	Taro.navigateTo({
-		url: '/pages/sign-in/index'
+		url: '/pages/rent-classroom/index'
 	})
 }
 definePageConfig({

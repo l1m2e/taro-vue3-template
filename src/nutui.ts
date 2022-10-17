@@ -25,7 +25,8 @@ import {
 	Calendar,
 	Input,
 	TextArea,
-	Checkbox
+	Checkbox,
+	Switch
 } from '@nutui/nutui-taro'
 
 const setNutUi = (app: App) => {
@@ -56,6 +57,7 @@ const setNutUi = (app: App) => {
 		.use(Input)
 		.use(TextArea)
 		.use(Checkbox)
+		.use(Switch)
 }
 
 export default setNutUi

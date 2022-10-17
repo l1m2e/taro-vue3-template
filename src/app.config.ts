@@ -1,7 +1,7 @@
 export default defineAppConfig({
 	pages: [
-		'pages/rent-classroom/index',
 		'pages/user/index',
+		'pages/rent-classroom/index',
 		'pages/sign-in/index',
 		'pages/task-table/index',
 		'pages/user/components/bindUserInfo',

@@ -12,7 +12,15 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  plugins: ['@tarojs/plugin-html','taro-plugin-pinia'],
+  plugins: ['@tarojs/plugin-html','taro-plugin-pinia',   ['@tarojs/plugin-framework-vue3', {
+      vueLoaderOption: {
+        compilerOptions: {
+          isCustomElement: tag => tag.includes("ec-canvas"),
+          whitespace: 'preserve'
+        },
+        reactivityTransform: true  // 开启vue3响应性语法糖
+      }
+    }]],
   defineConstants: {
   },
   copy: {
