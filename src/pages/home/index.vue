@@ -24,9 +24,9 @@ definePageConfig({
 
 <template>
 	<div class="home">
-		<nut-button type="info" @click="fn">打开课程表</nut-button>
-		<nut-button type="info" @click="fn2">打开签到</nut-button>
-		<nut-button type="info" @click="fn3">打开借用</nut-button>
+		<div class="btn" type="info" @click="fn">打开课程表</div>
+		<div class="btn" type="info" @click="fn2">打开签到</div>
+		<div class="btn" type="info" @click="fn3">打开借用</div>
 	</div>
 </template>
 

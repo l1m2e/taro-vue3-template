@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
 	<div class="mask" v-if="show">
-		<nut-icon class="icon" name="loading1" size="25" :color="color"></nut-icon>
+		<!-- <nut-icon class="icon" name="loading1" size="25" :color="color"></nut-icon> -->
 		<p>玩命加载中...</p>
 	</div>
 </template>

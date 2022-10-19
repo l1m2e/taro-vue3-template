@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import './app.scss'
 import setNutUi from './nutui'
 import { createPinia } from 'pinia'
+
 import 'uno.css'
 import './app.scss'
 const App = createApp({

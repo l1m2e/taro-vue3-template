@@ -18,72 +18,97 @@ const from = reactive({
 	openBit: '' //开关
 })
 
-const dateDialog = ref(false) // 日期对话框是否显示
-const floorDialog = ref(false) // 楼层选择器对话框是否显示
-const classDialog = ref(false) // 教室选择器是否显示
-const startTimeDialog = ref(false) // 开始时间选择器是否显示
-const sectionDialog = ref(false) // 选择器是否显示
-
 const dateValue = ref() //日期对话框 选中的值
 const floorList = ref<any[]>([]) //楼层选择器数组
 const classList = ref<any[]>([]) //教室选择器数组
 const startTimeList = ref<any[]>([]) // 开始时间选择器数组
-const sectionList = ref<any[]>([]) // 时间结束选择器数组
+const endTimeList = ref<any[]>([]) // 时间结束选择器数组
 
-const cleanFrom = (type: string = 'all') => {
-	switch (type) {
-		case 'all':
-			from.deviceName = '' // 清空教室名称
-			from.startTime = '' //清空开始时间表单
-			from.endTime = '' // 清空结束时间表单
-			classList.value.length = 0 // 清空教室选择器数组
-			startTimeList.value.length = 0 // 清空开始时间选择器数组
-			sectionList.value.length = 0 //清空结束时间选择器数组
-			break
-		case 'class':
-			from.startTime = ''
-			from.endTime = ''
-			break
-		case 'startTime':
-			from.endTime = ''
-			sectionList.value.length = 0
-			break
+const courseListList = ref() //所有课程信息数组
+
+// api --- end
+const switchList = ref([
+	{ switch: false, name: '系统权限' },
+	{ switch: false, name: '灯光权限' },
+	{ switch: false, name: '空调权限' },
+	{ switch: false, name: '窗帘权限' },
+	{ switch: false, name: '风扇权限' }
+])
+
+const submit = async () => {
+	// if (dateValue.value !== '' || from.deviceName !== '' || from.classPostion !== '' || from.reason !== '') {
+	// 	return console.log('[ 请将参数填写完整 ] >')
+	// }
+	const startTime = +dayjs(`${dateValue.value} ${from.startTime}`)
+	const endTime = +dayjs(`${dateValue.value} ${from.endTime}`)
+	const openBit: Array<number> = []
+	switchList.value.forEach((item: any) => {
+		if (item.switch) {
+			openBit.push(1)
+		} else {
+			openBit.push(0)
+		}
+	})
+	from.openBit = openBit.toString().replace(/,/g, '')
+
+	const res = await addRentClassroomApi({ ...from, startTime, endTime })
+	if (res.statusCode == 200) {
+		console.log('[ 添加成功 ] >')
 	}
 }
 
-//日期选择触发
-const selectDate = (e: Array<string>) => {
-	dateValue.value = e[3]
+//选择日期触发
+const dateChange = (e: any) => {
+	dateValue.value = e.detail.value
 	cleanFrom()
 	getFloorList()
 }
 
-//楼层选择触发
-const selectFloor = ({ selectedValue }) => {
-	from.classPostion = selectedValue[0]
-	cleanFrom()
+//选择楼层触发
+const floorChange = (e: any) => {
+	cleanFrom('class')
+	from.classPostion = floorList.value[parseInt(e.detail.value)].ClassDevicePosition
 	getClassList()
 }
+
 //教室选择触发
-const selectClass = ({ selectedOptions }) => {
+const classRoomChange = (e: any) => {
 	cleanFrom('class')
-	from.deviceName = selectedOptions[0].ClassDeviceName
-	from.classMAC = selectedOptions[0].ClassDeviceMac
+	from.deviceName = classList.value[parseInt(e.detail.value)].ClassDeviceName
+	from.classMAC = classList.value[parseInt(e.detail.value)].ClassDeviceMac
 	getCourseList()
 }
-//开始时间选择触发
-const selectStartTime = ({ selectedOptions }) => {
+
+// 选择开始时间
+const startTimeChange = (e: any) => {
 	cleanFrom('startTime')
-	from.startTime = selectedOptions[0].beginTime
-	sectionList.value = screenSection(selectedOptions[0].CurIndex)
-	console.log('[ selectedOptions[0].CurIndex) ] >', selectedOptions[0].CurIndex)
-}
-//选择结束时间触发
-const selectEndTime = ({ selectedOptions }) => {
-	from.endTime = selectedOptions[0].endTime
+	from.startTime = startTimeList.value[parseInt(e.detail.value)].beginTime
+	endTimeList.value = screenSection(startTimeList.value[parseInt(e.detail.value)].CurIndex)
+	console.log('[ selectedOptions[0].CurIndex) ] >', startTimeList.value[parseInt(e.detail.value)].CurIndex)
 }
 
-const courseListList = ref() //所有课程信息数组
+// 选择结束时间
+const endTimeChange = (e: any) => {
+	from.endTime = startTimeList.value[parseInt(e.detail.value)].endTime
+}
+//获取所有课程信息
+const getCourseList = async () => {
+	const param = {
+		parameter: from.deviceName,
+		time: dayjs(dateValue.value).format('YYYY-MM-DD')
+	}
+	const res = await getCourseListApi(param)
+	if (res.statusCode === 200) {
+		// 格式化出 选择器需要的字段
+		res.data.today.forEach((item: any) => {
+			item.text = `第${changeTextToCN(parseInt(item.CurIndex) + 1)}节`
+			item.value = item.beginTime
+		})
+		courseListList.value = res.data.today
+		startTimeList.value = res.data.today.filter((item: any) => item.CourseName === '') // 筛选没有课程的
+	}
+}
+
 //筛选课程信息
 const screenSection = (id: string) => {
 	//先筛掉被选中时间段之前的课程
@@ -124,74 +149,86 @@ const getClassList = async () => {
 	}
 }
 
-//获取所有课程信息
-const getCourseList = async () => {
-	const param = {
-		parameter: from.deviceName,
-		time: dayjs(dateValue.value).format('YYYY-MM-DD')
-	}
-	const res = await getCourseListApi(param)
-	if (res.statusCode === 200) {
-		// 格式化出 选择器需要的字段
-		res.data.today.forEach((item: any) => {
-			item.text = `第${changeTextToCN(parseInt(item.CurIndex) + 1)}节`
-			item.value = item.beginTime
-		})
-		courseListList.value = res.data.today
-		startTimeList.value = res.data.today.filter((item: any) => item.CourseName === '') // 筛选没有课程的
-	}
-}
-// api --- end
-const switchList = ref([
-	{ switch: false, name: '系统权限' },
-	{ switch: false, name: '灯光权限' },
-	{ switch: false, name: '空调权限' },
-	{ switch: false, name: '窗帘权限' },
-	{ switch: false, name: '风扇权限' }
-])
-
-const submit = async () => {
-	// if (dateValue.value !== '' || from.deviceName !== '' || from.classPostion !== '' || from.reason !== '') {
-	// 	return console.log('[ 请将参数填写完整 ] >')
-	// }
-	const startTime = +dayjs(`${dateValue.value} ${from.startTime}`)
-	const endTime = +dayjs(`${dateValue.value} ${from.endTime}`)
-	const openBit: Array<number> = []
-	switchList.value.forEach((item: any) => {
-		if (item.switch) {
-			openBit.push(1)
-		} else {
-			openBit.push(0)
-		}
-	})
-	from.openBit = openBit.toString().replace(/,/g, '')
-
-	const res = await addRentClassroomApi({ ...from, startTime, endTime })
-	if (res.statusCode == 200) {
-		console.log('[ 添加成功 ] >')
+//清楚表单函数
+const cleanFrom = (type: string = 'all') => {
+	switch (type) {
+		case 'all':
+			from.deviceName = '' // 清空教室名称
+			from.startTime = '' //清空开始时间表单
+			from.endTime = '' // 清空结束时间表单
+			classList.value.length = 0 // 清空教室选择器数组
+			startTimeList.value.length = 0 // 清空开始时间选择器数组
+			endTimeList.value.length = 0 //清空结束时间选择器数组
+			break
+		case 'class':
+			from.startTime = ''
+			from.endTime = ''
+			break
+		case 'startTime':
+			from.endTime = ''
+			endTimeList.value.length = 0
+			break
 	}
 }
 </script>
 
 <template>
 	<div class="add-rent">
+		<div class="cell">
+			<span>借用日期</span>
+			<picker mode="date" fields="day" @change="dateChange" :start="dayjs().format('YYYY-MM-DD')">
+				<div class="text-gray">{{ dateValue ? dateValue : '请选择' }}</div>
+			</picker>
+		</div>
+		<div class="cell">
+			<span>选择楼层</span>
+			<picker mode="selector" :range="floorList" range-key="ClassDevicePosition" @change="floorChange">
+				<div class="text-gray">{{ from.classPostion ? from.classPostion : '请选择' }}</div>
+			</picker>
+		</div>
+		<div class="cell">
+			<span>选择教室</span>
+			<picker mode="selector" :range="classList" range-key="ClassDeviceName" @change="classRoomChange">
+				<div class="text-gray">{{ from.deviceName ? from.deviceName : '请选择' }}</div>
+			</picker>
+		</div>
+		<div class="cell">
+			<span>选择开始时间</span>
+			<picker mode="selector" :range="startTimeList" range-key="text" @change="startTimeChange">
+				<div class="text-gray">{{ from.startTime ? from.startTime : '请选择' }}</div>
+			</picker>
+		</div>
+		<div class="cell">
+			<span>选择结束时间</span>
+			<picker mode="selector" :range="endTimeList" range-key="text" @change="endTimeChange">
+				<div class="text-gray">{{ from.endTime ? from.endTime : '请选择' }}</div>
+			</picker>
+		</div>
+		<div>功能</div>
+		<div class="bg-white p-10px box-border">
+			<textarea class="border-1 border-gray100 rounded-md w-100% p-10px box-border focus-within-border-emerald " auto-height placeholder="请输入申请理由" />
+			<div class="btn  mt-10px">提交</div>
+		</div>
 		<!-- 日期选择器 -->
-		<nut-calendar v-model:visible="dateDialog" :default-value="dateValue" @choose="selectDate"></nut-calendar>
+		<!-- <nut-calendar v-model:visible="dateDialog" :default-value="dateValue" @choose="selectDate"></nut-calendar> -->
 		<!-- 楼层选择器 -->
-		<nut-picker v-model:visible="floorDialog" :columns="floorList" title="楼层选择" @confirm="selectFloor" :three-dimensional="false"></nut-picker>
+		<!-- <nut-picker v-model:visible="floorDialog" :columns="floorList" title="楼层选择" @confirm="selectFloor" :three-dimensional="false"></nut-picker> -->
 		<!-- 教室选择器 -->
-		<nut-picker v-model:visible="classDialog" :columns="classList" title="教室选择" @confirm="selectClass" :three-dimensional="false"></nut-picker>
+		<!-- <nut-picker v-model:visible="classDialog" :columns="classList" title="教室选择" @confirm="selectClass" :three-dimensional="false"></nut-picker> -->
 		<!-- 开始时间选择器 -->
-		<nut-picker v-model:visible="startTimeDialog" :columns="startTimeList" title="选择开始时间" @confirm="selectStartTime" :three-dimensional="false"></nut-picker>
+		<!-- <nut-picker v-model:visible="startTimeDialog" :columns="startTimeList" title="选择开始时间" @confirm="selectStartTime" :three-dimensional="false"></nut-picker> -->
 		<!--  选择器/结束时间选择器 -->
-		<nut-picker v-model:visible="sectionDialog" :columns="sectionList" title="选择 " @confirm="selectEndTime" :three-dimensional="false"></nut-picker>
+		<!-- <nut-picker v-model:visible="sectionDialog" :columns="endTimeList" title="选择 " @confirm="selectEndTime" :three-dimensional="false"></nut-picker> -->
 		<!-- <span>基本信息</span> -->
-		<nut-form>
+		<!-- <nut-form>
 			<nut-form-item label="借用日期">
 				<input class="nut-input-text" v-model="dateValue" @click="dateDialog = true" :disabled="true" placeholder="请选择日期" type="text" />
 			</nut-form-item>
-			<nut-form-item label="楼层">
-				<input class="nut-input-text" v-model="from.classPostion" @click="floorDialog = true" :disabled="true" placeholder="请选择楼层" type="text" />
+			<nut-form-item label="楼层"> -->
+		<!-- <input class="nut-input-text" v-model="from.classPostion" @click="floorDialog = true" :disabled="true" placeholder="请选择楼层" type="text" /> -->
+		<!-- <picker class="nut-input-text" mode="selector" :range="floorList" range-key="ClassDevicePosition" @change="change">
+					<div class="picker">{{ from.classPostion ? from.classPostion : '请选择' }}</div>
+				</picker>
 			</nut-form-item>
 			<nut-form-item label="教室">
 				<input class="nut-input-text" v-model="from.deviceName" @click="classDialog = true" :disabled="true" placeholder="请选择教室" type="text" />
@@ -210,12 +247,11 @@ const submit = async () => {
 			<nut-form-item label="理由">
 				<nut-textarea placeholder="请填写申请理由" v-model="from.reason" type="text" />
 			</nut-form-item>
-
 			<nut-cell>
 				<nut-button type="primary" style="margin-right: 10px" size="small" @click="submit">提交</nut-button>
 				<nut-button size="small">重置表单</nut-button>
 			</nut-cell>
-		</nut-form>
+		</nut-form> -->
 	</div>
 </template>
 

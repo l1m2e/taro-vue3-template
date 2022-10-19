@@ -65,29 +65,21 @@ const handleScroll = (e: any) => {
 <template>
 	<div class="rent-classroom">
 		<div class="addBtn" @click="addRent"><nut-icon name="uploader"></nut-icon></div>
+		<!-- 
 		<nut-tabs v-model="state.tab1value">
-			<nut-tabpane title="当天进行" pane-key="0">
-				<div class="card-box" @scroll="handleScroll">
-					<card :item="item" v-for="item in nowLit"></card>
-				</div>
-			</nut-tabpane>
-			<nut-tabpane title="未来进行" pane-key="1">
-				<card :item="item" v-for="item in futureList"></card>
-			</nut-tabpane>
-		</nut-tabs>
-		<!-- <nut-tabs v-model="state.tab1value">
 			<nut-tabpane title="当天进行">
-				<div class="card-box" @scroll="handleScroll">
-					<card :item="item" v-for="item in nowLit"></card>
+				<div class="card-box">
+					<h1>jljalj</h1>
 				</div>
 			</nut-tabpane>
 			<nut-tabpane title="未来进行">
-				<card :item="item" v-for="item in futureList"></card>
+				<h2>ajga</h2>
 			</nut-tabpane>
 			<nut-tabpane title="历史进行">
-				<card :item="item" v-for="item in historyList"></card>
+				<h1>3</h1>
 			</nut-tabpane>
 		</nut-tabs> -->
+		<div class="i-ri-home-line"></div>
 	</div>
 </template>
 
@@ -104,6 +96,7 @@ const handleScroll = (e: any) => {
 		position: fixed;
 		top: 85vh;
 		right: 5vw;
+		z-index: 999;
 		border-radius: 100%;
 		@include center;
 		.nut-icon {

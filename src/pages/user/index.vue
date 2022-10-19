@@ -121,7 +121,7 @@ const logout = () => {
 			</nut-row>
 		</div>
 		<div class="logout" v-if="isToken" @click="logoutButton"><span>退出账号</span></div>
-		<div class="w-100px h-100px bg-red"></div>
+		<div class="btn">111</div>
 	</div>
 </template>
 

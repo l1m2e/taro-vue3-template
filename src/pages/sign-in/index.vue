@@ -59,7 +59,7 @@ getSignToDay()
 			<div class="h2">还有 30 分钟签到结束</div>
 			<div class="teacher">杨老师</div>
 			<!-- <div class="button">签到</div> -->
-			<nut-button type="info" class="button">签到</nut-button>
+			<div class="btn button" type="info">签到</div>
 			<Mask :show="flag"></Mask>
 		</div>
 	</div>
