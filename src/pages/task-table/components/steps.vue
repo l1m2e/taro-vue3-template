@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
 import dayjs from 'dayjs'
 
 type State = 'unfinished' | 'ongoing' | 'completed'
@@ -46,24 +45,24 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 			<div class="end">{{ endTime }}</div>
 		</div>
 		<div class="line-box">
-			<nut-icon :name="activate === 'ongoing' ? 'check-checked' : 'check-normal'" :class="activate === 'ongoing' ? 'round-activate' : 'round'" :color="lineColor"></nut-icon>
+			<!-- <nut-icon :name="activate === 'ongoing' ? 'check-checked' : 'check-normal'" :class="activate === 'ongoing' ? 'round-activate' : 'round'" :color="lineColor"></nut-icon> -->
 			<div class="line" v-if="!end"></div>
 		</div>
 		<div class="steps-content">
 			<div :class="`steps-content-card-${activate}`">
 				<div class="steps-title">
-					<nut-icon size="18" :name="icon"></nut-icon>
+					<!-- <nut-icon size="18" :name="icon"></nut-icon> -->
 					<span>{{ stateText }}</span>
 				</div>
 				<div class="steps-text-box">
 					<div class="course">{{ data.courseName }}</div>
 					<div class="steps-location">
 						<div class="steps-location-box">
-							<div class="steps-location-icon"><nut-icon name="location2" size="14"></nut-icon></div>
+							<!-- <div class="steps-location-icon"><nut-icon name="location2" size="14"></nut-icon></div> -->
 							<span class="steps-location-text">{{ data.classDevicePosition }}-{{ data.classDeviceName }}</span>
 						</div>
 						<div class="steps-location-box">
-							<div class="steps-location-icon"><nut-icon name="my2" size="14"></nut-icon></div>
+							<!-- <div class="steps-location-icon"><nut-icon name="my2" size="14"></nut-icon></div> -->
 							<span class="steps-location-text">{{ data.teacherName }}</span>
 						</div>
 					</div>

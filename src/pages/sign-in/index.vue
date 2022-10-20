@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-// import Taro from '@tarojs/taro'
 import { ws } from '@/services/scoket'
-import { ref } from 'vue'
+
 import { getSignToDayApi } from '@/api'
 import Mask from '@/components/mask/index.vue'
 definePageConfig({

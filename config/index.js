@@ -1,13 +1,21 @@
 import path from 'path'
-const r = (p) => path.resolve(__dirname, '..', p)
 import UnoCSS from '@unocss/webpack'
 import transformWeClass from 'unplugin-transform-we-class/webpack'
+import AutoImport from 'unplugin-auto-import/webpack'
+const r = (p) => path.resolve(__dirname, '..', p)
 const webpackChain = (chain) => {
 	if (process.env.TARO_ENV === 'h5') {
 		chain.plugin('analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
 	}
 	chain.plugin('unocss').use(UnoCSS())
 	chain.plugin('transformWeClass').use(transformWeClass())
+	chain.plugin('unplugin-auto-import').use(
+		AutoImport({
+			imports: ['vue', { '@tarojs/taro': ['showToast', ['default', 'Taro']] }],
+			dts: 'auto-imports.d.ts',
+			vueTemplate: true
+		})
+	)
 }
 const config = {
 	projectName: 'taro-vue3-template',

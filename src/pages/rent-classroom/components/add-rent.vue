@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
 import { getFloorApi, getClassListApi, getCourseListApi, addRentClassroomApi } from '@/api'
 import { changeTextToCN } from '@/utils/changeTextToCN'
 import dayjs from 'dayjs'
+
 definePageConfig({
-	navigationBarTitleText: '申请借用',
-	navigationBarBackgroundColor: '#fafafa'
+	navigationBarTitleText: '申请借用'
 })
 
 const from = reactive({
@@ -28,17 +27,15 @@ const courseListList = ref() //所有课程信息数组
 
 // api --- end
 const switchList = ref([
-	{ switch: false, name: '系统权限' },
-	{ switch: false, name: '灯光权限' },
-	{ switch: false, name: '空调权限' },
-	{ switch: false, name: '窗帘权限' },
-	{ switch: false, name: '风扇权限' }
+	{ switch: false, name: '系统权限', index: 0 },
+	{ switch: false, name: '灯光权限', index: 1 },
+	{ switch: false, name: '空调权限', index: 2 },
+	{ switch: false, name: '窗帘权限', index: 3 },
+	{ switch: false, name: '风扇权限', index: 4 }
 ])
 
+//提交
 const submit = async () => {
-	// if (dateValue.value !== '' || from.deviceName !== '' || from.classPostion !== '' || from.reason !== '') {
-	// 	return console.log('[ 请将参数填写完整 ] >')
-	// }
 	const startTime = +dayjs(`${dateValue.value} ${from.startTime}`)
 	const endTime = +dayjs(`${dateValue.value} ${from.endTime}`)
 	const openBit: Array<number> = []
@@ -53,7 +50,7 @@ const submit = async () => {
 
 	const res = await addRentClassroomApi({ ...from, startTime, endTime })
 	if (res.statusCode == 200) {
-		console.log('[ 添加成功 ] >')
+		emptyForm()
 	}
 }
 
@@ -105,7 +102,8 @@ const getCourseList = async () => {
 			item.value = item.beginTime
 		})
 		courseListList.value = res.data.today
-		startTimeList.value = res.data.today.filter((item: any) => item.CourseName === '') // 筛选没有课程的
+		const noCourse = res.data.today.filter((item: any) => item.CourseName === '') // 筛选没有课程的
+		startTimeList.value = noCourse.filter((item: any) => +dayjs(`${dayjs(dateValue.value).format('YYYY-MM-DD')} ${item.beginTime}`) >= +dayjs()) // 筛选开始时间小于当前时间
 	}
 }
 
@@ -113,7 +111,6 @@ const getCourseList = async () => {
 const screenSection = (id: string) => {
 	//先筛掉被选中时间段之前的课程
 	const tempArr: Array<any> = courseListList.value.filter((item: any) => parseInt(item.CurIndex) >= parseInt(id))
-	console.log('%c [ tempArr ]-90', 'font-size:13px; background:pink; color:#bf2c9f;', tempArr)
 	const index = tempArr.findIndex((item: any) => item.CourseName !== '')
 	if (index === -1) {
 		//如果找不到 那么就都是没问题的全部一起返回
@@ -170,6 +167,29 @@ const cleanFrom = (type: string = 'all') => {
 			break
 	}
 }
+const onCheckBoxChange = (e) => {
+	switchList.value.forEach((item: any) => {
+		item.switch = false
+	})
+	e.detail.value.forEach((item: string) => {
+		switchList.value[parseInt(item)].switch = true
+	})
+}
+//输入理由触发
+const onTextareaChange = (e) => {
+	from.reason = e.detail.value
+}
+
+//清空表单
+const emptyForm = () => {
+	for (let key in from) {
+		from[key] = ''
+	}
+	dateValue.value = ''
+	switchList.value.forEach((item) => {
+		item.switch = false
+	})
+}
 </script>
 
 <template>
@@ -204,69 +224,29 @@ const cleanFrom = (type: string = 'all') => {
 				<div class="text-gray">{{ from.endTime ? from.endTime : '请选择' }}</div>
 			</picker>
 		</div>
-		<div>功能</div>
-		<div class="bg-white p-10px box-border">
-			<textarea class="border-1 border-gray100 rounded-md w-100% p-10px box-border focus-within-border-emerald " auto-height placeholder="请输入申请理由" />
-			<div class="btn  mt-10px">提交</div>
+		<div class="p-10px box-border">
+			<div class="mb-10px">功能选择</div>
+			<checkbox-group @change="onCheckBoxChange" class="grid grid-cols-3 gap-10px justify-items-center my-20px">
+				<checkbox :value="item.index" :checked="item.switch" v-for="item in switchList">{{ item.name }}</checkbox>
+			</checkbox-group>
+			<textarea
+				class="border-1 border-gray100 rounded-md w-100% p-10px box-border focus-within-border-emerald mt-10px"
+				auto-height
+				placeholder="请输入申请理由"
+				v-model="from.reason"
+				:onInput="onTextareaChange"
+			/>
+			<div class="w-100% flex justify-end">
+				<div class="btn-success mt-20px" @click="submit">提交</div>
+			</div>
 		</div>
-		<!-- 日期选择器 -->
-		<!-- <nut-calendar v-model:visible="dateDialog" :default-value="dateValue" @choose="selectDate"></nut-calendar> -->
-		<!-- 楼层选择器 -->
-		<!-- <nut-picker v-model:visible="floorDialog" :columns="floorList" title="楼层选择" @confirm="selectFloor" :three-dimensional="false"></nut-picker> -->
-		<!-- 教室选择器 -->
-		<!-- <nut-picker v-model:visible="classDialog" :columns="classList" title="教室选择" @confirm="selectClass" :three-dimensional="false"></nut-picker> -->
-		<!-- 开始时间选择器 -->
-		<!-- <nut-picker v-model:visible="startTimeDialog" :columns="startTimeList" title="选择开始时间" @confirm="selectStartTime" :three-dimensional="false"></nut-picker> -->
-		<!--  选择器/结束时间选择器 -->
-		<!-- <nut-picker v-model:visible="sectionDialog" :columns="endTimeList" title="选择 " @confirm="selectEndTime" :three-dimensional="false"></nut-picker> -->
-		<!-- <span>基本信息</span> -->
-		<!-- <nut-form>
-			<nut-form-item label="借用日期">
-				<input class="nut-input-text" v-model="dateValue" @click="dateDialog = true" :disabled="true" placeholder="请选择日期" type="text" />
-			</nut-form-item>
-			<nut-form-item label="楼层"> -->
-		<!-- <input class="nut-input-text" v-model="from.classPostion" @click="floorDialog = true" :disabled="true" placeholder="请选择楼层" type="text" /> -->
-		<!-- <picker class="nut-input-text" mode="selector" :range="floorList" range-key="ClassDevicePosition" @change="change">
-					<div class="picker">{{ from.classPostion ? from.classPostion : '请选择' }}</div>
-				</picker>
-			</nut-form-item>
-			<nut-form-item label="教室">
-				<input class="nut-input-text" v-model="from.deviceName" @click="classDialog = true" :disabled="true" placeholder="请选择教室" type="text" />
-			</nut-form-item>
-			<nut-form-item label="开始时间">
-				<input class="nut-input-text" v-model="from.startTime" @click="startTimeDialog = true" :disabled="true" placeholder="请选择时间" type="text" />
-			</nut-form-item>
-			<nut-form-item label="结束事件">
-				<input class="nut-input-text" v-model="from.endTime" @click="sectionDialog = true" :disabled="true" placeholder="请选择 " type="text" />
-			</nut-form-item>
-			<nut-form-item :label="item.name" v-for="item in switchList">
-				<div class="switch-box">
-					<nut-switch v-model="item.switch" style="float: left;" />
-				</div>
-			</nut-form-item>
-			<nut-form-item label="理由">
-				<nut-textarea placeholder="请填写申请理由" v-model="from.reason" type="text" />
-			</nut-form-item>
-			<nut-cell>
-				<nut-button type="primary" style="margin-right: 10px" size="small" @click="submit">提交</nut-button>
-				<nut-button size="small">重置表单</nut-button>
-			</nut-cell>
-		</nut-form> -->
 	</div>
 </template>
 
 <style lang="scss">
 .add-rent {
-	& > span {
-		color: #9da7ae;
-		margin-top: 30px;
-		margin-left: 20px;
-	}
-	.switch-box {
-		width: 100%;
-		height: 100%;
-		@include center;
-		justify-content: flex-end;
-	}
+	overflow: hidden;
+	height: 100vh;
+	background-color: #fff;
 }
 </style>

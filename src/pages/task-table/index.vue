@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { ref, onBeforeUnmount } from 'vue'
 import todaySelect from '@/components/select-day/index.vue'
 import steps from './components/steps.vue'
 import { getWeekCourseApi, getformatWeekApi } from '@/api'
@@ -77,8 +76,8 @@ const weekListFormat = ref()
 const setColor = (data: any) => {
 	let index = 0
 	const obj = {}
-	data.forEach(item => {
-		item.forEach(v => {
+	data.forEach((item) => {
+		item.forEach((v) => {
 			if (!obj[v.name] && v.name !== '' && v.name) {
 				obj[v.name] = colorArr[index]
 				v.textColor = colorArr[index].textColor

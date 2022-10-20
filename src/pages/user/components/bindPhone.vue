@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import Taro from '@tarojs/taro'
-import { reactive } from 'vue'
 import { bindPhoneApi } from '@/api'
 definePageConfig({
 	navigationBarTitleText: '授权'
@@ -43,10 +42,10 @@ const getPhoneNumber = async (e: any) => {
 </script>
 
 <template>
-	<div>
+	<!-- <div>
 		<nut-notify v-model:visible="msg.show" :msg="msg.desc" :type="msg.type" />
 		<div class="icon">
-			<nut-avatar size="large" :icon="avatar"> </nut-avatar>
+			<nut-avatar size="large" :icon="avatar"></nut-avatar>
 		</div>
 		<div>
 			<p class="h1">你好,{{ name }}</p>
@@ -58,7 +57,7 @@ const getPhoneNumber = async (e: any) => {
 				授权
 			</nut-button>
 		</div>
-	</div>
+	</div> -->
 </template>
 
 <style lang="scss">

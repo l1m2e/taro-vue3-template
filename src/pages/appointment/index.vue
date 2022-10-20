@@ -1,33 +1,19 @@
 <script lang="ts" setup>
-import { reactive } from 'vue'
 definePageConfig({
 	navigationBarTitleText: '教室借用',
 	navigationBarBackgroundColor: '#fafafa'
-})
-const state = reactive({
-	tab11value: '0'
 })
 </script>
 
 <template>
 	<div>
-		<nut-tabs v-model="state.tab11value">
-			<nut-tabpane title="当天进行">
-				<div class="card">
+		<!-- <div class="card">
 					<div class="title">
 						<div>时间:2022-9-08</div>
 						<div>未上课</div>
 					</div>
 					<div></div>
-				</div>
-			</nut-tabpane>
-			<nut-tabpane title="未来进行">
-				Tab 2
-			</nut-tabpane>
-			<nut-tabpane title="历史记录">
-				Tab 3
-			</nut-tabpane>
-		</nut-tabs>
+				</div> -->
 	</div>
 </template>
 

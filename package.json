@@ -82,6 +82,7 @@
 		"typescript": "^3.7.0",
 		"unocss": "^0.45.29",
 		"unocss-preset-weapp": "^0.1.18",
+		"unplugin-auto-import": "^0.11.2",
 		"unplugin-transform-we-class": "^0.1.19",
 		"vue-loader": "^16.0.0-beta.8",
 		"webpack": "5.69.0"

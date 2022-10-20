@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import Taro from '@tarojs/taro'
-
 function fn() {
 	Taro.navigateTo({
 		url: '/pages/task-table/index'

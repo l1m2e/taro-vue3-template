@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import Taro, { useDidShow } from '@tarojs/taro'
 import { loginApi } from '@/api'
-import { ref } from 'vue'
 import { useUserStore } from '@/store'
 import { storeToRefs } from 'pinia'
 
@@ -96,7 +95,7 @@ const logout = () => {
 </script>
 
 <template>
-	<div class="user">
+	<!-- <div class="user">
 		<nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" />
 		<nut-row class="user-card" v-if="isToken">
 			<nut-col :span="6" class="avatar">
@@ -122,7 +121,7 @@ const logout = () => {
 		</div>
 		<div class="logout" v-if="isToken" @click="logoutButton"><span>退出账号</span></div>
 		<div class="btn">111</div>
-	</div>
+	</div> -->
 </template>
 
 <style lang="scss">

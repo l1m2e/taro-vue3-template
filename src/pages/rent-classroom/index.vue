@@ -1,7 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import Taro from '@tarojs/taro'
-import { reactive } from 'vue'
 import card from './components/card.vue'
 import { getRentListApi } from '@/api'
 definePageConfig({
@@ -13,9 +10,6 @@ const addRent = () => {
 		url: '/pages/rent-classroom/components/add-rent'
 	})
 }
-const state = reactive({
-	tab1value: '0'
-})
 
 const nowLit = ref<any[]>([])
 const futureList = ref<any[]>([])
@@ -60,26 +54,27 @@ const handleScroll = (e: any) => {
 		console.log('滚动到底部啦')
 	}
 }
+const current1 = ref(0)
+const tabList1 = [{ title: '标签页1' }, { title: '标签页2' }, { title: '标签页3' }]
+const handleClick = (value) => {
+	current1.value = value
+}
 </script>
 
 <template>
 	<div class="rent-classroom">
-		<div class="addBtn" @click="addRent"><nut-icon name="uploader"></nut-icon></div>
-		<!-- 
-		<nut-tabs v-model="state.tab1value">
-			<nut-tabpane title="当天进行">
-				<div class="card-box">
-					<h1>jljalj</h1>
-				</div>
-			</nut-tabpane>
-			<nut-tabpane title="未来进行">
-				<h2>ajga</h2>
-			</nut-tabpane>
-			<nut-tabpane title="历史进行">
-				<h1>3</h1>
-			</nut-tabpane>
-		</nut-tabs> -->
-		<div class="i-ri-home-line"></div>
+		<div class="addBtn" @click="addRent"><div class="i-ri-add-line  color-white text-25px"></div></div>
+		<AtTabs :swipeable="false" :current="current1" :tabList="tabList1" @click="handleClick">
+			<AtTabsPane :current="current1" :index="0">
+				<view class="tab-content">标签页一的内容</view>
+			</AtTabsPane>
+			<AtTabsPane :current="current1" :index="1">
+				<view class="tab-content">标签页二的内容</view>
+			</AtTabsPane>
+			<AtTabsPane :current="current1" :index="2">
+				<view class="tab-content">标签页三的内容</view>
+			</AtTabsPane>
+		</AtTabs>
 	</div>
 </template>
 
@@ -99,19 +94,6 @@ const handleScroll = (e: any) => {
 		z-index: 999;
 		border-radius: 100%;
 		@include center;
-		.nut-icon {
-			font-size: 20px;
-			color: white;
-		}
-	}
-	& .nut-tabpane {
-		height: calc(100vh - 46px);
-		overflow: hidden;
-		overflow-y: scroll;
-		background-color: #fafafa;
-	}
-	& .nut-tabs__titles {
-		background-color: #fafafa;
 	}
 }
 </style>

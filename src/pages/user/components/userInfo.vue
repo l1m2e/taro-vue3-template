@@ -30,9 +30,9 @@ fn()
 <template>
 	<div>
 		<span>用户信息</span>
-		<div class="avatar">
+		<!-- <div class="avatar">
 			<span>头像</span>
-			<nut-avatar shape="square" size="small" :icon="avater"> </nut-avatar>
+			<nut-avatar shape="square" size="small" :icon="avater"></nut-avatar>
 		</div>
 		<nut-cell title="用户名" :desc="userName"></nut-cell>
 		<nut-cell title="性别" :desc="sex"></nut-cell>
@@ -41,7 +41,7 @@ fn()
 		<nut-cell title="身份" :desc="identity"></nut-cell>
 		<nut-cell title="姓名" :desc="name"></nut-cell>
 		<nut-cell :title="identity === '学生' ? '学号' : '工号'" :desc="id"></nut-cell>
-		<nut-cell title="班别" :desc="className"></nut-cell>
+		<nut-cell title="班别" :desc="className"></nut-cell> -->
 	</div>
 </template>
 

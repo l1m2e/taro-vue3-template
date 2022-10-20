@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue'
 import { bindUserInfoApi } from '@/api'
 
 definePageConfig({
@@ -65,7 +64,7 @@ const onButton = () => {
 </script>
 
 <template>
-	<div>
+	<!-- <div>
 		<nut-notify v-model:visible="msg.show" :msg="msg.desc" :type="msg.type" />
 		<nut-dialog title="请检查信息是否有误" content="绑定个人信息后无法更改" v-model:visible="tipDialog" @ok="onOk" />
 		<span>基本信息</span>
@@ -89,8 +88,8 @@ const onButton = () => {
 		<nut-picker v-model:visible="show" :columns="columns" title="身份选择" @confirm="confirm"></nut-picker>
 		<div class="button">
 			<nut-button @click="onButton" type="info">提交</nut-button>
-		</div>
-	</div>
+		</div> -->
+	<!-- </div> -->
 </template>
 
 <style lang="scss">
