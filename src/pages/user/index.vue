@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import Taro, { useDidShow } from '@tarojs/taro'
 import { loginApi } from '@/api'
-import { useUserStore } from '@/store'
-import { storeToRefs } from 'pinia'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
@@ -23,9 +21,6 @@ const getCode = () => {
 		}
 	})
 }
-
-const userStore = useUserStore()
-const { userInfo } = storeToRefs(userStore)
 
 const login = () => {
 	getCode()
@@ -84,10 +79,10 @@ const onMenu = (link: string) => {
 }
 
 //登出
-const tipDialog = ref(false)
-const logoutButton = () => {
-	tipDialog.value = true
-}
+// const tipDialog = ref(false)
+// const logoutButton = () => {
+// 	tipDialog.value = true
+// }
 const logout = () => {
 	Taro.removeStorageSync('token')
 	isToken.value = false
@@ -95,33 +90,32 @@ const logout = () => {
 </script>
 
 <template>
-	<!-- <div class="user">
-		<nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" />
-		<nut-row class="user-card" v-if="isToken">
-			<nut-col :span="6" class="avatar">
-				<nut-avatar size="large" :icon="avatar"></nut-avatar>
-			</nut-col>
-			<nut-col :span="18" class="text">
+	<div class="user">
+		<!-- <nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" /> -->
+		<div class="user-card" v-if="isToken">
+			<div class="avatar basis-1/4">
+				<image class="w-60px h-60px rounded-full" :src="avatar" />
+			</div>
+			<div class="text basis-3/4">
 				<p class="name">{{ userName ? userName : '用户' }}</p>
 				<p class="signature">学生</p>
-			</nut-col>
-		</nut-row>
-		<nut-row class="user-card user-card-on-login" v-else>
-			<nut-button type="success" @click="login">登 录</nut-button>
-		</nut-row>
-		<div class="menu">
-			<nut-row class="menu-item" v-for="item in menuList" key="item.text">
-				<div class="menu-item-mask" @click="onMenu(item.link)"></div>
-				<nut-col class="menu-item-icon" :span="3"><image :src="item.icon"></image></nut-col>
-				<nut-col :span="17">
-					<span>{{ item.text }}</span>
-				</nut-col>
-				<nut-col class="menu-item-right" :span="4"><nut-icon name="right" size="14"></nut-icon></nut-col>
-			</nut-row>
+			</div>
 		</div>
-		<div class="logout" v-if="isToken" @click="logoutButton"><span>退出账号</span></div>
-		<div class="btn">111</div>
-	</div> -->
+		<div class="user-card user-card-on-login" v-else>
+			<div class="btn-success rounded-24" @click="login">登 录</div>
+		</div>
+		<div class="menu">
+			<div class="menu-item flex" v-for="item in menuList" key="item.text">
+				<div class="menu-item-mask" @click="onMenu(item.link)"></div>
+				<div class="menu-item-icon basis-1/4"><image :src="item.icon"></image></div>
+				<div class="basis-4/2 p-10px">
+					<span>{{ item.text }}</span>
+				</div>
+				<div class="menu-item-right basis-4/1" :span="4"><div class="i-ri-arrow-right-s-line font-14"></div></div>
+			</div>
+		</div>
+		<div class="logout" v-if="isToken" @click="logout"><span>退出账号</span></div>
+	</div>
 </template>
 
 <style lang="scss">

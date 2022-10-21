@@ -54,8 +54,8 @@ const handleScroll = (e: any) => {
 		console.log('滚动到底部啦')
 	}
 }
-const current1 = ref(0)
 const tabList1 = [{ title: '标签页1' }, { title: '标签页2' }, { title: '标签页3' }]
+const current1 = ref(0)
 const handleClick = (value) => {
 	current1.value = value
 }

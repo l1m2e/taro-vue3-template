@@ -1,11 +1,12 @@
 export default defineAppConfig({
 	pages: [
-		'pages/rent-classroom/index',
+		'pages/home/index',
+		'pages/authorization/web-csm-login',
 		'pages/user/index',
+		'pages/rent-classroom/index',
 		'pages/sign-in/index',
 		'pages/task-table/index',
 		'pages/user/components/bindUserInfo',
-		'pages/home/index',
 		'pages/appointment/index',
 		'pages/user/components/userInfo',
 		'pages/user/components/bindPhone',
