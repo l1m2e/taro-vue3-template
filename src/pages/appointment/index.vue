@@ -3,6 +3,7 @@ definePageConfig({
 	navigationBarTitleText: '教室借用',
 	navigationBarBackgroundColor: '#fafafa'
 })
+
 </script>
 
 <template>
