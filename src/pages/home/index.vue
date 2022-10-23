@@ -22,9 +22,9 @@ definePageConfig({
 
 <template>
 	<div class="home">
-		<div class="btn" type="info" @click="fn">打开课程表</div>
-		<div class="btn" type="info" @click="fn2">打开签到</div>
-		<div class="btn" type="info" @click="fn3">打开借用</div>
+		<div class="btn-success" type="info" @click="fn">打开课程表</div>
+		<div class="btn-success" type="info" @click="fn2">打开签到</div>
+		<div class="btn-success" type="info" @click="fn3">打开借用</div>
 	</div>
 </template>
 

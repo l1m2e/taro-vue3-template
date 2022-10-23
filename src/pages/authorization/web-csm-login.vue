@@ -4,9 +4,9 @@ definePageConfig({
 	navigationBarTitleText: '授权登录',
 	navigationBarBackgroundColor: '#fafafa'
 })
-useLoad((query): void => {
+// @ts-ignore
+useLoad((query: any) => {
 	const scene = decodeURIComponent(query.scene)
-	console.log('[ scene ] >', scene)
 	sceneref.value = scene
 })
 const avatar = Taro.getStorageSync('avatar')

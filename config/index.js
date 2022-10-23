@@ -3,6 +3,7 @@ import UnoCSS from '@unocss/webpack'
 import transformWeClass from 'unplugin-transform-we-class/webpack'
 import AutoImport from 'unplugin-auto-import/webpack'
 const r = (p) => path.resolve(__dirname, '..', p)
+//webpack
 const webpackChain = (chain) => {
 	if (process.env.TARO_ENV === 'h5') {
 		chain.plugin('analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])

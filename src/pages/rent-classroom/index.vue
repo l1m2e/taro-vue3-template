@@ -4,8 +4,8 @@
 import Tabs from '@/components/tabs/index.vue'
 import TabPane from '@/components/tab-pane/index.vue'
 definePageConfig({
-	navigationBarTitleText: '借用',
-	navigationBarBackgroundColor: '#fafafa'
+	navigationBarTitleText: '借用'
+	// navigationBarBackgroundColor: '#fafafa'
 })
 const addRent = () => {
 	Taro.navigateTo({
@@ -61,12 +61,16 @@ const current1 = ref(0)
 const handleClick = (value) => {
 	current1.value = value
 }
+
+// function handleClick(name) {
+// 	console.log(name)
+// }
 </script>
 
 <template>
 	<div class="rent-classroom">
 		<div class="addBtn" @click="addRent"><div class="i-ri-add-line  color-white text-25px"></div></div>
-		<!-- <AtTabs :swipeable="false" :current="current1" :tabList="tabList1" @click="handleClick">
+		<AtTabs :swipeable="true" :current="current1" :tabList="tabList1" @click="handleClick">
 			<AtTabsPane :current="current1" :index="0">
 				<view class="tab-content">标签页一的内容</view>
 			</AtTabsPane>
@@ -76,20 +80,13 @@ const handleClick = (value) => {
 			<AtTabsPane :current="current1" :index="2">
 				<view class="tab-content">标签页三的内容</view>
 			</AtTabsPane>
-		</AtTabs> -->
-		<Tabs name="123" default="tab2">
-			<TabPane name="tab1" tab="tab1">tab1</TabPane>
-			<TabPane name="tab2" tab="tab2">tab2</TabPane>
-			<TabPane name="tab3" tab="tab3">tab3</TabPane>
-			<TabPane name="tab4" tab="tab4">tab4</TabPane>
-		</Tabs>
+		</AtTabs>
 	</div>
 </template>
 
 <style lang="scss">
 .rent-classroom {
 	background-color: white;
-
 	width: 100%;
 	height: 100%;
 	& > .addBtn {
@@ -102,6 +99,23 @@ const handleClick = (value) => {
 		z-index: 999;
 		border-radius: 100%;
 		@include center;
+	}
+	& .tab-content {
+		background-color: #7e7e7e;
+		height: 100vh;
+		padding-top: 100px;
+		box-sizing: border-box;
+	}
+	& .at-tabs__item {
+		width: 100%;
+		height: 50px;
+		line-height: 50px;
+		font-size: 25px;
+	}
+	& .at-tabs__header {
+		position: fixed;
+		top: 0;
+		z-index: 99;
 	}
 }
 </style>
