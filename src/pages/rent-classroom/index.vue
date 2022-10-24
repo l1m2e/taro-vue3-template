@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-// import card from './components/card.vue'
-// import { getRentListApi } from '@/api'
-import Tabs from '@/components/tabs/index.vue'
-import TabPane from '@/components/tab-pane/index.vue'
+import card from './components/card.vue'
+import { getRentListApi } from '@/api'
+import Tabs from '@/components/base/tabs/index.vue'
+import TabPane from '@/components/base/tab-pane/index.vue'
 definePageConfig({
 	navigationBarTitleText: '借用'
 	// navigationBarBackgroundColor: '#fafafa'
@@ -13,9 +13,9 @@ const addRent = () => {
 	})
 }
 
-// const nowLit = ref<any[]>([])
-// const futureList = ref<any[]>([])
-// const historyList = ref<any[]>([])
+const nowLit = ref<any[]>([])
+const futureList = ref<any[]>([])
+const historyList = ref<any[]>([])
 
 const getRentList = async (type: string, length: number = 0) => {
 	const param = {
@@ -50,37 +50,54 @@ const getRentList = async (type: string, length: number = 0) => {
 getRentList('now')
 getRentList('future')
 getRentList('past')
-const handleScroll = (e: any) => {
-	const { scrollTop, clientHeight, scrollHeight } = e.target
-	if (scrollTop + clientHeight === scrollHeight) {
-		console.log('滚动到底部啦')
+// const handleScroll = (e: any) => {
+// 	const { scrollTop, clientHeight, scrollHeight } = e.target
+// 	if (scrollTop + clientHeight === scrollHeight) {
+// 		console.log('滚动到底部啦')
+// 	}
+// }
+
+const handleClick = (name: string) => {
+	tabs.value = name
+}
+const tabs = ref('当天进行')
+
+const lower = (type: string) => {
+	switch (type) {
+		case 'now':
+			getRentList('now', nowLit.value.length)
+			break
+		case 'future':
+			getRentList('future', futureList.value.length)
+			break
+		case 'past':
+			console.log('[ c ] >')
+			getRentList('past', historyList.value.length)
+			break
 	}
 }
-const tabList1 = [{ title: '标签页1' }, { title: '标签页2' }, { title: '标签页3' }]
-const current1 = ref(0)
-const handleClick = (value) => {
-	current1.value = value
-}
-
-// function handleClick(name) {
-// 	console.log(name)
-// }
 </script>
 
 <template>
 	<div class="rent-classroom">
 		<div class="addBtn" @click="addRent"><div class="i-ri-add-line  color-white text-25px"></div></div>
-		<AtTabs :swipeable="true" :current="current1" :tabList="tabList1" @click="handleClick">
-			<AtTabsPane :current="current1" :index="0">
-				<view class="tab-content">标签页一的内容</view>
-			</AtTabsPane>
-			<AtTabsPane :current="current1" :index="1">
-				<view class="tab-content">标签页二的内容</view>
-			</AtTabsPane>
-			<AtTabsPane :current="current1" :index="2">
-				<view class="tab-content">标签页三的内容</view>
-			</AtTabsPane>
-		</AtTabs>
+		<Tabs :activate="tabs" @changeTab="handleClick">
+			<TabPane name="当天进行" class="tab-content">
+				<scroll-view :scroll-y="true" class="h-100%" :lowerThreshold="50" @scrolltolower="lower('now')">
+					<card v-for="item in nowLit" :item="item"></card>
+				</scroll-view>
+			</TabPane>
+			<TabPane name="未来进行" class="tab-content">
+				<scroll-view :scroll-y="true" class="h-100%" :lowerThreshold="50" @scrolltolower="lower('future')">
+					<card v-for="item in futureList" :item="item"></card>
+				</scroll-view>
+			</TabPane>
+			<TabPane name="历史记录" class="tab-content">
+				<scroll-view :scroll-y="true" class="h-100%" :lowerThreshold="50" @scrolltolower="lower('past')">
+					<card v-for="item in historyList" :item="item"></card>
+				</scroll-view>
+			</TabPane>
+		</Tabs>
 	</div>
 </template>
 
@@ -101,21 +118,16 @@ const handleClick = (value) => {
 		@include center;
 	}
 	& .tab-content {
-		background-color: #7e7e7e;
 		height: 100vh;
-		padding-top: 100px;
 		box-sizing: border-box;
+		overflow: hidden;
+		padding: 100px 20px 20px 20px;
 	}
-	& .at-tabs__item {
-		width: 100%;
-		height: 50px;
-		line-height: 50px;
-		font-size: 25px;
-	}
-	& .at-tabs__header {
+	& .tabs-title {
 		position: fixed;
 		top: 0;
 		z-index: 99;
+		background-color: white;
 	}
 }
 </style>

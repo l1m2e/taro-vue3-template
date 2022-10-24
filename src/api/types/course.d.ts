@@ -1,5 +1,5 @@
 export interface IweekCourse {
-  className: string
-  time: string
-  interfaceNum: string
+	parameter: string
+	time: string
+	interfaceNum: string
 }

@@ -1,64 +1,108 @@
-<script setup>
-import { defineComponent, reactive, toRefs, ref, computed, watch, toRef, useSlots } from 'vue'
-
-const props = defineProps({
-	modelValue: [String, Number]
-})
-
-const emit = defineEmits(['update:modelValue', 'click'])
+<script lang="ts" setup>
+const props = defineProps<{
+	activate: string
+}>()
 
 const slots = useSlots()
 
-const tabList = computed(() => {
+const tag = computed(() => {
 	if (!slots.default) return []
-	return slots.default().map((item) => ({
-		name: item.props.name,
-		label: item.props.label
-	}))
+	const arr = slots.default().map((item) => item.props?.name)
+	return arr.filter((item) => item)
 })
 
-const modelValue = toRef(props, 'modelValue')
+const renderContent = () => {
+	return (
+		slots.default &&
+		slots.default().find((item) => {
+			if (props.activate === '') {
+				return true
+			}
+			return item.props?.name === props.activate
+		})
+	)
+}
 
-function handleClick(name) {
-	// 触发父组件更行value
-	emit('update:modelValue', name)
+// 点击改变
+const emit = defineEmits(['changeTab'])
+const changeTab = (name: string) => {
+	emit('changeTab', name)
+}
 
-	// 触发父组件上的点击事件。 传入name
-	emit('click', name)
+// 滑动开始
+let pageXStart = 0
+const touchstart = (e: any) => {
+	pageXStart = e.changedTouches[0].pageX
+}
+//滑动结束
+const touchend = (e: any) => {
+	//滑动减去结束滑动的像素
+	let difference = pageXStart - e.changedTouches[0].pageX
+	if (difference <= -50) {
+		emit('changeTab', touchChange('add'))
+	}
+	if (difference >= 50) {
+		emit('changeTab', touchChange('reduce'))
+	}
+}
+
+const touchChange = (type: string) => {
+	if (!slots.default) return
+	const arr = slots
+		.default()
+		.map((item) => item.props?.name)
+		.filter((item) => item)
+	const index = arr.findIndex((item) => item === props.activate)
+	if (type === 'add') {
+		return arr[index - 1] ? arr[index - 1] : arr[arr.length - 1]
+	} else {
+		return arr[index + 1] ? arr[index + 1] : arr[0]
+	}
 }
 </script>
 
 <template>
-	<div>
-		<ul class="title-wrap">
-			<li v-for="item in tabList" :key="item" :class="{ active: modelValue == item.name }" @click.stop="handleClick(item.name)">{{ item.label }}</li>
-		</ul>
-
-		<div class="content-wrap">
-			<slot />
+	<div class="tabs">
+		<div class="tabs-title">
+			<div v-for="item in tag" @click="changeTab(item)" :class="`tabs-title-item ${item === props.activate ? '.tabs-title-item-activate ' : ''}`">{{ item }}</div>
+		</div>
+		<div class="tabs-content" @touchstart="touchstart" @touchend="touchend">
+			<renderContent />
 		</div>
 	</div>
 </template>
 
-<style scoped lang="scss">
-.title-wrap {
-	padding: 0;
-	margin: 0 auto;
-	list-style: none;
-	display: flex;
-	flex-direction: row;
-	& > li {
-		min-width: 40px;
-		padding: 8px;
-		margin: 0 10px 0 0;
-		border: 1px solid #666;
-		&:last-child {
-			margin: 0;
+<style lang="scss">
+.tabs {
+	.tabs-title {
+		height: 100px;
+		width: 100%;
+		display: flex;
+		.tabs-title-item {
+			flex: 1;
+			text-align: center;
+			line-height: 100px;
+			position: relative;
+			top: 0;
+			padding: 20px;
+			height: 100%;
+			box-sizing: border-box;
+			border-color: white;
 		}
-		&.active {
-			border: 1px solid rgba(12, 143, 230, 0.856);
-			color: rgba(12, 143, 230, 0.856);
-		}
+	}
+	.tabs-title-item::after {
+		content: '';
+		width: 0;
+		height: 4px;
+		background: #48b583;
+		position: absolute;
+		bottom: 0px;
+		left: 50%;
+		transition: all 0.5s;
+	}
+	.tabs-title-item-activate::after {
+		left: 0;
+		width: 100%;
 	}
 }
 </style>

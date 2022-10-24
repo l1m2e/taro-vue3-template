@@ -5,9 +5,9 @@ import AutoImport from 'unplugin-auto-import/webpack'
 const r = (p) => path.resolve(__dirname, '..', p)
 //webpack
 const webpackChain = (chain) => {
-	if (process.env.TARO_ENV === 'h5') {
-		chain.plugin('analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
-	}
+	// if (process.env.TARO_ENV === 'h5') {
+	// 	// chain.plugin('analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
+	// }
 	chain.plugin('unocss').use(UnoCSS())
 	chain.plugin('transformWeClass').use(transformWeClass())
 	chain.plugin('unplugin-auto-import').use(
@@ -66,10 +66,7 @@ const config = {
 		webpackChain,
 		postcss: {
 			pxtransform: {
-				enable: true,
-				config: {
-					selectorBlackList: ['nut-']
-				}
+				enable: true
 			},
 			url: {
 				enable: true,
@@ -90,7 +87,6 @@ const config = {
 		webpackChain,
 		publicPath: '/',
 		staticDirectory: 'static',
-		esnextModules: ['nutui-taro'],
 		postcss: {
 			autoprefixer: {
 				enable: true,
