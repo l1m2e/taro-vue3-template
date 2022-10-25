@@ -12,7 +12,7 @@ const webpackChain = (chain) => {
 	chain.plugin('transformWeClass').use(transformWeClass())
 	chain.plugin('unplugin-auto-import').use(
 		AutoImport({
-			imports: ['vue', { '@tarojs/taro': ['showToast', ['default', 'Taro']] }],
+			imports: ['vue', { '@tarojs/taro': ['showToast', ['default', 'Taro']], '@/api': [['*', 'api']] }],
 			dts: 'auto-imports.d.ts',
 			vueTemplate: true
 		})

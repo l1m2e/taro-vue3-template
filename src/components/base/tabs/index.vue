@@ -84,7 +84,6 @@ const touchChange = (type: string) => {
 			line-height: 100px;
 			position: relative;
 			top: 0;
-			padding: 20px;
 			height: 100%;
 			box-sizing: border-box;
 			border-color: white;

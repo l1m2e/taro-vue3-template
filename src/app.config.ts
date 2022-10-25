@@ -1,5 +1,6 @@
 export default defineAppConfig({
 	pages: [
+		'pages/user/components/bindSchool',
 		'pages/home/index',
 		'pages/authorization/web-csm-login',
 		'pages/user/index',

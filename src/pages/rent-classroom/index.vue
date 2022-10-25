@@ -48,21 +48,34 @@ const getRentList = async (type: string, length: number = 0) => {
 	}
 }
 getRentList('now')
-getRentList('future')
-getRentList('past')
-// const handleScroll = (e: any) => {
-// 	const { scrollTop, clientHeight, scrollHeight } = e.target
-// 	if (scrollTop + clientHeight === scrollHeight) {
-// 		console.log('滚动到底部啦')
-// 	}
-// }
 
 const handleClick = (name: string) => {
 	tabs.value = name
+	switch (name) {
+		case '当天进行':
+			if (nowLit.value.length === 0) {
+				getRentList('now')
+			}
+			break
+		case '未来进行':
+			if (futureList.value.length === 0) {
+				getRentList('future')
+			}
+			break
+		case '历史记录':
+			if (historyList.value.length === 0) {
+				getRentList('past')
+			}
+			break
+		default:
+			break
+	}
 }
 const tabs = ref('当天进行')
 
+// 监听下滑到底部
 const lower = (type: string) => {
+	console.log('[ type ] >', type)
 	switch (type) {
 		case 'now':
 			getRentList('now', nowLit.value.length)
@@ -71,10 +84,13 @@ const lower = (type: string) => {
 			getRentList('future', futureList.value.length)
 			break
 		case 'past':
-			console.log('[ c ] >')
 			getRentList('past', historyList.value.length)
 			break
 	}
+}
+
+const fn = () => {
+	console.log('[  ] >')
 }
 </script>
 
@@ -83,19 +99,19 @@ const lower = (type: string) => {
 		<div class="addBtn" @click="addRent"><div class="i-ri-add-line  color-white text-25px"></div></div>
 		<Tabs :activate="tabs" @changeTab="handleClick">
 			<TabPane name="当天进行" class="tab-content">
-				<scroll-view :scroll-y="true" class="h-100%" :lowerThreshold="50" @scrolltolower="lower('now')">
+				<scroll-view :scroll-y="true" class="scroll-box bg-red" :lowerThreshold="50" @scrolltolower="lower('now')">
 					<card v-for="item in nowLit" :item="item"></card>
 				</scroll-view>
 			</TabPane>
-			<TabPane name="未来进行" class="tab-content">
-				<scroll-view :scroll-y="true" class="h-100%" :lowerThreshold="50" @scrolltolower="lower('future')">
+			<TabPane name="未来进行" class="tab-content  bg-blue">
+				<scroll-view :scroll-y="true" class="scroll-box bg-blue" :lowerThreshold="50" @scrolltolower="lower('future')">
 					<card v-for="item in futureList" :item="item"></card>
 				</scroll-view>
 			</TabPane>
-			<TabPane name="历史记录" class="tab-content">
-				<scroll-view :scroll-y="true" class="h-100%" :lowerThreshold="50" @scrolltolower="lower('past')">
-					<card v-for="item in historyList" :item="item"></card>
-				</scroll-view>
+			<TabPane name="历史记录" class="tab-content" @scroll="fn">
+				<!-- <div :scroll-y="true" class="scroll-box overflow-auto" :lowerThreshold="50" @scrolltolower="lower('past')"> -->
+				<card v-for="item in historyList" :item="item"></card>
+				<!-- </div> -->
 			</TabPane>
 		</Tabs>
 	</div>
@@ -106,6 +122,7 @@ const lower = (type: string) => {
 	background-color: white;
 	width: 100%;
 	height: 100%;
+	position: relative;
 	& > .addBtn {
 		width: 100px;
 		height: 100px;
@@ -121,7 +138,14 @@ const lower = (type: string) => {
 		height: 100vh;
 		box-sizing: border-box;
 		overflow: hidden;
-		padding: 100px 20px 20px 20px;
+		padding: 20px;
+		padding-top: 100px;
+		overflow-y: scroll;
+		.scroll-box {
+			box-sizing: border-box;
+
+			height: 100%;
+		}
 	}
 	& .tabs-title {
 		position: fixed;

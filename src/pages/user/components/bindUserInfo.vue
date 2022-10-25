@@ -88,8 +88,8 @@ const onButton = () => {
 		<nut-picker v-model:visible="show" :columns="columns" title="身份选择" @confirm="confirm"></nut-picker>
 		<div class="button">
 			<nut-button @click="onButton" type="info">提交</nut-button>
-		</div> -->
-	<!-- </div> -->
+		</div>
+	</div> -->
 </template>
 
 <style lang="scss">

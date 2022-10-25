@@ -94,7 +94,7 @@ const setColor = (data: any) => {
 }
 const getFormatWeek = async () => {
 	const param = {
-		className: '班级名称1',
+		parameter: '班级名称1',
 		time: dayjs().format('YYYY-MM-DD'),
 		interfaceNum: '45-4'
 	}
