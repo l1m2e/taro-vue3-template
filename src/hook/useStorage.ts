@@ -1,5 +1,5 @@
 //生成反应式本地缓存
-export const useStorage = <T>(key: string, data: T) => {
+export function useStorage<T>(key: string, data: T) {
 	const reactiveData = ref<T>(data)
 
 	if (Taro.getStorageSync(key)) {

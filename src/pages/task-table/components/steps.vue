@@ -46,6 +46,7 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 		</div>
 		<div class="line-box">
 			<!-- <nut-icon :name="activate === 'ongoing' ? 'check-checked' : 'check-normal'" :class="activate === 'ongoing' ? 'round-activate' : 'round'" :color="lineColor"></nut-icon> -->
+			<div :class="`${activate === 'ongoing' ? 'ri-checkbox-blank-circle-fill' : 'i-ri-checkbox-blank-circle-line'} color-bg`"></div>
 			<div class="line" v-if="!end"></div>
 		</div>
 		<div class="steps-content">
@@ -202,6 +203,9 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 				font-weight: 600px;
 			}
 		}
+	}
+	.color-bg {
+		color: v-bind(lineColor);
 	}
 }
 </style>

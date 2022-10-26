@@ -1,65 +1,10 @@
 <script lang="ts" setup>
-import Taro, { useDidShow } from '@tarojs/taro'
-import { loginApi } from '@/api'
+import { useToken, useUserLogin, useUserInfo, useGetCode } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
 	navigationBarBackgroundColor: '#fafafa'
 })
-useDidShow(() => {
-	isToken.value = Taro.getStorageSync('token')
-})
-const avatar = ref(Taro.getStorageSync('avatar'))
-const isToken = ref(Taro.getStorageSync('token'))
-const userName = ref(Taro.getStorageSync('userName'))
-
-let code = ''
-const getCode = () => {
-	Taro.login({
-		success(e) {
-			code = e.code
-		}
-	})
-}
-
-const login = () => {
-	getCode()
-	Taro.getUserProfile({
-		desc: '用于完善用户信息',
-		async success(user) {
-			Taro.setStorageSync('userName', user.userInfo.nickName)
-			Taro.setStorageSync('sex', user.userInfo.gender)
-			Taro.setStorageSync('avatar', user.userInfo.avatarUrl)
-			avatar.value = user.userInfo.avatarUrl
-			userName.value = user.userInfo.nickName
-			const parmas = {
-				code,
-				encryptedData: user.encryptedData,
-				iv: user.iv
-			}
-			const { data: res, statusCode } = await loginApi(parmas)
-			// 已经登录过 返回token
-			if (res.token) {
-				Taro.setStorageSync('token', res.token)
-				isToken.value = true
-				if (res.role === '游客') {
-					//绑定用户信息逻辑
-					Taro.navigateTo({
-						url: '/pages/user/components/bindUserInfo'
-					})
-				}
-				return
-			}
-			if (statusCode === 401) {
-				// 未登录过且用户跳转了绑定手机号
-				Taro.navigateTo({
-					url: '/pages/user/components/bindPhone'
-				})
-			}
-		}
-	})
-}
-
 const menuList = [
 	{
 		icon: require('../../assets/user/user.png'),
@@ -85,24 +30,24 @@ const onMenu = (link: string) => {
 // }
 const logout = () => {
 	Taro.removeStorageSync('token')
-	isToken.value = false
+	useToken.value = ''
 }
 </script>
 
 <template>
 	<div class="user">
 		<!-- <nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" /> -->
-		<div class="user-card" v-if="isToken">
+		<div class="user-card" v-if="useToken">
 			<div class="avatar basis-1/4">
-				<image class="w-60px h-60px rounded-full" :src="avatar" />
+				<image class="w-60px h-60px rounded-full" :src="useUserInfo.avatarUrl" />
 			</div>
 			<div class="text basis-3/4">
-				<p class="name">{{ userName ? userName : '用户' }}</p>
-				<p class="signature">学生</p>
+				<p class="name">{{ useUserInfo.nickName ? useUserInfo.nickName : '用户' }}</p>
+				<p class="signature">{{ useUserInfo.role }}</p>
 			</div>
 		</div>
 		<div class="user-card user-card-on-login" v-else>
-			<div class="btn-success rounded-24" @click="login">登 录</div>
+			<div class="btn-success rounded-24" @click="useUserLogin()">登 录</div>
 		</div>
 		<div class="menu">
 			<div class="menu-item flex" v-for="item in menuList" key="item.text">
@@ -114,7 +59,7 @@ const logout = () => {
 				<div class="menu-item-right basis-4/1" :span="4"><div class="i-ri-arrow-right-s-line font-14"></div></div>
 			</div>
 		</div>
-		<div class="logout" v-if="isToken" @click="logout"><span>退出账号</span></div>
+		<div class="logout" v-if="useToken" @click="logout"><span>退出账号</span></div>
 	</div>
 </template>
 

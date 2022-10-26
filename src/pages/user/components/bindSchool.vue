@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useConfirmSchool } from '@/composables'
 definePageConfig({
 	navigationStyle: 'custom'
 })
@@ -56,7 +57,9 @@ const lower = () => {
 
 // 选择学校
 const schoolInfo = ref({
-	sid: ''
+	sid: '',
+	School_Name: '',
+	innerURL: ''
 })
 const chooseSchools = (item: any) => {
 	schoolInfo.value = item
@@ -68,7 +71,7 @@ const chooseSchools = (item: any) => {
 		<div class="card center flex-col p-10px">
 			<div class="flex justify-between w-100%">
 				<p class=" text-16px">请选择您所在的学校</p>
-				<div center>
+				<div class="center">
 					<picker mode="region" class="btn-success p-5px" @change="selectArea">筛选</picker>
 					<div class="i-ri-close-line color-green" @click="removalFilter" v-if="params.School_Provinces"></div>
 				</div>
@@ -81,7 +84,7 @@ const chooseSchools = (item: any) => {
 				</scroll-view>
 			</div>
 		</div>
-		<div class="btn-success mt-10px">选择学校</div>
+		<div class="btn-success mt-10px" @click="useConfirmSchool(schoolInfo)">选择学校</div>
 	</div>
 </template>
 <style lang="scss">
@@ -89,8 +92,8 @@ const chooseSchools = (item: any) => {
 	@include center;
 	flex-direction: column;
 	height: 100vh;
-	background-image: linear-gradient(135deg, #69ff97 10%, #00e4ff 100%);
-	background-position: center;
+	// background-image: url(../../../assets/img/);
+	// background-position: center;
 	.card {
 		width: 85vw;
 		backdrop-filter: blur(16px) saturate(180%);

@@ -1,4 +1,10 @@
 <script lang="ts" setup>
+import { useSchoolInfo } from '@/composables'
+if (useSchoolInfo.value.innerURL === '') {
+	Taro.navigateTo({
+		url: '/pages/user/components/bindScholl'
+	})
+}
 function fn() {
 	Taro.navigateTo({
 		url: '/pages/task-table/index'
@@ -18,6 +24,10 @@ definePageConfig({
 	navigationBarTitleText: '首页',
 	navigationBarBackgroundColor: '#fafafa'
 })
+// 打开调试
+Taro.setEnableDebug({
+	enableDebug: true
+})
 </script>
 
 <template>
@@ -25,6 +35,7 @@ definePageConfig({
 		<div class="btn-success" type="info" @click="fn">打开课程表</div>
 		<div class="btn-success" type="info" @click="fn2">打开签到</div>
 		<div class="btn-success" type="info" @click="fn3">打开借用</div>
+		<div>{{ useSchoolInfo.innerURL }}</div>
 	</div>
 </template>
 

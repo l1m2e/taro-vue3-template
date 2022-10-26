@@ -1,8 +1,6 @@
 import Taro from '@tarojs/taro'
 import { isStatusCode } from './httpStatusCode'
-
-const isDev = process.env.NODE_ENV !== 'production'
-const baseUrl = isDev ? 'http://192.168.88.123:8080' : 'http://192.168.88.123:8080'
+import { baseUrl } from '@/config/baseUrl'
 
 interface Response {
 	data?: any
@@ -45,6 +43,7 @@ const GET = (url: string, data?: string | object) => Request('GET', url, data)
 const POST = (url: string, data?: string | object) => Request('POST', url, data)
 const PUT = (url: string, data?: string | object) => Request('PUT', url, data)
 const DELETE = (url: string, data?: string | object) => Request('DELETE', url, data)
+
 // const DownloadFile = (url: string, header?: {}): Promise<DownloadResponse> => {
 // 	return new Promise((resolve, reject) => {
 // 		Taro.downloadFile({
