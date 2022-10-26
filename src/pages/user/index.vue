@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useToken, useUserLogin, useUserInfo, useGetCode } from '@/composables'
+import { useToken, useUserLogin, useUserInfo } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
