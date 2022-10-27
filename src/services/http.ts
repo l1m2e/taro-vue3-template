@@ -1,5 +1,6 @@
 import Taro from '@tarojs/taro'
 import { isStatusCode } from './httpStatusCode'
+import { useToken } from '@/composables'
 import { baseUrl } from '@/config/baseUrl'
 
 interface Response {
@@ -25,7 +26,7 @@ const Request = (method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' 
 			method,
 			url: `${baseUrl}${url}`,
 			data,
-			header: { 'Content-Type': 'application/json;charset=UTF-8', token: Taro.getStorageSync('token'), Accept: 'application/json' },
+			header: { 'Content-Type': 'application/json;charset=UTF-8', token: useToken.value, Accept: 'application/json' },
 			dataType: 'json',
 			success: (res: Taro.request.SuccessCallbackResult) => {
 				isStatusCode(res)

@@ -9,6 +9,8 @@ export const bindPhoneApi = (data: IBindPhone) => GET('/user/bindPhone', data)
 export const bindUserInfoApi = (data: IBindUserInfo) => POST('/user/bindSchoolUser', data)
 // 获取用户信息
 export const getUserInfoApi = () => GET('/user/UserInfo')
+// 保存用户信息
+export const saveUserInfo = (data: any) => GET('/user/register', data)
 //获取学校列表
 export const getSchoolList = (data: ISchoolList) =>
 	new Promise<Taro.request.SuccessCallbackResult>((resolve) => {

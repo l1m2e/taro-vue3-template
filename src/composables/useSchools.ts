@@ -20,13 +20,12 @@ export const useConfirmSchool = (data: ISchoolInfo) => {
 			icon: 'success',
 			duration: 2000
 		})
-
 		Taro.switchTab({
 			url: '/pages/home/index'
 		})
 	} else {
 		Taro.showToast({
-			title: `绑定失败`,
+			title: `绑定失败,学校可能未分配请联系管理员`,
 			icon: 'error',
 			duration: 2000
 		})

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useToken, useUserLogin, useUserInfo } from '@/composables'
+import { useToken, useUserInfo, useUserLogin } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
@@ -30,6 +30,7 @@ const onMenu = (link: string) => {
 // }
 const logout = () => {
 	Taro.removeStorageSync('token')
+	useUserInfo.value.nickName = ''
 	useToken.value = ''
 }
 </script>
@@ -37,7 +38,7 @@ const logout = () => {
 <template>
 	<div class="user">
 		<!-- <nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" /> -->
-		<div class="user-card" v-if="useToken">
+		<div class="user-card" v-if="useUserInfo.nickName">
 			<div class="avatar basis-1/4">
 				<image class="w-60px h-60px rounded-full" :src="useUserInfo.avatarUrl" />
 			</div>
@@ -47,7 +48,7 @@ const logout = () => {
 			</div>
 		</div>
 		<div class="user-card user-card-on-login" v-else>
-			<div class="btn-success rounded-24" @click="useUserLogin()">登 录</div>
+			<div class="btn-success rounded-24" @click="useUserLogin">登 录</div>
 		</div>
 		<div class="menu">
 			<div class="menu-item flex" v-for="item in menuList" key="item.text">
@@ -59,7 +60,7 @@ const logout = () => {
 				<div class="menu-item-right basis-4/1" :span="4"><div class="i-ri-arrow-right-s-line font-14"></div></div>
 			</div>
 		</div>
-		<div class="logout" v-if="useToken" @click="logout"><span>退出账号</span></div>
+		<div class="logout" v-if="useUserInfo.nickName" @click="logout"><span>退出账号</span></div>
 	</div>
 </template>
 

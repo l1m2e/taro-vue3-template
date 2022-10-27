@@ -10,7 +10,8 @@ export function useStorage<T>(key: string, data: T) {
 		() => reactiveData.value,
 		(v) => {
 			Taro.setStorageSync(key, JSON.stringify(v))
-		}
+		},
+		{ deep: true }
 	)
 
 	return reactiveData

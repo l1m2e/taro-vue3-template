@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { useSchoolInfo } from '@/composables'
 if (useSchoolInfo.value.innerURL === '') {
-	Taro.navigateTo({
-		url: '/pages/user/components/bindScholl'
-	})
+	// Taro.navigateTo({
+	// 	url: '/pages/user/components/bindSchool'
+	// })
 }
 function fn() {
 	Taro.navigateTo({
@@ -25,9 +25,9 @@ definePageConfig({
 	navigationBarBackgroundColor: '#fafafa'
 })
 // 打开调试
-Taro.setEnableDebug({
-	enableDebug: true
-})
+// Taro.setEnableDebug({
+// 	enableDebug: true
+// })
 </script>
 
 <template>
@@ -35,7 +35,7 @@ Taro.setEnableDebug({
 		<div class="btn-success" type="info" @click="fn">打开课程表</div>
 		<div class="btn-success" type="info" @click="fn2">打开签到</div>
 		<div class="btn-success" type="info" @click="fn3">打开借用</div>
-		<div>{{ useSchoolInfo.innerURL }}</div>
+		<!-- <div>{{ useSchoolInfo?.innerURL }}</div> -->
 	</div>
 </template>
 
