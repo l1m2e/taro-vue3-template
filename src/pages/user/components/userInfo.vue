@@ -1,47 +1,53 @@
 <script lang="ts" setup>
-import { getUserInfoApi } from '@/api'
-import { ref } from 'vue'
+import { useUserInfo } from '@/composables'
 definePageConfig({
 	navigationBarTitleText: '个人信息',
 	navigationBarBackgroundColor: '#f7f8fa'
 })
-const userName = ref('')
-const sex = ref('')
-const avater = ref('')
-const schoolName = ref('')
-const identity = ref('')
-const name = ref('')
-const id = ref('')
-const className = ref('')
-const fn = async () => {
-	const { data: res } = await getUserInfoApi()
-	userName.value = res.nickname
-	sex.value = res.schoolUser.gender
-	avater.value = res.avater
-	schoolName.value = res.schoolUser.schoolName
-	identity.value = res.schoolUser.type === 'Student' ? '学生' : '老师'
-	name.value = res.schoolUser.name
-	id.value = res.schoolUser.cardId
-	className.value = res.schoolUser.className
+const goToBindUserInfo = () => {
+	Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
 }
-fn()
 </script>
 
 <template>
 	<div>
 		<span>用户信息</span>
-		<!-- <div class="avatar">
+		<div class="avatar border-b-1 border-b-gray100">
 			<span>头像</span>
-			<nut-avatar shape="square" size="small" :icon="avater"></nut-avatar>
+			<img :src="useUserInfo.avatarUrl" alt="" class="w-30px h-30px" />
 		</div>
-		<nut-cell title="用户名" :desc="userName"></nut-cell>
-		<nut-cell title="性别" :desc="sex"></nut-cell>
+		<div class="cell">
+			<div>微信用户名</div>
+			<div>{{ useUserInfo.nickName }}</div>
+		</div>
 		<span>绑定的信息</span>
-		<nut-cell title="学校" :desc="schoolName"></nut-cell>
-		<nut-cell title="身份" :desc="identity"></nut-cell>
-		<nut-cell title="姓名" :desc="name"></nut-cell>
-		<nut-cell :title="identity === '学生' ? '学号' : '工号'" :desc="id"></nut-cell>
-		<nut-cell title="班别" :desc="className"></nut-cell> -->
+		<div v-if="useUserInfo.schoolName">
+			<div class="cell">
+				<div>学校</div>
+				<div>{{ useUserInfo.schoolName }}</div>
+			</div>
+			<div class="cell" v-if="useUserInfo.role === '学生'">
+				<div>班别</div>
+				<div>{{ useUserInfo.className }}</div>
+			</div>
+			<div class="cell">
+				<div>姓名</div>
+				<div>{{ useUserInfo.name }}</div>
+			</div>
+			<div class="cell">
+				<div>身份</div>
+				<div>{{ useUserInfo.role }}</div>
+			</div>
+			<div class="cell">
+				<div>{{ useUserInfo.role === '学生' ? '学号' : '工号' }}</div>
+				<div>{{ useUserInfo.studentId }}</div>
+			</div>
+		</div>
+		<div v-else class="w-95% m-auto bg-#ffffff center h-300px rounded-lg flex-col">
+			<div class="mb-30px text-20px">您还没有绑定您的身份信息</div>
+			<div>这将导致大部分功能受限</div>
+			<div class="mt-30px w-200px h-40px text-center leading-40px  bg-#23a276 color-white rounded-full box-border active:bg-#16664a" @click="goToBindUserInfo">前往绑定</div>
+		</div>
 	</div>
 </template>
 
@@ -69,7 +75,6 @@ span {
 	box-sizing: border-box;
 	height: 50PX;
 	background-color: white;
-	margin-bottom: 15rpx;
 	span {
 		font-size: 16PX;
 		color: black;

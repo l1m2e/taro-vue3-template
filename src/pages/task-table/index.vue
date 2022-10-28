@@ -27,7 +27,6 @@ const weekList: any = ref([])
 const week = ref()
 const getWeekCourse = async () => {
 	const param = {
-		// className: '班级名称1',
 		time: dayjs().format('YYYY-MM-DD'),
 		interfaceNum: '45-2',
 		parameter: '班级名称1'

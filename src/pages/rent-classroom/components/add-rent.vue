@@ -64,15 +64,15 @@ const dateChange = (e: any) => {
 //选择楼层触发
 const floorChange = (e: any) => {
 	cleanFrom('class')
-	from.classPostion = floorList.value[parseInt(e.detail.value)].ClassDevicePosition
+	from.classPostion = floorList.value[parseInt(e.detail.value)].classDevicePosition
 	getClassList()
 }
 
 //教室选择触发
 const classRoomChange = (e: any) => {
 	cleanFrom('class')
-	from.deviceName = classList.value[parseInt(e.detail.value)].ClassDeviceName
-	from.classMAC = classList.value[parseInt(e.detail.value)].ClassDeviceMac
+	from.deviceName = classList.value[parseInt(e.detail.value)].classDeviceName
+	from.classMAC = classList.value[parseInt(e.detail.value)].classDeviceMac
 	getCourseList()
 }
 
@@ -80,8 +80,7 @@ const classRoomChange = (e: any) => {
 const startTimeChange = (e: any) => {
 	cleanFrom('startTime')
 	from.startTime = startTimeList.value[parseInt(e.detail.value)].beginTime
-	endTimeList.value = screenSection(startTimeList.value[parseInt(e.detail.value)].CurIndex)
-	console.log('[ selectedOptions[0].CurIndex) ] >', startTimeList.value[parseInt(e.detail.value)].CurIndex)
+	endTimeList.value = screenSection(startTimeList.value[parseInt(e.detail.value)].curIndex)
 }
 
 // 选择结束时间
@@ -98,11 +97,11 @@ const getCourseList = async () => {
 	if (res.statusCode === 200) {
 		// 格式化出 选择器需要的字段
 		res.data.today.forEach((item: any) => {
-			item.text = `第${changeTextToCN(parseInt(item.CurIndex) + 1)}节`
+			item.text = `第${changeTextToCN(parseInt(item.curIndex) + 1)}节`
 			item.value = item.beginTime
 		})
 		courseListList.value = res.data.today
-		const noCourse = res.data.today.filter((item: any) => item.CourseName === '') // 筛选没有课程的
+		const noCourse = res.data.today.filter((item: any) => item.courseName === '') // 筛选没有课程的
 		startTimeList.value = noCourse.filter((item: any) => +dayjs(`${dayjs(dateValue.value).format('YYYY-MM-DD')} ${item.beginTime}`) >= +dayjs()) // 筛选开始时间小于当前时间
 	}
 }
@@ -110,8 +109,8 @@ const getCourseList = async () => {
 //筛选课程信息
 const screenSection = (id: string) => {
 	//先筛掉被选中时间段之前的课程
-	const tempArr: Array<any> = courseListList.value.filter((item: any) => parseInt(item.CurIndex) >= parseInt(id))
-	const index = tempArr.findIndex((item: any) => item.CourseName !== '')
+	const tempArr: Array<any> = courseListList.value.filter((item: any) => parseInt(item.curIndex) >= parseInt(id))
+	const index = tempArr.findIndex((item: any) => item.courseName !== '')
 	if (index === -1) {
 		//如果找不到 那么就都是没问题的全部一起返回
 		return tempArr
@@ -126,8 +125,8 @@ const getFloorList = async () => {
 	if (res.statusCode === 200) {
 		//格式化为选择器可以使用的数据结构
 		res.data.list.forEach((item: any) => {
-			item.text = item.ClassDevicePosition
-			item.value = item.ClassDevicePosition
+			item.text = item.classDevicePosition
+			item.value = item.classDevicePosition
 		})
 		floorList.value = res.data.list
 	}
@@ -139,8 +138,8 @@ const getClassList = async () => {
 	if (res.statusCode === 200) {
 		//格式化为选择器可以使用的数据结构
 		res.data.list.forEach((item: any) => {
-			item.text = item.ClassDeviceName
-			item.value = item.ClassDeviceMac
+			item.text = item.classDeviceName
+			item.value = item.classDeviceMac
 		})
 		classList.value = res.data.list
 	}
@@ -202,13 +201,13 @@ const emptyForm = () => {
 		</div>
 		<div class="cell">
 			<span>选择楼层</span>
-			<picker mode="selector" :range="floorList" range-key="ClassDevicePosition" @change="floorChange">
+			<picker mode="selector" :range="floorList" range-key="classDevicePosition" @change="floorChange">
 				<div class="text-gray">{{ from.classPostion ? from.classPostion : '请选择' }}</div>
 			</picker>
 		</div>
 		<div class="cell">
 			<span>选择教室</span>
-			<picker mode="selector" :range="classList" range-key="ClassDeviceName" @change="classRoomChange">
+			<picker mode="selector" :range="classList" range-key="classDeviceName" @change="classRoomChange">
 				<div class="text-gray">{{ from.deviceName ? from.deviceName : '请选择' }}</div>
 			</picker>
 		</div>

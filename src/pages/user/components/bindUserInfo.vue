@@ -1,109 +1,74 @@
 <script lang="ts" setup>
-import { bindUserInfoApi } from '@/api'
+import { useUserInfo, useUpdateUserInfo } from '@/composables'
 
 definePageConfig({
-	navigationBarTitleText: '绑定用户信息',
-	navigationBarBackgroundColor: '#f7f8fa'
+	navigationBarTitleText: '绑定个人信息'
 })
-
-const msg = reactive({
-	show: false,
-	desc: '',
-	type: 'primary'
-})
-
-const NUmessage = (type: string = 'primary', desc: string = '成功') => {
-	msg.desc = desc
-	msg.type = type
-	msg.show = true
-}
-
-const show = ref(false)
-const columns = ref([
-	{ text: '老师', value: '老师', role: 'Teacher' },
-	{ text: '学生', value: '学生', role: 'Student' }
-])
-
-const desc = ref('学生')
-const confirm = ({ selectedValue, selectedOptions }) => {
-	console.log(selectedOptions)
-	desc.value = selectedValue.join(',')
-}
-
-const identity = computed(() => (desc.value === '老师' ? '工号' : '学号'))
-const formData = reactive({
+const role = ref('Student')
+const form = reactive({
 	name: '',
-	id: ''
+	studentId: '',
+	type: ''
 })
-
-const tipDialog = ref(false)
-const onOk = async () => {
-	const params = {
-		name: formData.name,
-		studentId: formData.id,
-		type: desc.value === '老师' ? 'Teacher' : 'Student'
+const bindUserInfo = async () => {
+	if (form.name === '' || form.studentId === '') return Taro.showToast({ title: '信息不完整', icon: 'error', duration: 2000 })
+	const res = await api.bindUserInfoApi({ ...form, type: role.value })
+	if (res.statusCode === 200) {
+		useUpdateUserInfo(res.data) //更新用户信息
+		useUserInfo.value.role = res.data.type === 'Student' ? '学生' : '老师'
+		Taro.switchTab({ url: '/pages/user/index' })
+	} else {
+		Taro.showToast({ title: res.data?.message, icon: 'error', duration: 2000 })
 	}
-	const { data: res, statusCode } = await bindUserInfoApi(params)
-	if (statusCode === 401) {
-		return NUmessage('danger', res.message)
-	}
-	if (statusCode === 500) {
-		return NUmessage('danger', res.message)
-	}
-	console.log(res)
-}
-const onButton = () => {
-	if (!formData.name) {
-		return NUmessage('danger', '请输入姓名')
-	}
-	if (!formData.id) {
-		return NUmessage('danger', `请输入${identity.value}`)
-	}
-	tipDialog.value = true
 }
 </script>
 
 <template>
-	<!-- <div>
-		<nut-notify v-model:visible="msg.show" :msg="msg.desc" :type="msg.type" />
-		<nut-dialog title="请检查信息是否有误" content="绑定个人信息后无法更改" v-model:visible="tipDialog" @ok="onOk" />
-		<span>基本信息</span>
-		<nut-form :model-value="formData" ref="ruleForm">
-			<nut-cell
-				title="请选您的身份"
-				:desc="desc"
-				@click="
-					() => {
-						show = true
-					}
-				"
-			></nut-cell>
-			<nut-form-item label="姓名" prop="name">
-				<input v-model="formData.name" class="nut-input-text" placeholder="请输入姓名" type="text" />
-			</nut-form-item>
-			<nut-form-item :label="identity" prop="id">
-				<input v-model="formData.id" class="nut-input-text" :placeholder="`请输入${identity}`" type="text" />
-			</nut-form-item>
-		</nut-form>
-		<nut-picker v-model:visible="show" :columns="columns" title="身份选择" @confirm="confirm"></nut-picker>
-		<div class="button">
-			<nut-button @click="onButton" type="info">提交</nut-button>
+	<div class="bind-user-info h-100vh w-100% bg-white">
+		<div class="w-100% h-150px center">
+			<img :src="useUserInfo.avatarUrl" class="w-100px h-100px rounded-full" />
 		</div>
-	</div> -->
+		<div class="px-20px mt-20px box-border">
+			<div class="w-100% h-auto center justify-between bg-#b1efd9d1 rounded-15px m-auto">
+				<div :class="`button  ${role === 'Student' ? '.button-activation' : ''}`" @click="role = 'Student'">学生</div>
+				<div :class="`button  ${role !== 'Student' ? '.button-activation' : ''}`" @click="role = 'Teacher'">老师</div>
+			</div>
+			<div class="pt-20px">姓名</div>
+			<div class="input"><input v-model="form.name" type="text" placeholder="请输入您的真实姓名" /></div>
+			<div class="pt-20px">{{ role === 'Student' ? '学号' : '工号' }}</div>
+			<div class="input"><input v-model="form.studentId" type="text" :placeholder="`请输入您的${role === 'Student' ? '学号' : '工号'}`" /></div>
+		</div>
+		<div class="w-200px h-40px text-center leading-40px m-auto mt-50px bg-#23a276 color-white rounded-full box-border active:bg-#16664a" @click="bindUserInfo">提交</div>
+	</div>
 </template>
 
 <style lang="scss">
-page {
-	background-color: #f7f8fa;
-}
-span {
-	color: #9da7ae;
-	margin-top: 30px;
-	margin-left: 20px;
-}
-.button {
-	@include center;
-	width: 100%;
-	margin: 60px auto;
+.bind-user-info {
+	.button {
+		flex: 1;
+		background-color: #b1efd9d1;
+		text-align: center;
+		height: 80px;
+		line-height: 80px;
+		border-radius: 15px;
+		color: #2a9670;
+		transition: all 0.1s;
+	}
+	.button-activation {
+		background-color: #23a276;
+		color: white;
+	}
+	.input {
+		background-color: #faf9f8;
+		width: 100;
+		border-radius: 15px;
+		margin-top: 20px;
+		padding: 20px;
+		box-sizing: border-box;
+		input {
+			width: 100%;
+			height: 100%;
+		}
+	}
 }
 </style>

@@ -1,18 +1,16 @@
 import { useStorage } from '@/hook'
-import { UserInfo } from '@tarojs/taro/types/index'
-interface IUserInfo extends UserInfo {
-	role?: string
-}
 
 //用户状态
-export const useUserInfo = useStorage<IUserInfo>('useInfo', {
-	nickName: '',
-	avatarUrl: '',
-	country: '',
-	province: '',
-	city: '',
-	language: 'zh_CN',
-	role: ''
+export const useUserInfo = useStorage('useInfo', {
+	nickName: '', //微信名称
+	avatarUrl: '', //微信头像
+	role: '', // 当前用户角色
+	name: '', //用户和学校绑定的真实姓名
+	schoolName: '', // 用户绑定的学校名称
+	studentId: '', //学号和工号
+	cardId: '', //卡号
+	gender: '', // 性别 0未知 1男 2女
+	className: '' // 班别
 })
 export const useToken = useStorage('token', '')
 
@@ -32,22 +30,50 @@ export const useUserLogin = async () => {
 	Taro.getUserProfile({
 		desc: '用于完善用户信息',
 		async success(user) {
-			useUserInfo.value = { ...useUserInfo.value, ...user.userInfo }
+			useUpdateUserInfo(user.userInfo)
 			const parmas = {
 				encryptedData: user.encryptedData,
 				iv: user.iv
 			}
 			const res = await api.saveUserInfo(parmas)
-			if (res.statusCode !== 200) return Taro.showToast({ title: '登录失败', icon: 'error', duration: 2000 })
+			if (res.statusCode !== 200) {
+				useLogout()
+				return Taro.showToast({ title: '登录失败', icon: 'error', duration: 2000 })
+			}
+			//根据用户身份判断是否要进一步绑定用户信息
+			if (useUserInfo.value.role === '游客') {
+				Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
+			}
 		}
 	})
 }
-
+// 获取token 以及 更新 用户信息 和 Sessionkey
 const login = async () => {
 	const { code } = await Taro.login()
 	const { data: res, statusCode } = await api.loginApi({ code })
 	if (statusCode === 200) {
 		useToken.value = res.token
 		useUserInfo.value.role = res.role
+		if (res.role !== '游客') {
+			const userInfoRes = await api.getUserInfoApi()
+			useUpdateUserInfo(userInfoRes.data.schoolUser)
+		}
+	}
+}
+
+// 更新用户信息
+export const useUpdateUserInfo = (data: any) => {
+	for (let key in data) {
+		if (key in useUserInfo.value) {
+			useUserInfo.value[key] = data[key]
+		}
+	}
+}
+
+//登出
+export const useLogout = () => {
+	useToken.value = ''
+	for (let key in useUserInfo.value) {
+		useUserInfo.value[key] = ''
 	}
 }

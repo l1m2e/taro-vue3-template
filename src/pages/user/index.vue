@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useToken, useUserInfo, useUserLogin } from '@/composables'
+import { useUserInfo, useUserLogin, useLogout } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
@@ -21,17 +21,6 @@ const onMenu = (link: string) => {
 	Taro.navigateTo({
 		url: link
 	})
-}
-
-//登出
-// const tipDialog = ref(false)
-// const logoutButton = () => {
-// 	tipDialog.value = true
-// }
-const logout = () => {
-	Taro.removeStorageSync('token')
-	useUserInfo.value.nickName = ''
-	useToken.value = ''
 }
 </script>
 
@@ -60,7 +49,7 @@ const logout = () => {
 				<div class="menu-item-right basis-4/1" :span="4"><div class="i-ri-arrow-right-s-line font-14"></div></div>
 			</div>
 		</div>
-		<div class="logout" v-if="useUserInfo.nickName" @click="logout"><span>退出账号</span></div>
+		<div class="logout" v-if="useUserInfo.nickName" @click="useLogout"><span>退出账号</span></div>
 	</div>
 </template>
 

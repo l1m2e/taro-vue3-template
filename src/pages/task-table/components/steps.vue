@@ -45,25 +45,26 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 			<div class="end">{{ endTime }}</div>
 		</div>
 		<div class="line-box">
-			<!-- <nut-icon :name="activate === 'ongoing' ? 'check-checked' : 'check-normal'" :class="activate === 'ongoing' ? 'round-activate' : 'round'" :color="lineColor"></nut-icon> -->
 			<div :class="`${activate === 'ongoing' ? 'ri-checkbox-blank-circle-fill' : 'i-ri-checkbox-blank-circle-line'} color-bg`"></div>
 			<div class="line" v-if="!end"></div>
 		</div>
 		<div class="steps-content">
 			<div :class="`steps-content-card-${activate}`">
 				<div class="steps-title">
-					<!-- <nut-icon size="18" :name="icon"></nut-icon> -->
+					<div class="i-ri-time-line" v-if="stateText === '未开始'"></div>
+					<div class="i-ri-check-line" v-if="stateText === '已完成'"></div>
+					<div class="i-ri-restart-line" v-if="stateText === '进行中'"></div>
 					<span>{{ stateText }}</span>
 				</div>
 				<div class="steps-text-box">
 					<div class="course">{{ data.courseName }}</div>
 					<div class="steps-location">
 						<div class="steps-location-box">
-							<!-- <div class="steps-location-icon"><nut-icon name="location2" size="14"></nut-icon></div> -->
+							<div class="steps-location-icon"><div class="i-ri-map-pin-line"></div></div>
 							<span class="steps-location-text">{{ data.classDevicePosition }}-{{ data.classDeviceName }}</span>
 						</div>
 						<div class="steps-location-box">
-							<!-- <div class="steps-location-icon"><nut-icon name="my2" size="14"></nut-icon></div> -->
+							<div class="steps-location-icon"><div class="i-ri-user-line"></div></div>
 							<span class="steps-location-text">{{ data.teacherName }}</span>
 						</div>
 					</div>
@@ -156,6 +157,7 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 				.steps-location-icon {
 					width: 55px;
 					height: 55px;
+					min-width: 55px;
 					background-color: $bg;
 					margin-right: 20px;
 					border-radius: 10px;
