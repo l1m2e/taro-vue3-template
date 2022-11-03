@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useUserInfo, useUserLogin, useLogout } from '@/composables'
+import { useUserInfo, useUserLogin, useLogout, useToken } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
@@ -18,16 +18,18 @@ const menuList = [
 	}
 ]
 const onMenu = (link: string) => {
-	Taro.navigateTo({
-		url: link
-	})
+	if (useToken.value) {
+		Taro.navigateTo({ url: link })
+	} else {
+		Taro.showToast({ title: '请先登陆', icon: 'error', duration: 2000 })
+	}
 }
 </script>
 
 <template>
 	<div class="user">
 		<!-- <nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" /> -->
-		<div class="user-card" v-if="useUserInfo.nickName">
+		<div class="user-card" v-if="useUserInfo.role">
 			<div class="avatar basis-1/4">
 				<image class="w-60px h-60px rounded-full" :src="useUserInfo.avatarUrl" />
 			</div>
@@ -49,7 +51,7 @@ const onMenu = (link: string) => {
 				<div class="menu-item-right basis-4/1" :span="4"><div class="i-ri-arrow-right-s-line font-14"></div></div>
 			</div>
 		</div>
-		<div class="logout" v-if="useUserInfo.nickName" @click="useLogout"><span>退出账号</span></div>
+		<div class="logout" v-if="useToken" @click="useLogout"><span>退出账号</span></div>
 	</div>
 </template>
 

@@ -37,7 +37,7 @@ export const useUserLogin = async () => {
 			}
 			const res = await api.saveUserInfo(parmas)
 			if (res.statusCode !== 200) {
-				useLogout()
+				// useLogout()
 				return Taro.showToast({ title: '登录失败', icon: 'error', duration: 2000 })
 			}
 			//根据用户身份判断是否要进一步绑定用户信息
