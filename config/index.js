@@ -2,6 +2,7 @@ import path from 'path'
 import UnoCSS from '@unocss/webpack'
 import transformWeClass from 'unplugin-transform-we-class/webpack'
 import AutoImport from 'unplugin-auto-import/webpack'
+
 const r = (p) => path.resolve(__dirname, '..', p)
 //webpack
 const webpackChain = (chain) => {

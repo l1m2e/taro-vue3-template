@@ -46,7 +46,6 @@ specifiers:
   unocss-preset-weapp: ^0.1.18
   unplugin-auto-import: ^0.11.2
   unplugin-transform-we-class: ^0.1.19
-  vconsole: ^3.14.7
   vue: ^3.0.0
   vue-loader: ^16.0.0-beta.8
   webpack: 5.69.0
@@ -73,7 +72,6 @@ dependencies:
   pinia: 2.0.23_tlck4aeuippjmceprmydwaqmwy
   taro-plugin-pinia: 1.0.0
   taro-ui-vue3: 1.0.0-alpha.21_5eborqvf6i7c6iddjfch3v65bm
-  vconsole: 3.14.7
   vue: 3.2.37
 
 devDependencies:
@@ -4894,11 +4892,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /copy-text-to-clipboard/3.0.1:
-    resolution: {integrity: sha512-rvVsHrpFcL4F2P8ihsoLdFHmd404+CMg71S756oRSeQgqk51U3kicGdnvfkrxva0xXH92SjGS62B0XIJsbh+9Q==}
-    engines: {node: '>=12'}
-    dev: false
-
   /copy-webpack-plugin/10.2.0_webpack@5.69.0:
     resolution: {integrity: sha512-my6iXII95c78w14HzYCNya5TlJYa44lOppAge5GSTMM1SyDxNsVGCJvhP4/ld6snm8lzjn3XOonMZD6s1L86Og==}
     engines: {node: '>= 12.20.0'}
@@ -4933,6 +4926,7 @@ packages:
   /core-js/3.24.1:
     resolution: {integrity: sha512-0QTBSYSUZ6Gq21utGzkfITDylE8jWC9Ne1D2MrhvlsZBI1x39OdDIVbzSqtgMndIy6BlHxBXpMGqzZmnztg2rg==}
     requiresBuild: true
+    dev: true
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
@@ -9583,10 +9577,6 @@ packages:
       minimatch: 3.1.2
     dev: true
 
-  /mutation-observer/1.0.3:
-    resolution: {integrity: sha512-M/O/4rF2h776hV7qGMZUH3utZLO/jK7p8rnNgGkjKUw8zCGjRQPxB8z6+5l8+VjRUQ3dNYu4vjqXYLr+U8ZVNA==}
-    dev: false
-
   /mute-stream/0.0.5:
     resolution: {integrity: sha512-EbrziT4s8cWPmzr47eYVW3wimS4HsvlnV5ri1xw1aR6JQo/OrJX5rkl32K/QQHdxeabJETtfeaROGhd8W7uBgg==}
     dev: true
@@ -13562,15 +13552,6 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
     dev: true
-
-  /vconsole/3.14.7:
-    resolution: {integrity: sha512-48byrra1sZk0zJfUM8HFN/ZKtMzvd7Sirt2h5Hfnf7txKOxL9JfoFKB2uLixmOF3jjxCpwnLLb1tsHlg4YzoyA==}
-    dependencies:
-      '@babel/runtime': 7.18.9
-      copy-text-to-clipboard: 3.0.1
-      core-js: 3.24.1
-      mutation-observer: 1.0.3
-    dev: false
 
   /verror/1.10.0:
     resolution: {integrity: sha512-ZZKSmDAEFOijERBLkmYfJ+vmk3w+7hOLYDNkRCuRuMJGEmqYNCNLyBBFwWKVMhfwaEF3WOd0Zlw86U/WC/+nYw==}

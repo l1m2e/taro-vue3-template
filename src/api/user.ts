@@ -16,8 +16,7 @@ export const getSchoolList = (data: ISchoolList) =>
 	new Promise<Taro.request.SuccessCallbackResult>((resolve) => {
 		Taro.request({
 			method: 'POST',
-			header: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-			url: `http://www.lta-yun.com/school/querySchool`,
+			url: `https://www.lta-yun.com/school/querySchool`,
 			timeout: 60000,
 			data,
 			success: (res: Taro.request.SuccessCallbackResult) => {

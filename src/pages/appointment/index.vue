@@ -3,18 +3,17 @@ definePageConfig({
 	navigationBarTitleText: '教室借用',
 	navigationBarBackgroundColor: '#fafafa'
 })
-
 </script>
 
 <template>
 	<div>
-		<!-- <div class="card">
-					<div class="title">
-						<div>时间:2022-9-08</div>
-						<div>未上课</div>
-					</div>
-					<div></div>
-				</div> -->
+		<div class="card">
+			<div class="title">
+				<div>时间:2022-9-08</div>
+				<div>未上课</div>
+			</div>
+			<div></div>
+		</div>
 	</div>
 </template>
 

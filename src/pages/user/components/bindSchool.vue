@@ -7,13 +7,13 @@ definePageConfig({
 const selectArea = (e: any) => {
 	const arr = e.detail.value
 	//格式化对齐服务器格式
-	params.School_Provinces = arr[0].replace(/省|市|自治区|特别行政区/g, '')
+	params.school_Provinces = arr[0].replace(/省|市|自治区|特别行政区/g, '')
 	if (['北京市', '上海市', '天津市', '重庆市'].includes(arr[1])) {
-		params.School_City = '直辖市'
+		params.school_City = '直辖市'
 	} else {
-		params.School_City = arr[1]
+		params.school_City = arr[1]
 	}
-	params.School_County = arr[2]
+	params.school_County = arr[2]
 	schoolList.value.length = 0
 	//发送筛选请求
 	getSchollList()
@@ -22,23 +22,24 @@ const selectArea = (e: any) => {
 // 清空筛选
 const removalFilter = () => {
 	schoolList.value.length = 0
-	params.School_Provinces = ''
-	params.School_City = ''
-	params.School_County = ''
+	params.school_Provinces = ''
+	params.school_City = ''
+	params.school_County = ''
 	getSchollList()
 }
 
 // 学校列表
 const schoolList: any = ref([])
 const params = {
-	School_Provinces: '', //省份
-	School_City: '', // 城市
-	School_County: '', //区
-	Verify: '1', //是否被显示
-	OnLineStatus: '', // 在线状况
-	School_IP: '', // 学校ip
+	school_Provinces: '', //省份
+	school_City: '', // 城市
+	school_County: '', //区
+	verify: '1', //是否被显示
+	onLineStatus: '', // 在线状况
+	school_IP: '', // 学校ip
 	firstIndex: '', // 开始序号
-	lastIndex: 8 // 结束序号
+	lastIndex: 8, // 结束序号
+	school_Name: ''
 }
 const getSchollList = async () => {
 	const res = await api.getSchoolList({ ...params, firstIndex: schoolList.value.length })
@@ -73,13 +74,13 @@ const chooseSchools = (item: any) => {
 				<p class=" text-16px">请选择您所在的学校</p>
 				<div class="center">
 					<picker mode="region" class="btn-success p-5px" @change="selectArea">筛选</picker>
-					<div class="i-ri-close-line color-green" @click="removalFilter" v-if="params.School_Provinces"></div>
+					<div class="i-ri-close-line color-green" @click="removalFilter" v-if="params.school_Provinces"></div>
 				</div>
 			</div>
 			<div class="h-400px mt-10px w-100%">
 				<scroll-view scroll-y="true" :lowerThreshold="50" @scrolltolower="lower" class="h-100% w-100%">
 					<div :class="`w-100% h-50px leading-50px mt-10px text-center ${schoolInfo.sid === item.sid ? '.activate' : ''}`" v-for="item in schoolList" @click="chooseSchools(item)">
-						{{ item.School_Name }}
+						{{ item.school_Name }}
 					</div>
 				</scroll-view>
 			</div>

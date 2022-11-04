@@ -3,7 +3,7 @@ import presetIcons from '@unocss/preset-icons'
 import presetWeapp from 'unocss-preset-weapp'
 export default defineConfig({
 	shortcuts: [
-		['btn-success', 'px-5 py-2 rounded inline-block bg-teal-500 text-white cursor-pointer active:bg-teal-100 disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50'],
+		['btn-success', 'px-5 py-2 rounded inline-block bg-teal-500 text-white cursor-pointer active:bg-teal-700'],
 		['cell', 'w-100% h-50px bg-white flex  px-10px leading-50px justify-between box-border border-b-1 border-b-gray100'],
 		['center', 'flex items-center justify-center']
 	],

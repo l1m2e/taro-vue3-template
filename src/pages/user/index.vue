@@ -93,14 +93,14 @@ page {
 		width: 95%;
 		margin-top: 20px;
 		border-radius: 30px;
-		padding: 40px 0 40px 0;
+		padding: 20px 0 20px 0;
 		margin: 0 auto;
 		box-sizing: border-box;
 		@include shadow-1;
 		.menu-item {
 			width: 100%;
-			height: 70px;
-			margin-top: 20px;
+			height: 100px;
+			margin-top: 10px;
 			display: flex;
 			align-items: center;
 			position: relative;

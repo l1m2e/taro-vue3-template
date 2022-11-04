@@ -44,6 +44,9 @@ export const useUserLogin = async () => {
 			if (useUserInfo.value.role === '游客') {
 				Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
 			}
+		},
+		fail() {
+			useLogout()
 		}
 	})
 }

@@ -1,16 +1,18 @@
 export default defineAppConfig({
 	pages: [
-		'pages/user/index',
+		'pages/user/index', // 我的
+		'pages/live/index', // 直播
 		'pages/user/components/bindSchool',
+		'pages/rent-classroom/index', // 教室借用
+		'pages/appointment/index', // 预约教室
+		'pages/sign-in/index', // 签到
+		'pages/home/index', //主页
+		'pages/task-table/index', // 课程表
 		'pages/user/components/bindUserInfo',
-		'pages/home/index',
 		'pages/authorization/web-csm-login',
-		'pages/rent-classroom/index',
-		'pages/sign-in/index',
-		'pages/task-table/index',
 		'pages/user/components/userInfo',
-		'pages/appointment/index',
-		'pages/rent-classroom/components/add-rent'
+		'pages/rent-classroom/components/add-rent',
+		'pages/live/components/video-view'
 	],
 	window: {
 		backgroundTextStyle: 'light',
