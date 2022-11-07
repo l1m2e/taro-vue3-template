@@ -6,7 +6,7 @@ definePageConfig({
 	navigationBarBackgroundColor: '#fafafa'
 })
 
-const liveList = ref()
+const liveList = ref<any[]>([])
 const getLiveList = async () => {
 	const res = await api.getClassLiveList(+dayjs())
 	if (res.statusCode === 200) {
@@ -18,7 +18,6 @@ getLiveList()
 
 const today = dayjs().format('YYYY-MM-DD')
 const computeTime = () => {
-	console.log('[ 计算执行 ] >')
 	liveList.value.forEach((item: any) => {
 		let startTime = +dayjs(`${today} ${item.beginTime.slice(0, 5)}`)
 		let endTime = +dayjs(`${today} ${item.endTime.slice(0, 5)}`)
@@ -42,8 +41,11 @@ Taro.useUnload(() => {
 	clearTimeout(loopComputeTime)
 })
 const goToVideoView = (link: any) => {
-	const res = link.find((item: any) => item.bsmodel === '电脑画面')
-	Taro.navigateTo({ url: `/pages/live/components/video-view?link=${res.bspreSales}` })
+	const res = link.find((item: any) => item.bsmodel === '电脑桌面')
+	Taro.navigateTo({
+		url: `/pages/live/components/video-vi
+		ew?link=${res.bspreSales}`
+	})
 }
 </script>
 
