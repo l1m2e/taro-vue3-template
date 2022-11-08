@@ -45,7 +45,7 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 			<div class="end">{{ endTime }}</div>
 		</div>
 		<div class="line-box">
-			<div :class="`${activate === 'ongoing' ? 'ri-checkbox-blank-circle-fill' : 'i-ri-checkbox-blank-circle-line'} color-bg`"></div>
+			<div :class="`${activate === 'ongoing' ? 'i-ri-refresh-fill' : 'i-ri-checkbox-blank-circle-line'} color-bg animate-spin`"></div>
 			<div class="line" v-if="!end"></div>
 		</div>
 		<div class="steps-content">

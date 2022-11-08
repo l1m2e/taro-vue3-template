@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useSchoolInfo } from '@/composables'
-import { socket } from '@/services/scoket.io'
-console.log('[ socket ] >', socket)
+// import { socket } from '@/services/scoket.io'
+// console.log('[ socket ] >', socket)
 if (useSchoolInfo.value.innerURL === '') {
 	Taro.navigateTo({
 		url: '/pages/user/components/bindSchool'

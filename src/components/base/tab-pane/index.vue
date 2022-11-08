@@ -2,10 +2,14 @@
 defineProps<{
 	name: string
 }>()
+const emit = defineEmits(['buttomLoad'])
+const lower = () => {
+	emit('buttomLoad')
+}
 </script>
 
 <template>
-	<div>
+	<scroll-view :scroll-y="true" :lowerThreshold="50" @scrolltolower="lower" class="scroll">
 		<slot></slot>
-	</div>
+	</scroll-view>
 </template>

@@ -43,8 +43,7 @@ Taro.useUnload(() => {
 const goToVideoView = (link: any) => {
 	const res = link.find((item: any) => item.bsmodel === '电脑桌面')
 	Taro.navigateTo({
-		url: `/pages/live/components/video-vi
-		ew?link=${res.bspreSales}`
+		url: `/pages/live/components/video-view?link=${res.bspreSales}`
 	})
 }
 </script>

@@ -1,10 +1,10 @@
 export default defineAppConfig({
 	pages: [
+		'pages/rent-classroom/index', // 教室借用
+		'pages/appointment/index', // 预约教室
 		'pages/user/index', // 我的
 		'pages/live/index', // 直播
 		'pages/user/components/bindSchool',
-		'pages/rent-classroom/index', // 教室借用
-		'pages/appointment/index', // 预约教室
 		'pages/sign-in/index', // 签到
 		'pages/home/index', //主页
 		'pages/task-table/index', // 课程表
@@ -20,6 +20,7 @@ export default defineAppConfig({
 		navigationBarTitleText: 'WeChat',
 		navigationBarTextStyle: 'black'
 	},
+	// 导航栏
 	tabBar: {
 		color: '#ccc',
 		selectedColor: '#4988fd',
@@ -30,6 +31,12 @@ export default defineAppConfig({
 				pagePath: 'pages/home/index',
 				iconPath: './assets/tab-bar/home.png',
 				selectedIconPath: './assets/tab-bar/home-active.png',
+				text: ''
+			},
+			{
+				pagePath: 'pages/task-table/index',
+				iconPath: './assets/tab-bar/user.png',
+				selectedIconPath: './assets/tab-bar/user-active.png',
 				text: ''
 			},
 			{

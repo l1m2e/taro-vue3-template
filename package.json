@@ -54,8 +54,6 @@
 		"@tarojs/taro": "3.5.4",
 		"@tarojs/taro-h5": "3.5.4",
 		"dayjs": "^1.11.5",
-		"pinia": "^2.0.23",
-		"taro-plugin-pinia": "^1.0.0",
 		"taro-ui-vue3": "^1.0.0-alpha.21",
 		"vue": "^3.0.0",
 		"weapp.socket.io": "^3.0.0"

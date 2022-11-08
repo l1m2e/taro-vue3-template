@@ -33,7 +33,6 @@ const config = {
 	outputRoot: 'dist',
 	plugins: [
 		'@tarojs/plugin-html',
-		'taro-plugin-pinia',
 		[
 			'@tarojs/plugin-framework-vue3',
 			{

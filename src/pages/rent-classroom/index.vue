@@ -88,30 +88,22 @@ const lower = (type: string) => {
 			break
 	}
 }
-
-const fn = () => {
-	console.log('[  ] >')
-}
 </script>
 
 <template>
 	<div class="rent-classroom">
+		<!-- 添加按钮 -->
 		<div class="addBtn" @click="addRent"><div class="i-ri-add-line  color-white text-25px"></div></div>
+		<!-- tabs -->
 		<Tabs :activate="tabs" @changeTab="handleClick">
-			<TabPane name="当天进行" class="tab-content">
-				<scroll-view :scroll-y="true" class="scroll-box bg-red" :lowerThreshold="50" @scrolltolower="lower('now')">
-					<card v-for="item in nowLit" :item="item"></card>
-				</scroll-view>
+			<TabPane name="当天进行" class="tab-content" @buttomLoad="lower('now')">
+				<card v-for="item in nowLit" :item="item" class="card"></card>
 			</TabPane>
-			<TabPane name="未来进行" class="tab-content  bg-blue">
-				<scroll-view :scroll-y="true" class="scroll-box bg-blue" :lowerThreshold="50" @scrolltolower="lower('future')">
-					<card v-for="item in futureList" :item="item"></card>
-				</scroll-view>
+			<TabPane name="未来进行" class="tab-content" @buttomLoad="lower('future')">
+				<card v-for="item in futureList" :item="item" class="card"></card>
 			</TabPane>
-			<TabPane name="历史记录" class="tab-content" @scroll="fn">
-				<!-- <div :scroll-y="true" class="scroll-box overflow-auto" :lowerThreshold="50" @scrolltolower="lower('past')"> -->
-				<card v-for="item in historyList" :item="item"></card>
-				<!-- </div> -->
+			<TabPane name="历史记录" class="tab-content" @buttomLoad="lower('future')">
+				<card v-for="item in historyList" :item="item" class="card"></card>
 			</TabPane>
 		</Tabs>
 	</div>
@@ -135,16 +127,12 @@ const fn = () => {
 		@include center;
 	}
 	& .tab-content {
-		height: 100vh;
+		height: calc(100vh - 60px);
 		box-sizing: border-box;
-		overflow: hidden;
-		padding: 20px;
-		padding-top: 100px;
-		overflow-y: scroll;
-		.scroll-box {
-			box-sizing: border-box;
-
-			height: 100%;
+		padding-top: 120px;
+		@include center;
+		.card {
+			width: 90%;
 		}
 	}
 	& .tabs-title {

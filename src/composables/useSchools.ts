@@ -1,4 +1,4 @@
-import { useStorage } from '@/hook'
+import { useStorage } from './useStorage'
 
 interface ISchoolInfo {
 	sid: string

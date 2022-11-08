@@ -1,4 +1,4 @@
-import { useStorage } from '@/hook'
+import { useStorage } from './useStorage'
 
 //用户状态
 export const useUserInfo = useStorage('useInfo', {
