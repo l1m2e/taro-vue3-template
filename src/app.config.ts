@@ -1,11 +1,11 @@
 export default defineAppConfig({
 	pages: [
+		'pages/sign-in/index', // 签到
+		'pages/user/index', // 我的
 		'pages/rent-classroom/index', // 教室借用
 		'pages/appointment/index', // 预约教室
-		'pages/user/index', // 我的
 		'pages/live/index', // 直播
 		'pages/user/components/bindSchool',
-		'pages/sign-in/index', // 签到
 		'pages/home/index', //主页
 		'pages/task-table/index', // 课程表
 		'pages/user/components/bindUserInfo',
