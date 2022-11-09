@@ -1,7 +1,13 @@
 <script lang="ts" setup>
 import { baseUrl } from '@/config/baseUrl'
 import { useWifi } from '@/composables'
-useWifi()
+const getWIfi = async () => {
+	const res = await useWifi()
+	if (res) {
+		console.log('[ res.wifi ] >', res.wifi)
+	}
+}
+getWIfi()
 </script>
 
 <template>
