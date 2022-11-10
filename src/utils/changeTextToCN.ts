@@ -11,7 +11,7 @@ export const changeTextToCN = (num: number) => {
 	} else if (num > 10) {
 		let result = ''
 		let numStr = num.toString()
-		for (var i = 0; i < numStr.length; ++i) {
+		for (let i = 0; i < numStr.length; ++i) {
 			let n = numStr.substring(i, i + 1)
 			let m = numStr.length - i - 1
 			result += words[n] + adds[m]

@@ -1,7 +1,7 @@
 export default defineAppConfig({
 	pages: [
-		'pages/sign-in/index', // 签到
 		'pages/user/index', // 我的
+		'pages/sign-in/index', // 签到
 		'pages/rent-classroom/index', // 教室借用
 		'pages/appointment/index', // 预约教室
 		'pages/live/index', // 直播
