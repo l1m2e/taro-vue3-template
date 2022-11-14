@@ -6,7 +6,7 @@ export const useCountDown = (endTime: number) => {
 		timer: null | ReturnType<typeof setInterval>
 	}
 	let state = reactive<IState>({
-		count: 0,
+		count: endTime - +dayjs(),
 		timer: null
 	})
 	//开始倒计时
@@ -27,7 +27,7 @@ export const useCountDown = (endTime: number) => {
 		}
 	}
 	//离开页面清除计时器
-	onBeforeUnmount(() => {
+	Taro.useUnload(() => {
 		clear()
 	})
 	return state

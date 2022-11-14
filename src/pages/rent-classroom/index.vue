@@ -3,6 +3,7 @@ import card from './components/card.vue'
 import { getRentListApi } from '@/api'
 import Tabs from '@/components/base/tabs/index.vue'
 import TabPane from '@/components/base/tab-pane/index.vue'
+import empty from '@/components/empty-page/index.vue'
 definePageConfig({
 	navigationBarTitleText: '借用'
 	// navigationBarBackgroundColor: '#fafafa'
@@ -97,13 +98,16 @@ const lower = (type: string) => {
 		<!-- tabs -->
 		<Tabs :activate="tabs" @changeTab="handleClick">
 			<TabPane name="当天进行" class="tab-content" @buttomLoad="lower('now')">
-				<card v-for="item in nowLit" :item="item" class="card"></card>
+				<card v-for="item in nowLit" :item="item" class="card" v-if="nowLit.length !== 0"></card>
+				<empty v-else></empty>
 			</TabPane>
 			<TabPane name="未来进行" class="tab-content" @buttomLoad="lower('future')">
-				<card v-for="item in futureList" :item="item" class="card"></card>
+				<card v-for="item in futureList" :item="item" class="card" v-if="futureList.length !== 0"></card>
+				<empty v-else></empty>
 			</TabPane>
 			<TabPane name="历史记录" class="tab-content" @buttomLoad="lower('future')">
-				<card v-for="item in historyList" :item="item" class="card"></card>
+				<card v-for="item in historyList" :item="item" class="card" v-if="historyList.length !== 0"></card>
+				<empty v-else></empty>
 			</TabPane>
 		</Tabs>
 	</div>

@@ -1,13 +1,6 @@
-import { io } from 'weapp.socket.io'
-import { baseUrl } from '@/config/baseUrl'
-import { useToken } from '@/composables'
+import { socketUrl } from '@/config/baseUrl'
+import { useToken, useUserInfo } from '@/composables'
+const ws = require('weapp.socket.io')
 
-export const socket = io(baseUrl, {
-	reconnectionDelayMax: 10000,
-	auth: {
-		token: useToken
-	},
-	query: {
-		'my-key': 'my-value'
-	}
-})
+//签到
+export const signInIO = () => ws(`${socketUrl}/CInteractStu`, { query: { token: useToken.value, userId: useUserInfo.value.studentId }, transports: ['websocket'] })

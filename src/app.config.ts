@@ -1,5 +1,7 @@
 export default defineAppConfig({
 	pages: [
+		'pages/authorization/getUserInfo', // 获取用户信息 微信
+		'pages/user/components/bindUserInfo', // 绑定用户信息
 		'pages/user/index', // 我的
 		'pages/sign-in/index', // 签到
 		'pages/rent-classroom/index', // 教室借用
@@ -8,11 +10,10 @@ export default defineAppConfig({
 		'pages/user/components/bindSchool',
 		'pages/home/index', //主页
 		'pages/task-table/index', // 课程表
-		'pages/user/components/bindUserInfo',
-		'pages/authorization/web-csm-login',
-		'pages/user/components/userInfo',
-		'pages/rent-classroom/components/add-rent',
-		'pages/live/components/video-view'
+		'pages/authorization/web-csm-login', // 授权网页登录
+		'pages/user/components/userInfo', // 用户信息页面
+		'pages/rent-classroom/components/add-rent', // 添加借用
+		'pages/live/components/video-view' // 查看直播
 	],
 	window: {
 		backgroundTextStyle: 'light',
@@ -35,8 +36,8 @@ export default defineAppConfig({
 			},
 			{
 				pagePath: 'pages/task-table/index',
-				iconPath: './assets/tab-bar/user.png',
-				selectedIconPath: './assets/tab-bar/user-active.png',
+				iconPath: './assets/tab-bar/task.png',
+				selectedIconPath: './assets/tab-bar/task-active.png',
 				text: ''
 			},
 			{

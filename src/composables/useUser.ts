@@ -15,43 +15,45 @@ export const useUserInfo = useStorage('useInfo', {
 export const useToken = useStorage('token', '')
 
 // 登录函数
-export const useUserLogin = async () => {
-	if (!useToken.value) {
-		//如果没有token 直接登录
-		login()
-	} else {
-		Taro.checkSession({
-			fail() {
-				//如果Sessionkey 过期
-				login()
-			}
-		})
-	}
-	Taro.getUserProfile({
-		desc: '用于完善用户信息',
-		async success(user) {
-			useUpdateUserInfo(user.userInfo)
-			const parmas = {
-				encryptedData: user.encryptedData,
-				iv: user.iv
-			}
-			const res = await api.saveUserInfo(parmas)
-			if (res.statusCode !== 200) {
-				// useLogout()
-				return Taro.showToast({ title: '登录失败', icon: 'error', duration: 2000 })
-			}
-			//根据用户身份判断是否要进一步绑定用户信息
-			if (useUserInfo.value.role === '游客') {
-				Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
-			}
-		},
-		fail() {
-			useLogout()
-		}
-	})
-}
-// 获取token 以及 更新 用户信息 和 Sessionkey
-const login = async () => {
+// export const useUserLogin = async () => {
+// 	if (useToken.value) {
+// 		//检查如果Sessionkey 是否过期 如果Sessionkey 过期
+// 		Taro.checkSession({
+// 			fail() {
+// 				login()
+// 			}
+// 		})
+// 	} else {
+// 		//如果没有token 直接登录
+// 		login()
+// 	}
+
+// 	Taro.getUserProfile({
+// 		desc: '用于完善用户信息',
+// 		async success(user) {
+// 			useUpdateUserInfo(user.userInfo)
+// 			const parmas = {
+// 				encryptedData: user.encryptedData,
+// 				iv: user.iv
+// 			}
+// 			const res = await api.saveUserInfo(parmas)
+// 			if (res.statusCode !== 200) {
+// 				// useLogout()
+// 				return Taro.showToast({ title: '登录失败', icon: 'error', duration: 2000 })
+// 			}
+// 			//根据用户身份判断是否要进一步绑定用户信息
+// 			if (useUserInfo.value.role === '游客') {
+// 				Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
+// 			}
+// 		},
+// 		fail() {
+// 			useLogout()
+// 		}
+// 	})
+// }
+
+// 登录函数
+export const useLogin = async () => {
 	const { code } = await Taro.login()
 	const { data: res, statusCode } = await api.loginApi({ code })
 	if (statusCode === 200) {
@@ -62,6 +64,25 @@ const login = async () => {
 			useUpdateUserInfo(userInfoRes.data.schoolUser)
 		}
 	}
+	//获取用户头像信息
+	const userRes = await api.getUserInfoApi()
+	if (userRes.statusCode === 200) {
+		useUpdateUserInfo(userRes.data)
+	}
+}
+
+// 获取微信用户信息
+export const useWeChatUserInfo = () => {
+	Taro.getUserProfile({
+		desc: '用于完善用户信息',
+		async success(user) {
+			useUpdateUserInfo(user.userInfo) // 更新用户信息
+			const res = await api.saveUserInfo({ encryptedData: user.encryptedData, iv: user.iv })
+			if (res.statusCode === 200) {
+				Taro.showToast({ title: '授权成功', icon: 'none', duration: 2000 })
+			}
+		}
+	})
 }
 
 // 更新用户信息
@@ -72,7 +93,6 @@ export const useUpdateUserInfo = (data: any) => {
 		}
 	}
 }
-
 //登出
 export const useLogout = () => {
 	useToken.value = ''

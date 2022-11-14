@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useUserInfo, useUserLogin, useLogout, useToken } from '@/composables'
+import { useUserInfo, useLogin, useLogout, useToken } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
@@ -28,7 +28,6 @@ const onMenu = (link: string) => {
 
 <template>
 	<div class="user">
-		<!-- <nut-dialog title="提示" content="退出账号后需要重新登录" v-model:visible="tipDialog" @ok="logout" /> -->
 		<div class="user-card" v-if="useUserInfo.role">
 			<div class="avatar basis-1/4">
 				<image class="w-60px h-60px rounded-full" :src="useUserInfo.avatarUrl" />
@@ -39,7 +38,7 @@ const onMenu = (link: string) => {
 			</div>
 		</div>
 		<div class="user-card user-card-on-login" v-else>
-			<div class="btn-success rounded-24" @click="useUserLogin">登 录</div>
+			<div class="btn-success rounded-24" @click="useLogin">登 录</div>
 		</div>
 		<div class="menu">
 			<div class="menu-item flex" v-for="item in menuList" key="item.text">

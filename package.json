@@ -56,7 +56,7 @@
 		"dayjs": "^1.11.5",
 		"taro-ui-vue3": "^1.0.0-alpha.21",
 		"vue": "^3.0.0",
-		"weapp.socket.io": "^3.0.0"
+		"weapp.socket.io": "^2.1.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.8.0",

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { noNetworkSvg, noDataSvg, errorSvg } from '@/utils/image'
+import { noNetworkSvg, noDataSvg, errorSvg } from '@/assets/img/image'
 
 type IEmptyType = 'noNetwork' | 'noData' | 'error'
 interface Props {
