@@ -21,7 +21,7 @@ const goToBindUserInfo = () => {
 			<div>{{ useUserInfo.nickName }}</div>
 		</div>
 		<span>绑定的信息</span>
-		<div v-if="useUserInfo.schoolName">
+		<div v-if="useUserInfo.studentName">
 			<div class="cell">
 				<div>学校</div>
 				<div>{{ useUserInfo.schoolName }}</div>
@@ -32,7 +32,7 @@ const goToBindUserInfo = () => {
 			</div>
 			<div class="cell">
 				<div>姓名</div>
-				<div>{{ useUserInfo.name }}</div>
+				<div>{{ useUserInfo.studentName }}</div>
 			</div>
 			<div class="cell">
 				<div>身份</div>

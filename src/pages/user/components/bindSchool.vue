@@ -93,8 +93,8 @@ const chooseSchools = (item: any) => {
 	@include center;
 	flex-direction: column;
 	height: 100vh;
-	// background-image: url(../../../assets/img/);
-	// background-position: center;
+	background-image: url(https://www.lta-yun.com/school.jpg);
+	background-size: cover;
 	.card {
 		width: 85vw;
 		backdrop-filter: blur(16px) saturate(180%);
@@ -104,7 +104,7 @@ const chooseSchools = (item: any) => {
 		border: 1px solid rgba(209, 213, 219, 0.3);
 	}
 	.activate {
-		background-color: aquamarine;
+		background-color: rgba(255, 255, 255, 0.493);
 		border-radius: 30px;
 	}
 }

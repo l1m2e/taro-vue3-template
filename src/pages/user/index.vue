@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useUserInfo, useLogin, useLogout, useToken } from '@/composables'
+import { useUserInfo, useLogin, useLogout, useToken, useLoginState } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
@@ -24,11 +24,23 @@ const onMenu = (link: string) => {
 		Taro.showToast({ title: '请先登陆', icon: 'error', duration: 2000 })
 	}
 }
+
+const logout = () => {
+	Taro.showModal({
+		title: '提示',
+		content: '您确定要退出登录吗',
+		success: function(res) {
+			if (res.confirm) {
+				useLogout()
+			}
+		}
+	})
+}
 </script>
 
 <template>
 	<div class="user">
-		<div class="user-card" v-if="useUserInfo.role">
+		<div class="user-card" v-if="useLoginState">
 			<div class="avatar basis-1/4">
 				<image class="w-60px h-60px rounded-full" :src="useUserInfo.avatarUrl" />
 			</div>
@@ -50,7 +62,7 @@ const onMenu = (link: string) => {
 				<div class="menu-item-right basis-4/1" :span="4"><div class="i-ri-arrow-right-s-line font-14"></div></div>
 			</div>
 		</div>
-		<div class="logout" v-if="useToken" @click="useLogout"><span>退出账号</span></div>
+		<div class="logout" v-if="useLoginState" @click="logout"><span>退出账号</span></div>
 	</div>
 </template>
 

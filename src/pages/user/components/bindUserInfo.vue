@@ -6,19 +6,19 @@ definePageConfig({
 })
 const role = ref('Student')
 const form = reactive({
-	name: '',
+	studentName: '',
 	studentId: '',
 	type: ''
 })
 const bindUserInfo = async () => {
-	if (form.name === '' || form.studentId === '') return Taro.showToast({ title: '信息不完整', icon: 'error', duration: 2000 })
+	if (form.studentName === '' || form.studentId === '') return Taro.showToast({ title: '信息不完整', icon: 'error', duration: 2000 })
 	const res = await api.bindUserInfoApi({ ...form, type: role.value })
 	if (res.statusCode === 200) {
 		useUpdateUserInfo(res.data) //更新用户信息
 		useUserInfo.value.role = res.data.type === 'Student' ? '学生' : '老师'
 		Taro.switchTab({ url: '/pages/user/index' })
 	} else {
-		Taro.showToast({ title: res.data?.message, icon: 'error', duration: 2000 })
+		Taro.showToast({ title: res.data?.message || '服务器有误', icon: 'error', duration: 2000 })
 	}
 }
 </script>
@@ -34,7 +34,7 @@ const bindUserInfo = async () => {
 				<div :class="`button  ${role !== 'Student' ? '.button-activation' : ''}`" @click="role = 'Teacher'">老师</div>
 			</div>
 			<div class="pt-20px">姓名</div>
-			<div class="input"><input v-model="form.name" type="text" placeholder="请输入您的真实姓名" /></div>
+			<div class="input"><input v-model="form.studentName" type="text" placeholder="请输入您的真实姓名" /></div>
 			<div class="pt-20px">{{ role === 'Student' ? '学号' : '工号' }}</div>
 			<div class="input"><input v-model="form.studentId" type="text" :placeholder="`请输入您的${role === 'Student' ? '学号' : '工号'}`" /></div>
 		</div>

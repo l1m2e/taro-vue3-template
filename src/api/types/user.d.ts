@@ -6,7 +6,7 @@ export interface IBindPhone {
 	openCode: string
 }
 export interface IBindUserInfo {
-	name: string
+	studentName: string
 	studentId: string
 	type: string
 }

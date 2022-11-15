@@ -5,8 +5,8 @@ import Tabs from '@/components/base/tabs/index.vue'
 import TabPane from '@/components/base/tab-pane/index.vue'
 import empty from '@/components/empty-page/index.vue'
 definePageConfig({
-	navigationBarTitleText: '借用'
-	// navigationBarBackgroundColor: '#fafafa'
+	navigationBarTitleText: '借用',
+	navigationBarBackgroundColor: '#fafafa'
 })
 const addRent = () => {
 	Taro.navigateTo({
@@ -115,7 +115,6 @@ const lower = (type: string) => {
 
 <style lang="scss">
 .rent-classroom {
-	background-color: white;
 	width: 100%;
 	height: 100%;
 	position: relative;
@@ -131,7 +130,7 @@ const lower = (type: string) => {
 		@include center;
 	}
 	& .tab-content {
-		height: calc(100vh - 60px);
+		height: calc(100vh - 30px);
 		box-sizing: border-box;
 		padding-top: 120px;
 		@include center;
@@ -143,7 +142,7 @@ const lower = (type: string) => {
 		position: fixed;
 		top: 0;
 		z-index: 99;
-		background-color: white;
+		// background-color: white;
 	}
 }
 </style>

@@ -50,6 +50,7 @@ const submit = async () => {
 
 	const res = await addRentClassroomApi({ ...from, startTime, endTime })
 	if (res.statusCode == 200) {
+		Taro.showToast({ title: '提交成功', icon: 'success', duration: 2000 })
 		emptyForm()
 	}
 }

@@ -10,6 +10,10 @@ definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
 })
+Taro.useDidShow(() => {
+	getWeekCourse()
+	getFormatWeek()
+})
 //遮罩
 const maskShow = ref(true)
 //日视图
@@ -54,7 +58,7 @@ const setWeekCourse = () => {
 		})
 	})
 }
-getWeekCourse()
+// getWeekCourse()
 const timeOut = setInterval(() => {
 	setWeekCourse()
 }, 1000)
@@ -102,7 +106,7 @@ const getFormatWeek = async () => {
 	setColor(weekListFormat.value)
 	console.log(weekListFormat.value)
 }
-getFormatWeek()
+// getFormatWeek()
 </script>
 
 <template>

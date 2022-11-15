@@ -64,8 +64,8 @@ const sginIn = async () => {
 
 <template>
 	<div class="w-100vw min-h-100vh bg-white sgin-in">
-		<empty v-if="signInfo.className === ''" :img="noCourseSvg" text="当前暂无课程 您无需签到"></empty>
-		<!-- <empty v-else-if="!wifiInfo" type="noNetwork" text="请打开WIFI开关 , 连接教室网络进行签到"></empty> -->
+		<empty v-if="signInfo.className === ''" :img="noCourseSvg" text="老师暂未发起签到 您暂时无需签到"></empty>
+		<empty v-else-if="!wifiInfo" type="noNetwork" text="请打开WIFI开关 , 连接教室网络进行签到"></empty>
 		<div class="p-10px 	box-border" v-else>
 			<div class="text-20px">{{ signInfo.className }} {{ signInfo.courseName }}</div>
 			<div class="mt-10px color-gray-400 center justify-start">
