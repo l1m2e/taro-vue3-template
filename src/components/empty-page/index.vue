@@ -14,9 +14,9 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emptyType = {
-	noNetwork: { img: noNetworkSvg, text: '网络异常' },
-	noData: { img: noDataSvg, text: '无数据' },
-	error: { img: errorSvg, text: '错误' }
+	noNetwork: { img: noNetworkSvg.value, text: '网络异常' },
+	noData: { img: noDataSvg.value, text: '无数据' },
+	error: { img: errorSvg.value, text: '错误' }
 }
 const info = computed(() => emptyType[props.type])
 </script>

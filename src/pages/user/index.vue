@@ -14,7 +14,7 @@ const menuList = [
 	{
 		icon: require('../../assets/user/set.png'),
 		text: '设置',
-		link: ''
+		link: '/pages/setting/index'
 	}
 ]
 const onMenu = (link: string) => {
@@ -149,7 +149,7 @@ page {
 	.logout {
 		@include center;
 		width: 95%;
-		height: 70px;
+		height: 80px;
 		background-color: white;
 		margin: 0 auto;
 		margin-top: 30px;

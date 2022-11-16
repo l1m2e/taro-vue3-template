@@ -45,15 +45,15 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 			<div class="end">{{ endTime }}</div>
 		</div>
 		<div class="line-box">
-			<div :class="`${activate === 'ongoing' ? 'i-ri-refresh-fill' : 'i-ri-checkbox-blank-circle-line'} color-bg animate-spin`"></div>
+			<div :class="`${activate === 'ongoing' ? 'i-ri-album-line' : 'i-ri-checkbox-blank-circle-line'} color-bg  mb-5px w-20px h-20px`"></div>
 			<div class="line" v-if="!end"></div>
 		</div>
 		<div class="steps-content">
 			<div :class="`steps-content-card-${activate}`">
 				<div class="steps-title">
-					<div class="i-ri-time-line" v-if="stateText === '未开始'"></div>
-					<div class="i-ri-check-line" v-if="stateText === '已完成'"></div>
-					<div class="i-ri-restart-line" v-if="stateText === '进行中'"></div>
+					<div class="i-ri-time-line w-22px h-22px" v-if="stateText === '未开始'"></div>
+					<div class="i-ri-check-line w-22px h-22px" v-if="stateText === '已完成'"></div>
+					<div class="i-ri-restart-line animate-spin w-22px h-22px" v-if="stateText === '进行中'"></div>
 					<span>{{ stateText }}</span>
 				</div>
 				<div class="steps-text-box">
@@ -79,9 +79,11 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 	width: 100%;
 	height: 300px;
 	display: flex;
+	margin-top: 10px;
 	.time {
 		width: 80px;
 		height: 100%;
+		overflow: hidden;
 		.start {
 			font-size: 30px;
 		}

@@ -1,9 +1,10 @@
 export default defineAppConfig({
 	pages: [
 		'pages/live/index', // 直播
+		'pages/user/components/bindSchool', //绑定学校
+		'pages/setting/index', // 设置
 		'pages/sign-in/index', // 签到
 		'pages/home/index', //主页
-		'pages/user/components/bindSchool', //绑定学校
 		'pages/user/index', // 我的
 		'pages/authorization/getUserInfo', // 获取用户信息 微信
 		'pages/user/components/bindUserInfo', // 绑定用户信息
@@ -59,5 +60,12 @@ export default defineAppConfig({
 				text: '我的'
 			}
 		]
+	},
+	// 配置权限
+	requiredPrivateInfos: ['getLocation'],
+	permission: {
+		'scope.userLocation': {
+			desc: '用于筛选位置'
+		}
 	}
 })

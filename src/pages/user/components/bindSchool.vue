@@ -1,9 +1,18 @@
 <script lang="ts" setup>
 import { useConfirmSchool } from '@/composables'
+import { setReactive } from '@/utils/setReactive'
+import Mask from '@/components/mask/index.vue'
 definePageConfig({
 	navigationStyle: 'custom'
 })
 
+// Taro.getLocation({
+// 	type: 'wgs84',
+// 	success: function(res) {
+// 		const latitude = res.latitude
+// 		const longitude = res.longitude
+// 	}
+// })
 const selectArea = (e: any) => {
 	const arr = e.detail.value
 	//格式化对齐服务器格式
@@ -29,7 +38,7 @@ const removalFilter = () => {
 }
 
 // 学校列表
-const schoolList: any = ref([])
+const schoolList = ref<any[]>([])
 const params = {
 	school_Provinces: '', //省份
 	school_City: '', // 城市
@@ -59,22 +68,25 @@ const lower = () => {
 // 选择学校
 const schoolInfo = ref({
 	sid: '',
-	School_Name: '',
-	innerURL: ''
+	school_Name: '',
+	innerURL: '',
+	outURL: '',
+	mac: ''
 })
 const chooseSchools = (item: any) => {
-	schoolInfo.value = item
+	setReactive(schoolInfo.value, item)
 }
 </script>
 
 <template>
 	<div class="bindScholl">
+		<Mask :show="schoolList.length === 0"></Mask>
 		<div class="card center flex-col p-10px">
 			<div class="flex justify-between w-100%">
 				<p class=" text-16px">请选择您所在的学校</p>
 				<div class="center">
-					<picker mode="region" class="btn-success p-5px" @change="selectArea">筛选</picker>
-					<div class="i-ri-close-line color-green" @click="removalFilter" v-if="params.school_Provinces"></div>
+					<picker mode="region" class="btn-success p-5px px-10px" v-if="!params.school_Provinces" @change="selectArea">筛选</picker>
+					<div class="btn-success p-5px px-10px ml-10px" @click="removalFilter" v-if="params.school_Provinces">清除筛选</div>
 				</div>
 			</div>
 			<div class="h-400px mt-10px w-100%">
@@ -85,7 +97,7 @@ const chooseSchools = (item: any) => {
 				</scroll-view>
 			</div>
 		</div>
-		<div class="btn-success mt-10px" @click="useConfirmSchool(schoolInfo)">选择学校</div>
+		<div class="btn-success w-80vw h-30px center mt-10px" @click="useConfirmSchool(schoolInfo)">选择学校</div>
 	</div>
 </template>
 <style lang="scss">

@@ -10,10 +10,19 @@ definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
 })
+
+let timeOut = 0
 Taro.useDidShow(() => {
 	getWeekCourse()
 	getFormatWeek()
+	const timeOutIndex = createTimeOut()
+	timeOut = timeOutIndex
 })
+//离开清空定时器
+Taro.useDidHide(() => {
+	clearInterval(timeOut)
+})
+
 //遮罩
 const maskShow = ref(true)
 //日视图
@@ -58,13 +67,14 @@ const setWeekCourse = () => {
 		})
 	})
 }
-// getWeekCourse()
-const timeOut = setInterval(() => {
-	setWeekCourse()
-}, 1000)
-onBeforeUnmount(() => {
-	clearInterval(timeOut)
-})
+
+// 创建定时器
+const createTimeOut = () => {
+	return setInterval(() => {
+		setWeekCourse()
+	}, 1000)
+}
+
 const date = ref(dayjs().format('YYYY-MM-DD'))
 const viewSwitch = ref(true)
 const weekDateArr = getNowWeek(date.value)
@@ -76,24 +86,26 @@ const colorArr = [
 	{ backgroundColor: '#ffbd695D', textColor: '#F79514' },
 	{ backgroundColor: '#2c68ff5D', textColor: '#0C4EF5' }
 ]
-const weekListFormat = ref()
+
+const weekListFormat = ref<any>([])
 const setColor = (data: any) => {
 	let index = 0
 	const obj = {}
-	data.forEach((item) => {
-		item.forEach((v) => {
-			if (!obj[v.name] && v.name !== '' && v.name) {
-				obj[v.name] = colorArr[index]
-				v.textColor = colorArr[index].textColor
-				v.backgroundColor = colorArr[index].backgroundColor
+	data.forEach((item: any) => {
+		item.courseName.forEach((name: any, i: number) => {
+			if (!obj[name] && name) {
+				obj[name] = colorArr[index]
+				let temp = { name, textColor: colorArr[index].textColor, backgroundColor: colorArr[index].backgroundColor }
+				item.courseName[i] = temp
 				index++
 				index = index >= colorArr.length ? 0 : index
-			} else if (v.name !== '' && v.name) {
-				v.textColor = obj[v.name].textColor
-				v.backgroundColor = obj[v.name].backgroundColor
+			} else if (name) {
+				let temp = { name, textColor: obj[name].textColor, backgroundColor: obj[name].backgroundColor }
+				item.courseName[i] = temp
 			}
 		})
 	})
+	console.log('[ data ] >', data)
 }
 const getFormatWeek = async () => {
 	const param = {
@@ -101,12 +113,13 @@ const getFormatWeek = async () => {
 		time: dayjs().format('YYYY-MM-DD'),
 		interfaceNum: '45-4'
 	}
-	const { data: res } = await getformatWeekApi(param)
-	weekListFormat.value = res
-	setColor(weekListFormat.value)
-	console.log(weekListFormat.value)
+	const { data: res, statusCode } = await getformatWeekApi(param)
+	if (statusCode === 200) {
+		weekListFormat.value = res
+		setColor(weekListFormat.value)
+		console.log(weekListFormat.value)
+	}
 }
-// getFormatWeek()
 </script>
 
 <template>
@@ -147,11 +160,11 @@ const getFormatWeek = async () => {
 			</div>
 			<div class="week-box">
 				<div class="week-body" v-for="(item, index) in weekListFormat">
-					<div class="week-body-item" v-for="(v, i) in item">
+					<div class="week-body-item" v-for="(v, i) in item.courseName">
 						<div v-if="i === 0" class="week-body-index">
 							<span>{{ index + 1 }}</span>
-							<span>{{ v.startTime }}</span>
-							<span>{{ v.endTime }}</span>
+							<span>{{ item.startTime }}</span>
+							<span>{{ item.endTime }}</span>
 						</div>
 						<div v-else class="week-body-course" :style="{ backgroundColor: v.backgroundColor, color: v.textColor }">{{ v.name }}</div>
 					</div>

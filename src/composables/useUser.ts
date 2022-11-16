@@ -30,6 +30,7 @@ export const useCheckSessionkey = async () => {
 
 // 登录函数
 export const useLogin = async () => {
+	Taro.showLoading({ title: '登录中' })
 	const { code } = await Taro.login()
 	const { data: res, statusCode } = await api.loginApi({ code })
 	if (statusCode === 200) {
@@ -39,6 +40,7 @@ export const useLogin = async () => {
 	//获取用户头像信息 以及学校信息
 	const userRes = await api.getUserInfoApi()
 	if (userRes.statusCode === 200) {
+		Taro.hideLoading()
 		if (userRes.data.nickName) {
 			useUpdateUserInfo(userRes.data)
 		} else {
@@ -48,6 +50,9 @@ export const useLogin = async () => {
 			//若非游客赋值学校信息
 			useUpdateUserInfo(userRes.data.schoolUser)
 		}
+	} else {
+		Taro.hideLoading()
+		Taro.showToast({ title: '登录失败', icon: 'error', duration: 2000 })
 	}
 }
 

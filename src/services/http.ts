@@ -24,7 +24,7 @@ const Request = (method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' 
 	return new Promise((resolve, reject) => {
 		Taro.request({
 			method,
-			url: `${baseUrl}${url}`,
+			url: `${baseUrl.value}${url}`,
 			data,
 			header: { 'Content-Type': 'application/json;charset=UTF-8', token: useToken.value, Accept: 'application/json' },
 			dataType: 'json',

@@ -31,13 +31,17 @@ const changeTab = (name: string) => {
 
 // 滑动开始
 let pageXStart = 0
+let pageYStart = 0
 const touchstart = (e: any) => {
 	pageXStart = e.changedTouches[0].pageX
+	pageYStart = e.changedTouches[0].pageY
 }
 //滑动结束
 const touchend = (e: any) => {
 	//滑动减去结束滑动的像素
 	let difference = pageXStart - e.changedTouches[0].pageX
+	let isPullDown = pageYStart - e.changedTouches[0].pageY
+	if (isPullDown <= -100 || isPullDown >= 100) return // 监测如果是下滑操作取消切换页面
 	if (difference <= -50) {
 		emit('changeTab', touchChange('add'))
 	}
