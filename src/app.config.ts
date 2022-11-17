@@ -1,6 +1,7 @@
 export default defineAppConfig({
 	pages: [
 		'pages/live/index', // 直播
+		'pages/authorization/web-csm-login', // 授权网页登录
 		'pages/user/components/bindSchool', //绑定学校
 		'pages/setting/index', // 设置
 		'pages/sign-in/index', // 签到
@@ -11,7 +12,6 @@ export default defineAppConfig({
 		'pages/rent-classroom/index', // 教室借用
 		'pages/appointment/index', // 预约教室
 		'pages/task-table/index', // 课程表
-		'pages/authorization/web-csm-login', // 授权网页登录
 		'pages/user/components/userInfo', // 用户信息页面
 		'pages/rent-classroom/components/add-rent', // 添加借用
 		'pages/live/components/video-view' // 查看直播

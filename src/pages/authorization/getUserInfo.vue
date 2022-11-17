@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { logoSvg } from '@/assets/img/image'
+import Svg from '@/assets/img/image'
 import { useWeChatUserInfo } from '@/composables'
 definePageConfig({
 	navigationBarTitleText: '授权',
@@ -9,7 +9,7 @@ definePageConfig({
 
 <template>
 	<div class="center flex-col px-20px">
-		<img :src="logoSvg" class="w-150px h-150px mt-100px" />
+		<img :src="Svg.logo" class="w-150px h-150px mt-100px" />
 		<div class="mt-40px text-20px">欢迎使用智能校园小程序</div>
 		<div class="mt-20px text-17px">智能校园小程序需要您的授权</div>
 		<div class="mt-20px text-14px color-gray">我们承诺不会将您的头像用户名信息透露给第三方</div>

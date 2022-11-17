@@ -2,7 +2,7 @@
 import dayjs from 'dayjs'
 import empty from '@/components/empty-page/index.vue'
 import { useWifi, useCountDown } from '@/composables'
-import { signInSvg, noCourseSvg } from '@/assets/img/image'
+import Svg from '@/assets/img/image'
 import { setReactive } from '@/utils/setReactive'
 import { signInIO } from '@/services'
 definePageConfig({
@@ -64,14 +64,14 @@ const sginIn = async () => {
 
 <template>
 	<div class="w-100vw min-h-100vh bg-white sgin-in">
-		<empty v-if="signInfo.className === ''" :img="noCourseSvg" text="老师暂未发起签到 您暂时无需签到"></empty>
+		<empty v-if="signInfo.className === ''" :img="Svg.noCourse" text="老师暂未发起签到 您暂时无需签到"></empty>
 		<empty v-else-if="!wifiInfo" type="noNetwork" text="请打开WIFI开关 , 连接教室网络进行签到"></empty>
 		<div class="p-10px 	box-border" v-else>
 			<div class="text-20px">{{ signInfo.className }} {{ signInfo.courseName }}</div>
 			<div class="mt-10px color-gray-400 center justify-start">
 				老师已发起签到 请在时间结束之前签到
 			</div>
-			<img :src="signInSvg" class="w-100% object-contain mt-80px mb-30px" alt="" />
+			<img :src="Svg.signIn" class="w-100% object-contain mt-80px mb-30px" alt="" />
 			<div v-if="!isCanSign" class="center text-24px tracking-widest color-gray-4">签到已结束</div>
 			<div class="center text-18px color-gray-5" v-else-if="!signInfo.state">
 				<span>签到剩余时间</span>

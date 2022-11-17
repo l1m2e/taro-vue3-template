@@ -11,6 +11,8 @@ export const bindUserInfoApi = (data: IBindUserInfo) => POST('/user/bindSchoolUs
 export const getUserInfoApi = () => GET('/user/UserInfo')
 // 保存用户信息
 export const saveUserInfo = (data: any) => GET('/user/register', data)
+// 授权登录网页端
+export const webCMSLogin = (data: string) => GET('/user/accredit', { scene: data })
 //获取学校列表
 export const getSchoolList = (data: ISchoolList) =>
 	new Promise<Taro.request.SuccessCallbackResult>((resolve) => {

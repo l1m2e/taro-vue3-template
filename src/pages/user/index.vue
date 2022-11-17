@@ -1,10 +1,15 @@
 <script lang="ts" setup>
-import { useUserInfo, useLogin, useLogout, useToken, useLoginState } from '@/composables'
+import { useUserInfo, useLogin, useLogout, useToken, useLoginState, useCheckSchoolBind } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
 	navigationBarBackgroundColor: '#fafafa'
 })
+
+Taro.useDidShow(() => {
+	useCheckSchoolBind() //检查是否绑定了学校
+})
+
 const menuList = [
 	{
 		icon: require('../../assets/user/user.png'),
@@ -17,8 +22,10 @@ const menuList = [
 		link: '/pages/setting/index'
 	}
 ]
-const onMenu = (link: string) => {
+const onMenu = (link: string, text: string) => {
 	if (useToken.value) {
+		Taro.navigateTo({ url: link })
+	} else if (['设置'].includes(text)) {
 		Taro.navigateTo({ url: link })
 	} else {
 		Taro.showToast({ title: '请先登陆', icon: 'error', duration: 2000 })
@@ -54,7 +61,7 @@ const logout = () => {
 		</div>
 		<div class="menu">
 			<div class="menu-item flex" v-for="item in menuList" key="item.text">
-				<div class="menu-item-mask" @click="onMenu(item.link)"></div>
+				<div class="menu-item-mask" @click="onMenu(item.link, item.text)"></div>
 				<div class="menu-item-icon basis-1/4"><image :src="item.icon"></image></div>
 				<div class="basis-4/2 p-10px">
 					<span>{{ item.text }}</span>

@@ -1,5 +1,5 @@
 import { useStorage } from './useStorage'
-
+import dayjs from 'dayjs'
 //用户状态
 export const useUserInfo = useStorage('useInfo', {
 	nickName: '', //微信名称
@@ -59,16 +59,17 @@ export const useLogin = async () => {
 // 获取微信用户信息
 export const useWeChatUserInfo = () => {
 	Taro.getUserProfile({
-		desc: '用于完善用户信息',
-		async success(user) {
+		desc: '获取你的昵称、头像、地区及性别',
+		success(user) {
+			console.log('[ user ] >', user)
 			useUpdateUserInfo(user.userInfo) // 更新用户信息
-			const res = await api.saveUserInfo({ encryptedData: user.encryptedData, iv: user.iv })
-			if (res.statusCode === 200) {
-				Taro.showToast({ title: '授权成功', icon: 'none', duration: 2000 })
-				if (useUserInfo.value.role === '游客') {
-					Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
-				}
-			}
+			// const res = await api.saveUserInfo({ encryptedData: user.encryptedData, iv: user.iv })
+			// if (res.statusCode === 200) {
+			// 	Taro.showToast({ title: '授权成功', icon: 'none', duration: 2000 })
+			// 	if (useUserInfo.value.role === '游客') {
+			// 		Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
+			// 	}
+			// }
 		}
 	})
 }
