@@ -1,9 +1,10 @@
+import { baseUrl } from '@/config/baseUrl'
 import { useStorage } from './useStorage'
-import dayjs from 'dayjs'
+import Svg from '@/assets/img/image'
+
 //用户状态
 export const useUserInfo = useStorage('useInfo', {
-	nickName: '', //微信名称
-	avatarUrl: '', //微信头像
+	avatarUrl: Svg.baseAvatar, // 头像
 	role: '', // 当前用户角色
 	studentName: '', //用户和学校绑定的真实姓名
 	schoolName: '', // 用户绑定的学校名称
@@ -14,8 +15,8 @@ export const useUserInfo = useStorage('useInfo', {
 })
 // token
 export const useToken = useStorage('token', '')
-// 用户登录状态
-export const useLoginState = computed(() => useToken.value && useUserInfo.value.nickName)
+// 用户是否已经绑定信息
+export const useIsBindUserInfo = computed(() => useToken.value && useUserInfo.value.studentName)
 
 //检查如果Sessionkey 是否过期 如果Sessionkey 过期重新执行登录函数
 export const useCheckSessionkey = async () => {
@@ -34,44 +35,28 @@ export const useLogin = async () => {
 	const { code } = await Taro.login()
 	const { data: res, statusCode } = await api.loginApi({ code })
 	if (statusCode === 200) {
+		Taro.hideLoading()
 		useToken.value = res.token
 		useUserInfo.value.role = res.role
-	}
-	//获取用户头像信息 以及学校信息
-	const userRes = await api.getUserInfoApi()
-	if (userRes.statusCode === 200) {
-		Taro.hideLoading()
-		if (userRes.data.nickName) {
-			useUpdateUserInfo(userRes.data)
-		} else {
-			Taro.navigateTo({ url: '/pages/authorization/getUserInfo' })
-		}
-		if (res.role !== '游客') {
-			//若非游客赋值学校信息
-			useUpdateUserInfo(userRes.data.schoolUser)
-		}
+		res.role === '游客' ? Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' }) : useGetUserInfo()
 	} else {
-		Taro.hideLoading()
 		Taro.showToast({ title: '登录失败', icon: 'error', duration: 2000 })
 	}
 }
 
-// 获取微信用户信息
-export const useWeChatUserInfo = () => {
-	Taro.getUserProfile({
-		desc: '获取你的昵称、头像、地区及性别',
-		success(user) {
-			console.log('[ user ] >', user)
-			useUpdateUserInfo(user.userInfo) // 更新用户信息
-			// const res = await api.saveUserInfo({ encryptedData: user.encryptedData, iv: user.iv })
-			// if (res.statusCode === 200) {
-			// 	Taro.showToast({ title: '授权成功', icon: 'none', duration: 2000 })
-			// 	if (useUserInfo.value.role === '游客') {
-			// 		Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
-			// 	}
-			// }
+//获取用户头像信息 以及学校信息
+export const useGetUserInfo = async () => {
+	if (useUserInfo.value.role !== '游客') {
+		console.log('[  ] >', useUserInfo.value.role)
+		const res = await api.getUserInfoApi()
+		if (res.statusCode === 200) {
+			res.data.avatarUrl = `${baseUrl.value}/applet/image/avatar/${res.data.avatarUrl}`
+			useUpdateUserInfo(res.data)
+			useUpdateUserInfo(res.data.schoolUser)
+		} else {
+			Taro.showToast({ title: '获取用户信息失败', icon: 'error', duration: 2000 })
 		}
-	})
+	}
 }
 
 // 更新用户信息

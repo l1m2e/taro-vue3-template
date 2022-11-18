@@ -1,13 +1,13 @@
 export default defineAppConfig({
 	pages: [
 		'pages/live/index', // 直播
+		'pages/setting/index', // 设置
+		'pages/user/components/change-avatar', //修改头像
 		'pages/authorization/web-csm-login', // 授权网页登录
 		'pages/user/components/bindSchool', //绑定学校
-		'pages/setting/index', // 设置
 		'pages/sign-in/index', // 签到
 		'pages/home/index', //主页
 		'pages/user/index', // 我的
-		'pages/authorization/getUserInfo', // 获取用户信息 微信
 		'pages/user/components/bindUserInfo', // 绑定用户信息
 		'pages/rent-classroom/index', // 教室借用
 		'pages/appointment/index', // 预约教室

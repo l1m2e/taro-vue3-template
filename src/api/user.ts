@@ -13,6 +13,10 @@ export const getUserInfoApi = () => GET('/user/UserInfo')
 export const saveUserInfo = (data: any) => GET('/user/register', data)
 // 授权登录网页端
 export const webCMSLogin = (data: string) => GET('/user/accredit', { scene: data })
+// 获取用户头像列表
+export const getAvatarList = () => GET('/user/getAvatarList')
+// 修改头像
+export const changeAvatar = (data: string) => POST('/user/changeAvatar', { avatarUrl: data })
 //获取学校列表
 export const getSchoolList = (data: ISchoolList) =>
 	new Promise<Taro.request.SuccessCallbackResult>((resolve) => {

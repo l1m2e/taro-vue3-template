@@ -7,7 +7,8 @@ const Svg = reactive({
 	noCourse: `${baseUrl.value}/applet/image/noCourse.svg`, // 没有课程
 	signIn: `${baseUrl.value}/applet/image/sign-in.svg`, // 签到
 	logo: `${baseUrl.value}/applet/image/logo.svg`, // 小程序图标
-	state403: `${baseUrl.value}/applet/image/403.svg` //403 无权访问
+	state403: `${baseUrl.value}/applet/image/403.svg`, //403 无权访问
+	baseAvatar: `${baseUrl.value}/applet/image/avatar/male.svg`
 })
 
 watch(

@@ -81,7 +81,7 @@ const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 	display: flex;
 	margin-top: 10px;
 	.time {
-		width: 80px;
+		width: 100px;
 		height: 100%;
 		overflow: hidden;
 		.start {

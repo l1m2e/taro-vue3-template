@@ -72,7 +72,6 @@ const touchChange = (type: string) => {
 		</div>
 		<div class="tabs-content" @touchstart="touchstart" @touchend="touchend">
 			<renderContent />
-			<!-- <slot></slot> -->
 		</div>
 	</div>
 </template>

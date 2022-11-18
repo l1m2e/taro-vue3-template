@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useLoad } from '@tarojs/taro'
-import { useUserInfo, useLoginState } from '@/composables'
+import { useUserInfo, useIsBindUserInfo } from '@/composables'
 import empty from '@/components/empty-page/index.vue'
 import Svg from '@/assets/img/image'
 definePageConfig({
@@ -32,10 +32,10 @@ const sceneref = ref()
 
 <template>
 	<div class="px-10px relative h-100vh">
-		<div v-if="useLoginState">
+		<div v-if="useIsBindUserInfo">
 			<div class="h-200px center flex-col">
 				<image class="w-100px h-100px rounded-full" :src="useUserInfo.avatarUrl" />
-				<text class="mt-20px  text-18px">{{ useUserInfo.nickName }}</text>
+				<text class="mt-20px  text-18px">{{ useUserInfo.studentName }}</text>
 			</div>
 			<p class="font-500 text-22px text-center ">授权登录备课系统</p>
 			<div></div>
@@ -45,7 +45,7 @@ const sceneref = ref()
 			<p class="bg-red">{{ sceneref }}</p>
 		</div>
 		<div v-else>
-			<empty :img="Svg.state403" text="您无权访问 请先登录后重新扫码"></empty>
+			<empty :img="Svg.state403" text="您无权访问 请先登录绑定信息后后重新扫码"></empty>
 			<div class="btn-success m-auto w-80%  mt-100px  center box-border rounded-full h-40px tracking-widest text-17px" @click="goToUser">去登录</div>
 		</div>
 	</div>

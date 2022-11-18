@@ -1,21 +1,23 @@
 <script lang="ts" setup>
-import { useUserInfo, useUpdateUserInfo } from '@/composables'
-
+import { useUpdateUserInfo, useGetUserInfo } from '@/composables'
+import Svg from '@/assets/img/image'
 definePageConfig({
 	navigationBarTitleText: '绑定个人信息'
 })
+
 const role = ref('Student')
 const form = reactive({
 	studentName: '',
 	studentId: '',
 	type: ''
 })
+
 const bindUserInfo = async () => {
 	if (form.studentName === '' || form.studentId === '') return Taro.showToast({ title: '信息不完整', icon: 'error', duration: 2000 })
 	const res = await api.bindUserInfoApi({ ...form, type: role.value })
 	if (res.statusCode === 200) {
-		useUpdateUserInfo(res.data) //更新用户信息
-		useUserInfo.value.role = res.data.type === 'Student' ? '学生' : '老师'
+		useUpdateUserInfo({ ...res.data, role: res.data.type === 'Student' ? '学生' : '老师' }) //更新用户信息
+		useGetUserInfo()
 		Taro.switchTab({ url: '/pages/user/index' })
 	} else {
 		Taro.showToast({ title: res.data?.message || '服务器有误', icon: 'error', duration: 2000 })
@@ -26,7 +28,7 @@ const bindUserInfo = async () => {
 <template>
 	<div class="bind-user-info h-100vh w-100% bg-white">
 		<div class="w-100% h-150px center">
-			<img :src="useUserInfo.avatarUrl" class="w-100px h-100px rounded-full" />
+			<image :src="Svg.baseAvatar" class="w-100px h-100px rounded-full" />
 		</div>
 		<div class="px-20px mt-20px box-border">
 			<div class="w-100% h-auto center justify-between bg-#b1efd9d1 rounded-15px m-auto">

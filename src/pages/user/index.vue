@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { useUserInfo, useLogin, useLogout, useToken, useLoginState, useCheckSchoolBind } from '@/composables'
+import Svg from '@/assets/img/image'
+import { useUserInfo, useLogin, useLogout, useToken, useIsBindUserInfo, useCheckSchoolBind } from '@/composables'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
@@ -43,17 +44,26 @@ const logout = () => {
 		}
 	})
 }
+
+const goToChangeAvatar = () => {
+	if (useIsBindUserInfo) {
+		Taro.navigateTo({ url: '/pages/user/components/change-avatar' })
+	} else {
+		Taro.showToast({ title: '需绑定|登录', icon: 'success', duration: 2000 })
+	}
+}
 </script>
 
 <template>
 	<div class="user">
-		<div class="user-card" v-if="useLoginState">
-			<div class="avatar basis-1/4">
-				<image class="w-60px h-60px rounded-full" :src="useUserInfo.avatarUrl" />
+		<div class="user-card" v-if="useToken">
+			<div class="avatar basis-1/4" @click="goToChangeAvatar">
+				<image class="w-60px h-60px rounded-full" :src="useIsBindUserInfo ? useUserInfo.avatarUrl : Svg.baseAvatar" />
 			</div>
 			<div class="text basis-3/4">
-				<p class="name">{{ useUserInfo.nickName ? useUserInfo.nickName : '用户' }}</p>
-				<p class="signature">{{ useUserInfo.role }}</p>
+				<p class="name">{{ useUserInfo.studentName ? useUserInfo.studentName : '用户' }}</p>
+				<p class="signature" v-if="useIsBindUserInfo">{{ useUserInfo.role }}</p>
+				<p class="signature" v-else>游客功能受限 请前往个人信息中绑定</p>
 			</div>
 		</div>
 		<div class="user-card user-card-on-login" v-else>
@@ -69,7 +79,7 @@ const logout = () => {
 				<div class="menu-item-right basis-4/1" :span="4"><div class="i-ri-arrow-right-s-line font-14"></div></div>
 			</div>
 		</div>
-		<div class="logout" v-if="useLoginState" @click="logout"><span>退出账号</span></div>
+		<div class="logout" v-if="useToken" @click="logout"><span>退出账号</span></div>
 	</div>
 </template>
 

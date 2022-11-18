@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
 import { useCheckSchoolBind } from '@/composables'
+import empty from '@/components/empty-page/index.vue'
 definePageConfig({
 	navigationBarTitleText: '课程',
 	navigationBarBackgroundColor: '#fafafa'
@@ -61,11 +62,11 @@ const goToSign = () => {
 
 <template>
 	<div class="live">
-		<div class="card" v-for="item in liveList">
+		<div class="card" v-for="item in liveList" v-if="liveList.length">
 			<div class="flex">
 				<div class="flex-1">
-					<div class="text-20px">{{ item.courseName }}</div>
-					<div class="text-20px font-600 mt-5px">{{ `${item.beginTime.slice(0, 5)} ~ ${item.endTime.slice(0, 5)}` }}</div>
+					<div class="title">{{ item.courseName }}</div>
+					<div class="text-20px font-600 mt-42px">{{ `${item.beginTime.slice(0, 5)} ~ ${item.endTime.slice(0, 5)}` }}</div>
 					<div class="mt-5px center justify-start">
 						<div class="icon">
 							<div class="i-ri-map-pin-line"></div>
@@ -89,6 +90,7 @@ const goToSign = () => {
 				</div>
 			</div>
 		</div>
+		<empty v-else></empty>
 	</div>
 </template>
 
@@ -106,6 +108,21 @@ const goToSign = () => {
 		padding-right: 20px;
 		border-radius: 12px;
 		box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+		position: relative;
+		.title {
+			padding-left: 10px;
+			position: absolute;
+			top: 18px;
+			left: 0px;
+			width: 340px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			color: #18a058;
+			background: rgba(24, 160, 88, 0.16);
+			border-radius: 0px 20px 20px 0px;
+			@include ellipsis-overflow;
+		}
 	}
 	.icon {
 		width: 55px;

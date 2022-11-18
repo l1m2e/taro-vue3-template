@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { useUserInfo } from '@/composables'
+import Svg from '@/assets/img/image'
+import { useIsBindUserInfo, useUserInfo } from '@/composables'
 definePageConfig({
 	navigationBarTitleText: '个人信息',
 	navigationBarBackgroundColor: '#f7f8fa'
@@ -7,18 +8,24 @@ definePageConfig({
 const goToBindUserInfo = () => {
 	Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
 }
+const goToChangeAvatar = () => {
+	if (useIsBindUserInfo) {
+		Taro.navigateTo({ url: '/pages/user/components/change-avatar' })
+	} else {
+		Taro.showToast({ title: '需绑定|登录', icon: 'success', duration: 2000 })
+	}
+}
 </script>
 
 <template>
 	<div>
 		<span>用户信息</span>
-		<div class="avatar border-b-1 border-b-gray100">
+		<div class="avatar border-b-1 border-b-gray100" @click="goToChangeAvatar()">
 			<span>头像</span>
-			<img :src="useUserInfo.avatarUrl" alt="" class="w-30px h-30px" />
-		</div>
-		<div class="cell">
-			<div>微信用户名</div>
-			<div>{{ useUserInfo.nickName }}</div>
+			<div class="center">
+				<image :src="useIsBindUserInfo ? useUserInfo.avatarUrl : Svg.baseAvatar" alt="" class="w-30px h-30px" />
+				<div class=" ml-5px color-gray i-ri-arrow-right-s-line"></div>
+			</div>
 		</div>
 		<span>绑定的信息</span>
 		<div v-if="useUserInfo.studentName">
