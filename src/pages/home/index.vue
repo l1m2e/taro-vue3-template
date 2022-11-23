@@ -18,7 +18,7 @@ function fn3() {
 }
 function fn4() {
 	Taro.navigateTo({
-		url: '/pages/live/index'
+		url: '/pages/course/index'
 	})
 }
 definePageConfig({

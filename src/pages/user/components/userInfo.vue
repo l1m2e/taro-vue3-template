@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Svg from '@/assets/img/image'
-import { useIsBindUserInfo, useUserInfo } from '@/composables'
+import { useIsBindUserInfo, useUserInfo, useSchoolInfo } from '@/composables'
 definePageConfig({
 	navigationBarTitleText: '个人信息',
 	navigationBarBackgroundColor: '#f7f8fa'
@@ -31,7 +31,7 @@ const goToChangeAvatar = () => {
 		<div v-if="useUserInfo.studentName">
 			<div class="cell">
 				<div>学校</div>
-				<div>{{ useUserInfo.schoolName }}</div>
+				<div>{{ useSchoolInfo.school_Name }}</div>
 			</div>
 			<div class="cell" v-if="useUserInfo.role === '学生'">
 				<div>班别</div>

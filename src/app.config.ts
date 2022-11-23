@@ -1,6 +1,7 @@
 export default defineAppConfig({
 	pages: [
-		'pages/live/index', // 直播
+		'pages/course/components/video-view', // 查看直播
+		'pages/course/index', // 课程
 		'pages/setting/index', // 设置
 		'pages/user/components/change-avatar', //修改头像
 		'pages/authorization/web-csm-login', // 授权网页登录
@@ -13,8 +14,7 @@ export default defineAppConfig({
 		'pages/appointment/index', // 预约教室
 		'pages/task-table/index', // 课程表
 		'pages/user/components/userInfo', // 用户信息页面
-		'pages/rent-classroom/components/add-rent', // 添加借用
-		'pages/live/components/video-view' // 查看直播
+		'pages/rent-classroom/components/add-rent' // 添加借用
 	],
 	window: {
 		backgroundTextStyle: 'light',
@@ -36,7 +36,7 @@ export default defineAppConfig({
 			// 	text: ''
 			// },
 			{
-				pagePath: 'pages/live/index',
+				pagePath: 'pages/course/index',
 				iconPath: './assets/tab-bar/course.png',
 				selectedIconPath: './assets/tab-bar/course-active.png',
 				text: '课程'

@@ -4,6 +4,7 @@ import { getRentListApi } from '@/api'
 import Tabs from '@/components/base/tabs/index.vue'
 import TabPane from '@/components/base/tab-pane/index.vue'
 import empty from '@/components/empty-page/index.vue'
+import { useToken } from '@/composables'
 definePageConfig({
 	navigationBarTitleText: '借用',
 	navigationBarBackgroundColor: '#fafafa'
@@ -93,23 +94,26 @@ const lower = (type: string) => {
 
 <template>
 	<div class="rent-classroom">
-		<!-- 添加按钮 -->
-		<div class="addBtn" @click="addRent"><div class="i-ri-add-line  color-white text-25px"></div></div>
-		<!-- tabs -->
-		<Tabs :activate="tabs" @changeTab="handleClick">
-			<TabPane name="当天进行" class="tab-content" @buttomLoad="lower('now')">
-				<card v-for="item in nowLit" :item="item" class="card" v-if="nowLit.length !== 0"></card>
-				<empty v-else></empty>
-			</TabPane>
-			<TabPane name="未来进行" class="tab-content" @buttomLoad="lower('future')">
-				<card v-for="item in futureList" :item="item" class="card" v-if="futureList.length !== 0"></card>
-				<empty v-else></empty>
-			</TabPane>
-			<TabPane name="历史记录" class="tab-content" @buttomLoad="lower('future')">
-				<card v-for="item in historyList" :item="item" class="card" v-if="historyList.length !== 0"></card>
-				<empty v-else></empty>
-			</TabPane>
-		</Tabs>
+		<div v-if="useToken">
+			<!-- 添加按钮 -->
+			<div class="addBtn" @click="addRent"><div class="i-ri-add-line  color-white text-25px"></div></div>
+			<!-- tabs -->
+			<Tabs :activate="tabs" @changeTab="handleClick">
+				<TabPane name="当天进行" class="tab-content" @buttomLoad="lower('now')">
+					<card v-for="item in nowLit" :item="item" class="card" v-if="nowLit.length !== 0"></card>
+					<empty v-else></empty>
+				</TabPane>
+				<TabPane name="未来进行" class="tab-content" @buttomLoad="lower('future')">
+					<card v-for="item in futureList" :item="item" class="card" v-if="futureList.length !== 0"></card>
+					<empty v-else></empty>
+				</TabPane>
+				<TabPane name="历史记录" class="tab-content" @buttomLoad="lower('future')">
+					<card v-for="item in historyList" :item="item" class="card" v-if="historyList.length !== 0"></card>
+					<empty v-else></empty>
+				</TabPane>
+			</Tabs>
+		</div>
+		<empty v-else type="noLogin"></empty>
 	</div>
 </template>
 
@@ -118,7 +122,7 @@ const lower = (type: string) => {
 	width: 100%;
 	height: 100%;
 	position: relative;
-	& > .addBtn {
+	.addBtn {
 		width: 100px;
 		height: 100px;
 		background-color: #49b583;
@@ -129,7 +133,7 @@ const lower = (type: string) => {
 		border-radius: 100%;
 		@include center;
 	}
-	& .tab-content {
+	.tab-content {
 		height: calc(100vh - 30px);
 		box-sizing: border-box;
 		padding-top: 120px;
@@ -138,7 +142,7 @@ const lower = (type: string) => {
 			width: 90%;
 		}
 	}
-	& .tabs-title {
+	.tabs-title {
 		position: fixed;
 		top: 0;
 		z-index: 99;

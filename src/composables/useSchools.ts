@@ -1,5 +1,6 @@
 import { useStorage } from './useStorage'
 import { setReactive } from '@/utils/setReactive'
+import { useLogout } from './useUser'
 interface ISchoolInfo {
 	innerURL: string
 	mac: string
@@ -42,6 +43,7 @@ export const useCheckSchoolBind = () => {
 //确定绑定学校
 export const useConfirmSchool = (data: ISchoolInfo) => {
 	if (data.innerURL && data.outURL) {
+		useLogout() // 清除登录状态
 		setReactive(useSchoolInfo.value, data)
 		Taro.showToast({ title: `绑定成功`, icon: 'success', duration: 2000 })
 		Taro.switchTab({ url: '/pages/user/index' })

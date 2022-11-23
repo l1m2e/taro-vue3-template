@@ -6,21 +6,24 @@ import { getWeekCourseApi, getformatWeekApi } from '@/api'
 import { changeTextToCN } from '@/utils/changeTextToCN'
 import getNowWeek from '@/utils/getNowWeek'
 import Mask from '@/components/mask/index.vue'
+import { useToken } from '@/composables'
+import empty from '@/components/empty-page/index.vue'
 definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
 })
 
-let timeOut = 0
+let timeIndex = 0
 Taro.useDidShow(() => {
-	getWeekCourse()
-	getFormatWeek()
-	const timeOutIndex = createTimeOut()
-	timeOut = timeOutIndex
+	if (useToken.value) {
+		getWeekCourse()
+		getFormatWeek()
+		timeIndex = createTimeOut()
+	}
 })
 //离开清空定时器
 Taro.useDidHide(() => {
-	clearInterval(timeOut)
+	clearInterval(timeIndex)
 })
 
 //遮罩
@@ -30,6 +33,7 @@ const swiperChange = (e: any) => {
 	console.log(e.detail.current)
 	num.value = e.detail.current
 }
+
 const getIndex = (e: number) => {
 	console.log('获取index', e)
 	num.value = e
@@ -123,54 +127,57 @@ const getFormatWeek = async () => {
 </script>
 
 <template>
-	<div class="task">
-		<Mask :show="maskShow"></Mask>
-		<div class="title">
-			<div class="left">
-				<span class="item1">{{ month }}</span>
-				<span class="item2">{{ week }}周</span>
-			</div>
-			<div :class="viewSwitch ? 'right' : 'rightWeek'">
-				<div @click="viewSwitch = !viewSwitch">
-					<image :src="require('../../assets/icon/switch.svg')"></image>
-					&nbsp;
-					<span>{{ viewSwitch ? '周视图' : '日视图' }}</span>
+	<div>
+		<div class="task" v-if="useToken">
+			<Mask :show="maskShow"></Mask>
+			<div class="title">
+				<div class="left">
+					<span class="item1">{{ month }}</span>
+					<span class="item2">{{ week }}周</span>
+				</div>
+				<div :class="viewSwitch ? 'right' : 'rightWeek'">
+					<div @click="viewSwitch = !viewSwitch">
+						<image :src="require('../../assets/icon/switch.svg')"></image>
+						&nbsp;
+						<span>{{ viewSwitch ? '周视图' : '日视图' }}</span>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div v-show="viewSwitch">
-			<todaySelect @index="getIndex" :swiperIndex="num"></todaySelect>
-			<div class="task-today">
-				<swiper :current="num" @change="swiperChange">
-					<swiper-item class="swiper-item" v-for="item in weekList">
-						<div class="content">
-							<steps :data="day" :activate="day.activate" v-for="(day, i) in item" :end="i === item.length - 1 ? true : false"></steps>
-						</div>
-					</swiper-item>
-				</swiper>
-			</div>
-		</div>
-		<div class="week-view" v-show="!viewSwitch">
-			<div class="week-title">
-				<div class="week-title-item"></div>
-				<div class="week-title-item" v-for="item in weekDateArr">
-					<span class="week-title-text">{{ item.week }}</span>
-					<span class="week-title-date">{{ dayjs(item.date).format('MM/DD') }}</span>
+			<div v-show="viewSwitch">
+				<todaySelect @index="getIndex" :swiperIndex="num"></todaySelect>
+				<div class="task-today">
+					<swiper :current="num" @change="swiperChange">
+						<swiper-item class="swiper-item" v-for="item in weekList">
+							<div class="content">
+								<steps :data="day" :activate="day.activate" v-for="(day, i) in item" :end="i === item.length - 1 ? true : false"></steps>
+							</div>
+						</swiper-item>
+					</swiper>
 				</div>
 			</div>
-			<div class="week-box">
-				<div class="week-body" v-for="(item, index) in weekListFormat">
-					<div class="week-body-item" v-for="(v, i) in item.courseName">
-						<div v-if="i === 0" class="week-body-index">
-							<span>{{ index + 1 }}</span>
-							<span>{{ item.startTime }}</span>
-							<span>{{ item.endTime }}</span>
+			<div class="week-view" v-show="!viewSwitch">
+				<div class="week-title">
+					<div class="week-title-item"></div>
+					<div class="week-title-item" v-for="item in weekDateArr">
+						<span class="week-title-text">{{ item.week }}</span>
+						<span class="week-title-date">{{ dayjs(item.date).format('MM/DD') }}</span>
+					</div>
+				</div>
+				<div class="week-box">
+					<div class="week-body" v-for="(item, index) in weekListFormat">
+						<div class="week-body-item" v-for="(v, i) in item.courseName">
+							<div v-if="i === 0" class="week-body-index">
+								<span>{{ index + 1 }}</span>
+								<span>{{ item.startTime }}</span>
+								<span>{{ item.endTime }}</span>
+							</div>
+							<div v-else class="week-body-course" :style="{ backgroundColor: v.backgroundColor, color: v.textColor }">{{ v.name }}</div>
 						</div>
-						<div v-else class="week-body-course" :style="{ backgroundColor: v.backgroundColor, color: v.textColor }">{{ v.name }}</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<empty v-else type="noLogin"></empty>
 	</div>
 </template>
 

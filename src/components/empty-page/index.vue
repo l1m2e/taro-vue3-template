@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import Svg from '@/assets/img/image'
 
-type IEmptyType = 'noNetwork' | 'noData' | 'error'
+type IEmptyType = 'noNetwork' | 'noData' | 'error' | 'noLogin'
 
 interface Props {
 	type?: IEmptyType
@@ -16,7 +16,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emptyType = {
 	noNetwork: { img: 'noNetwork', text: '网络异常' },
 	noData: { img: 'noData', text: '无数据' },
-	error: { img: 'error', text: '错误' }
+	error: { img: 'error', text: '错误' },
+	noLogin: { img: 'noLogin', text: '您未登录 请前往我的页面登录' }
 }
 const defaultInfo = computed(() => emptyType[props.type])
 </script>

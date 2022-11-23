@@ -37,7 +37,6 @@
 	"license": "MIT",
 	"dependencies": {
 		"@babel/runtime": "^7.7.7",
-		"@nutui/nutui-taro": "^3.1.8",
 		"@tarojs/components": "3.5.4",
 		"@tarojs/helper": "3.5.4",
 		"@tarojs/plugin-framework-vue3": "3.5.4",
@@ -54,7 +53,6 @@
 		"@tarojs/taro": "3.5.4",
 		"@tarojs/taro-h5": "3.5.4",
 		"dayjs": "^1.11.5",
-		"taro-ui-vue3": "^1.0.0-alpha.21",
 		"vue": "^3.0.0",
 		"weapp.socket.io": "^2.1.0"
 	},
