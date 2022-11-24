@@ -1,6 +1,6 @@
 import { baseUrl } from '@/config/baseUrl'
 
-const Svg = reactive({
+export const Svg = reactive({
 	noNetwork: `${baseUrl.value}/applet/image/noNetwork.svg`, // 没有网络
 	error: `${baseUrl.value}/applet/image/error.svg`, // 错误
 	noData: `${baseUrl.value}/applet/image/noData.svg`, // 没有数据
@@ -22,5 +22,3 @@ watch(
 )
 
 const splitText = (text: string) => text.substring(text.indexOf('/applet'), text.length)
-
-export default Svg

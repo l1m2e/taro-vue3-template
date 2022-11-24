@@ -2,7 +2,6 @@
 import dayjs from 'dayjs'
 import empty from '@/components/empty-page/index.vue'
 import { useWifi, useCountDown } from '@/composables'
-import Svg from '@/assets/img/image'
 import { setReactive } from '@/utils/setReactive'
 import { signInIO } from '@/services'
 definePageConfig({

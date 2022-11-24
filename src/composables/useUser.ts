@@ -1,6 +1,6 @@
 import { baseUrl } from '@/config/baseUrl'
 import { useStorage } from './useStorage'
-import Svg from '@/assets/img/image'
+
 
 //用户状态
 export const useUserInfo = useStorage('useInfo', {

@@ -2,7 +2,6 @@
 import { useLoad } from '@tarojs/taro'
 import { useUserInfo, useIsBindUserInfo } from '@/composables'
 import empty from '@/components/empty-page/index.vue'
-import Svg from '@/assets/img/image'
 definePageConfig({
 	navigationBarTitleText: '授权登录',
 	navigationBarBackgroundColor: '#fafafa'

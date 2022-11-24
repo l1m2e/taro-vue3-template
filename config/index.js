@@ -13,7 +13,7 @@ const webpackChain = (chain) => {
 	chain.plugin('transformWeClass').use(transformWeClass())
 	chain.plugin('unplugin-auto-import').use(
 		AutoImport({
-			imports: ['vue', { '@tarojs/taro': ['showToast', ['default', 'Taro']], '@/api': [['*', 'api']] }],
+			imports: ['vue', { '@tarojs/taro': ['showToast', ['default', 'Taro']], '@/api': [['*', 'api']], '@/assets/img/image': ['Svg'] }],
 			dts: 'auto-imports.d.ts',
 			vueTemplate: true
 		})
@@ -60,7 +60,7 @@ const config = {
 		enable: false // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
 	},
 	sass: {
-		data: `@import "@nutui/nutui-taro/dist/styles/variables-jdt.scss";@import "@/styles/index.scss";`
+		data: `@import "@/styles/index.scss";`
 	},
 	mini: {
 		webpackChain,

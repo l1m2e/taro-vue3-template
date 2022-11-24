@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import Svg from '@/assets/img/image'
 import { useUserInfo, useLogin, useLogout, useToken, useIsBindUserInfo, useCheckSchoolBind } from '@/composables'
 
 definePageConfig({

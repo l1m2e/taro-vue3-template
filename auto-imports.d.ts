@@ -2,6 +2,7 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const Svg: typeof import('@/assets/img/image')['Svg']
   const Taro: typeof import('@tarojs/taro')['default']
   const api: typeof import('@/api')
   const computed: typeof import('vue')['computed']
@@ -61,6 +62,7 @@ import { UnwrapRef } from 'vue'
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly Svg: UnwrapRef<typeof import('@/assets/img/image')['Svg']>
     readonly Taro: UnwrapRef<typeof import('@tarojs/taro')['default']>
     readonly api: UnwrapRef<typeof import('@/api')>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>

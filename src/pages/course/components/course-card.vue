@@ -30,7 +30,7 @@ const goToSign = () => {
 </script>
 
 <template>
-	<div class="course-card w-95% h-150px bg-white m-auto rounded-15px mt-10px overflow-hidden shadow-md relative">
+	<div class="course-card w-95% h-150px bg-white m-auto rounded-15px mt-10px overflow-hidden shadow-lg relative">
 		<div :class="`w-100% h-40px  color-white px-10px box-border ${titleColor} flex `">
 			<div v-if="data.state === '已结束'" class=" h-100%  flex items-center flex-1">
 				<div class="i-ri-check-line w-22px h-22px"></div>
