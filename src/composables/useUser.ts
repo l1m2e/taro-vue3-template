@@ -1,7 +1,6 @@
 import { baseUrl } from '@/config/baseUrl'
 import { useStorage } from './useStorage'
 
-
 //用户状态
 export const useUserInfo = useStorage('useInfo', {
 	avatarUrl: Svg.baseAvatar, // 头像
@@ -13,6 +12,7 @@ export const useUserInfo = useStorage('useInfo', {
 	gender: '', // 性别 0未知 1男 2女
 	className: '' // 班别
 })
+
 // token
 export const useToken = useStorage('token', '')
 // 用户是否已经绑定信息
@@ -75,3 +75,7 @@ export const useLogout = () => {
 		useUserInfo.value[key] = ''
 	}
 }
+
+watch(baseUrl, () => {
+	useLogout()
+})

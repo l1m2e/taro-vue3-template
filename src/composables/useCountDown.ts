@@ -6,13 +6,13 @@ export const useCountDown = (endTime: number) => {
 		timer: null | ReturnType<typeof setInterval>
 	}
 	let state = reactive<IState>({
-		count: endTime - +dayjs(),
+		count: endTime - dayjs().valueOf(),
 		timer: null
 	})
 	//开始倒计时
 	clear()
 	state.timer = setInterval(() => {
-		let now = +dayjs()
+		let now = dayjs().valueOf()
 		state.count = endTime - now
 		if (state.count <= 0) {
 			state.count = 0

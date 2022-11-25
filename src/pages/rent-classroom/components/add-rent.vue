@@ -103,7 +103,7 @@ const getCourseList = async () => {
 		})
 		courseListList.value = res.data.today
 		const noCourse = res.data.today.filter((item: any) => item.courseName === '') // 筛选没有课程的
-		startTimeList.value = noCourse.filter((item: any) => +dayjs(`${dayjs(dateValue.value).format('YYYY-MM-DD')} ${item.beginTime}`) >= +dayjs()) // 筛选开始时间小于当前时间
+		startTimeList.value = noCourse.filter((item: any) => +dayjs(`${dayjs(dateValue.value).format('YYYY-MM-DD')} ${item.beginTime}`) >= dayjs().valueOf()) // 筛选开始时间小于当前时间
 	}
 }
 

@@ -3,6 +3,7 @@ export function useStorage<T>(key: string, data: T) {
 	const reactiveData = ref<T>(data)
 
 	if (Taro.getStorageSync(key)) {
+		console.log('key', key)
 		reactiveData.value = JSON.parse(Taro.getStorageSync(key))
 	}
 

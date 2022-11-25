@@ -14,10 +14,11 @@ const signInfo = reactive({
 	courseName: '',
 	signEndTime: 0,
 	signStartTime: 0,
-	state: false
+	state: false,
+	wifiName: ''
 })
 const getSignInfo = async () => {
-	const res = await api.getSignList({ time: +dayjs() })
+	const res = await api.getSignList({ time: dayjs().valueOf() })
 	if (res.statusCode === 200) {
 		setReactive(signInfo, res.data)
 	}
@@ -28,11 +29,12 @@ getSignInfo()
 const residueTime = computed(() => useCountDown(signInfo.signEndTime))
 
 //是否能签到
-const isCanSign = computed(() => signInfo.signEndTime >= +dayjs())
+const isCanSign = computed(() => signInfo.signEndTime >= dayjs().valueOf())
 
 // Taro.useDidShow(()=>{})
 // websocket 接收老师发起签到信息
 const socket = signInIO()
+
 //签到开始
 socket.on('onStartSign', () => {
 	Taro.showToast({ title: '老师发起签到', icon: 'none', duration: 2000 })
@@ -55,7 +57,20 @@ const sginIn = async () => {
 	if (wifiInfo.value) {
 		const res = await api.signIn(wifiInfo.value.wifi.SSID)
 		if (res.statusCode === 200) {
-			getSignInfo()
+			switch (res.data?.message) {
+				case 'Error Wifi':
+					Taro.showToast({ title: 'wifi验证失败', icon: 'error', duration: 2000 })
+					break
+				case 'long time':
+					Taro.showToast({ title: '签到已结束', icon: 'error', duration: 2000 })
+					break
+				case '签到成功':
+					Taro.showToast({ title: '签到成功', icon: 'none', duration: 2000 })
+					getSignInfo()
+					break
+			}
+		} else {
+			Taro.showToast({ title: '未知错误', icon: 'error', duration: 2000 })
 		}
 	}
 }
@@ -78,6 +93,9 @@ const sginIn = async () => {
 					{{ dayjs(residueTime.count).format('mm:ss') }}
 				</span>
 				<span>分钟</span>
+			</div>
+			<div class="center text-18px color-gray-5" v-if="!signInfo.state">
+				<span>请连接教室WIFi {{ signInfo.wifiName }} 进行签到</span>
 			</div>
 			<div class="center text-24px tracking-widest color-gray-4" v-if="signInfo.state">您已签到</div>
 			<div :class="`${isCanSign ? 'button' : 'button-off'}  color-white text-20px font-600 tracking-widest`" @click="sginIn">{{ signInfo.state ? '您已签到' : '签到' }}</div>

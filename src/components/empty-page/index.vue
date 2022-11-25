@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-
-
 type IEmptyType = 'noNetwork' | 'noData' | 'error' | 'noLogin'
 
 interface Props {

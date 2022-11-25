@@ -17,10 +17,14 @@ iconClass.set('未上课', 'icon-future')
 const iconColor = computed(() => iconClass.get(props.state))
 
 const goToVideoView = (link: any) => {
-	const res = link.find((item: any) => item.bsmodel === '电脑桌面')
-	Taro.navigateTo({
-		url: `/pages/course/components/video-view?link=${res.bspreSales}`
-	})
+	if (link.length !== 0) {
+		const res = link.find((item: any) => item.bsmodel === '电脑桌面')
+		Taro.navigateTo({
+			url: `/pages/course/components/video-view?link=${res.bspreSales}`
+		})
+	} else {
+		Taro.showToast({ title: '无直播地址', icon: 'error', duration: 2000 })
+	}
 }
 const goToSign = () => {
 	Taro.navigateTo({
@@ -60,7 +64,7 @@ const goToSign = () => {
 			{{ data.teacherName }}
 		</div>
 		<div v-if="data.state === '在进行'">
-			<div class="btn-info absolute right-20px top-60px " @click="goToVideoView(data.list)">观看</div>
+			<div class="btn-info absolute right-20px top-60px " @click="goToVideoView(data.list)" v-if="data.haveClass === 'FF'">观看</div>
 			<div class="btn-info mt-10px absolute right-20px top-90px" @click="goToSign">签到</div>
 		</div>
 	</div>

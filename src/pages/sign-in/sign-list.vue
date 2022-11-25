@@ -6,7 +6,7 @@ definePageConfig({
 })
 const signList = ref<any[]>([])
 const getSignList = async () => {
-	const res = await api.getSignList({ time: +dayjs() })
+	const res = await api.getSignList({ time: dayjs().valueOf() })
 	if (res.statusCode === 200) {
 		signList.value = res.data
 		console.log('[ res.data ] >', res.data)

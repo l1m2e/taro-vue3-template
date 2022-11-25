@@ -57,7 +57,7 @@ const getWeekCourse = async () => {
 }
 const setWeekCourse = () => {
 	weekList.value.forEach((item: any) => {
-		let now: any = +dayjs()
+		let now: any = dayjs().valueOf()
 		item.forEach((e: any) => {
 			if (now < e.endTime) {
 				if (now > e.startTime) {
