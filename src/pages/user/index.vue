@@ -62,7 +62,7 @@ const goToChangeAvatar = () => {
 			<div class="text basis-3/4">
 				<p class="name">{{ useUserInfo.studentName ? useUserInfo.studentName : '用户' }}</p>
 				<p class="signature" v-if="useIsBindUserInfo">{{ useUserInfo.role }}</p>
-				<p class="signature" v-else>游客功能受限 请前往个人信息中绑定</p>
+				<p class="signature" v-else>游客功能受限 请前往个人信息中绑定 {{ useIsBindUserInfo }}</p>
 			</div>
 		</div>
 		<div class="user-card user-card-on-login" v-else>

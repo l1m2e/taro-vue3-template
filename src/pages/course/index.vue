@@ -60,18 +60,17 @@ const startLongLoopTime = () => {
 const today = dayjs().format('YYYY-MM-DD')
 function computeTime() {
 	courseList.value.forEach((item: any) => {
-		const startTime = +dayjs(`${today} ${item.beginTime.slice(0, 5)}`)
-		const endTime = +dayjs(`${today} ${item.endTime.slice(0, 5)}`)
-		if (dayjs().valueOf() > endTime) {
-			item.state = '已结束'
-		} else {
-			if (dayjs().valueOf() >= startTime) {
-				item.state = '在进行'
-			} else {
-				item.state = '未上课'
-			}
-		}
+		item.state = computeType(item)
 	})
+}
+const computeType = ({ beginTime, endTime }) => {
+	const startTimestamp = dayjs(`${today} ${beginTime.slice(0, 5)}`).valueOf()
+	const endTimestamp = dayjs(`${today} ${endTime.slice(0, 5)}`).valueOf()
+	const nowTimestamp = dayjs().valueOf()
+	if (nowTimestamp <= startTimestamp && nowTimestamp >= startTimestamp - leadTime) return '待进行'
+	if (nowTimestamp <= startTimestamp) return '未上课'
+	if (nowTimestamp >= startTimestamp && nowTimestamp <= endTimestamp) return '在进行'
+	if (nowTimestamp >= endTimestamp) return '已结束'
 }
 
 //下拉刷新
