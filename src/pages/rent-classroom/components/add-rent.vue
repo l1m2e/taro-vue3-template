@@ -36,8 +36,8 @@ const switchList = ref([
 
 //提交
 const submit = async () => {
-	const startTime = +dayjs(`${dateValue.value} ${from.startTime}`)
-	const endTime = +dayjs(`${dateValue.value} ${from.endTime}`)
+	const startTime = dayjs(`${dateValue.value} ${from.startTime}`).valueOf()
+	const endTime = dayjs(`${dateValue.value} ${from.endTime}`).valueOf()
 	const openBit: Array<number> = []
 	switchList.value.forEach((item: any) => {
 		if (item.switch) {
@@ -82,11 +82,13 @@ const startTimeChange = (e: any) => {
 	cleanFrom('startTime')
 	from.startTime = startTimeList.value[parseInt(e.detail.value)].beginTime
 	endTimeList.value = screenSection(startTimeList.value[parseInt(e.detail.value)].curIndex)
+	console.log('e.detail.value', e.detail.value)
 }
 
 // 选择结束时间
 const endTimeChange = (e: any) => {
-	from.endTime = startTimeList.value[parseInt(e.detail.value)].endTime
+	from.endTime = endTimeList.value[parseInt(e.detail.value)].endTime
+	console.log('e', e.detail.value)
 }
 //获取所有课程信息
 const getCourseList = async () => {
@@ -103,7 +105,7 @@ const getCourseList = async () => {
 		})
 		courseListList.value = res.data.today
 		const noCourse = res.data.today.filter((item: any) => item.courseName === '') // 筛选没有课程的
-		startTimeList.value = noCourse.filter((item: any) => +dayjs(`${dayjs(dateValue.value).format('YYYY-MM-DD')} ${item.beginTime}`) >= dayjs().valueOf()) // 筛选开始时间小于当前时间
+		startTimeList.value = noCourse.filter((item: any) => dayjs(`${dayjs(dateValue.value).format('YYYY-MM-DD')} ${item.beginTime}`).valueOf() >= dayjs().valueOf()) // 筛选开始时间小于当前时间
 	}
 }
 

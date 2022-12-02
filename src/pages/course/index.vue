@@ -34,8 +34,11 @@ const getCourseist = async () => {
 			courseList.value = res.data.list
 			leadTime = res.data.atime * 1000
 			computeTime()
+			const flag = courseList.value.find((item) => item.state === '待进行')
+			if (flag) {
+				getRefreshData()
+			}
 			Taro.hideLoading()
-			Taro.showToast({ title: '数据已更新' })
 		} else {
 			Taro.hideLoading()
 			Taro.showToast({ title: '数据更新失败', icon: 'error' })
@@ -47,7 +50,7 @@ const getCourseist = async () => {
 	}
 }
 
-//长轮询定时器
+//上课时间 轮询定时器
 const startLongLoopTime = () => {
 	const index = setInterval(() => {
 		computeTime()
@@ -58,10 +61,25 @@ const startLongLoopTime = () => {
 
 //计算当前上课状态
 const today = dayjs().format('YYYY-MM-DD')
+let classMac = ''
+let courseIndex = ''
 function computeTime() {
 	courseList.value.forEach((item: any) => {
 		item.state = computeType(item)
+		if (item.state === '待进行') {
+			classMac = item.classDeviceMac
+			courseIndex = item.sid
+		}
 	})
+	const res = courseList.value.find((item) => item.state === '待进行')
+	if (res && res.haveClass === 'FE') {
+		if (!refreshDataTimeIndex) {
+			console.log('启动定时器')
+			startRefreshDataTime()
+		}
+	} else {
+		stopRefreshDataTime()
+	}
 }
 const computeType = ({ beginTime, endTime }) => {
 	const startTimestamp = dayjs(`${today} ${beginTime.slice(0, 5)}`).valueOf()
@@ -71,6 +89,38 @@ const computeType = ({ beginTime, endTime }) => {
 	if (nowTimestamp <= startTimestamp) return '未上课'
 	if (nowTimestamp >= startTimestamp && nowTimestamp <= endTimestamp) return '在进行'
 	if (nowTimestamp >= endTimestamp) return '已结束'
+}
+//刷新数据定时器
+let refreshDataTimeIndex: number | false = false
+const startRefreshDataTime = () => {
+	const index = setInterval(() => {
+		getRefreshData()
+	}, 5000)
+	refreshDataTimeIndex = index
+}
+//停止刷新数据定时器
+const stopRefreshDataTime = () => {
+	if (refreshDataTimeIndex) {
+		clearTimeout(refreshDataTimeIndex)
+		refreshDataTimeIndex = false
+	}
+}
+// 请求刷新数据
+const getRefreshData = async () => {
+	const res = await api.getNewClassLive({ classRoomMac: classMac, id: courseIndex })
+	if (res.statusCode === 200) {
+		courseList.value.forEach((item) => {
+			if (item.sid === courseIndex) {
+				item.haveClass = res.data.havingClass
+				item.newMac = res.data.newMac
+				item.newName = res.data.newName
+				item.newPos = res.data.newPos
+				if (res.data.list) {
+					item.list = res.data.list
+				}
+			}
+		})
+	}
 }
 
 //下拉刷新
@@ -82,7 +132,7 @@ Taro.usePullDownRefresh(() => {
 </script>
 
 <template>
-	<div class="course">
+	<div class="course pb-50px box-border">
 		<empty v-if="!useToken" type="noLogin"></empty>
 		<div v-else>
 			<div v-if="courseList.length">

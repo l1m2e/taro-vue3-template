@@ -23,6 +23,6 @@
 			"@/*": ["src/*"]
 		}
 	},
-	"include": ["./src", "./types", "global.d.ts", "auto-imports.d.ts", "./src/**/*"],
+	"include": ["./src", "./types", "global.d.ts", "src/auto-imports.d.tsd.ts", "./src/**/*", "auto-imports.d.ts", "auto-imports.d.ts"],
 	"compileOnSave": false
 }

@@ -8,12 +8,14 @@ const titleClass = new Map()
 titleClass.set('在进行', 'title-ongoing')
 titleClass.set('已结束', 'title-past')
 titleClass.set('未上课', 'title-future')
+titleClass.set('待进行', 'title-wait')
 const titleColor = computed(() => titleClass.get(props.state))
 
 const iconClass = new Map()
 iconClass.set('在进行', 'icon-ongoing')
 iconClass.set('已结束', 'icon-past')
 iconClass.set('未上课', 'icon-future')
+iconClass.set('待进行', 'icon-wait')
 const iconColor = computed(() => iconClass.get(props.state))
 
 const goToVideoView = (link: any) => {
@@ -48,6 +50,10 @@ const goToSign = () => {
 				<div class="i-ri-restart-line animate-spin w-22px h-22px"></div>
 				<div class="ml-10px">{{ data.state }}</div>
 			</div>
+			<div v-if="data.state === '待进行'" class=" h-100% flex items-center flex-1">
+				<div class="i-ri-time-line w-22px h-22px"></div>
+				<div class="ml-10px">{{ data.state }}</div>
+			</div>
 			<div class="center justify-end  flex-1 mr-20px">{{ data.courseName }}</div>
 		</div>
 		<div class="text-20px font-600 mt-10px ml-10px">{{ `${data.beginTime.slice(0, 5)} ~ ${data.endTime.slice(0, 5)}` }}</div>
@@ -55,7 +61,7 @@ const goToSign = () => {
 			<div :class="`icon ${iconColor}`">
 				<div class="i-ri-map-pin-line"></div>
 			</div>
-			{{ `${data.classDevicePosition} - ${data.classDeviceName}` }}
+			{{ `${data.newPos ? data.newPos : data.classDevicePosition} - ${data.newName ? data.newName : data.classDeviceName}` }}
 		</div>
 		<div class="mt-5px center justify-start ml-10px">
 			<div :class="`icon ${iconColor}`">
@@ -63,7 +69,7 @@ const goToSign = () => {
 			</div>
 			{{ data.teacherName }}
 		</div>
-		<div v-if="data.state === '在进行'">
+		<div v-if="data.state === '在进行' || data.state === '待进行'">
 			<div class="btn-info absolute right-20px top-60px " @click="goToVideoView(data.list)" v-if="data.haveClass === 'FF'">观看</div>
 			<div class="btn-info mt-10px absolute right-20px top-90px" @click="goToSign">签到</div>
 		</div>
@@ -74,26 +80,33 @@ const goToSign = () => {
 .course-card {
 	// 标题颜色
 	.title-ongoing {
-		background-color: #7f86ff;
+		background-color: var(--color-primary1);
 	}
 	.title-past {
-		background-color: #49b583;
+		background-color: var(--color-primary2);
 	}
 	.title-future {
-		background-color: #ffbd69;
+		background-color: var(--color-primary3);
+	}
+	.title-wait {
+		background-color: var(--color-primary4);
 	}
 	// 图标颜色
 	.icon-ongoing {
-		background-color: #7f86ff30;
-		color: #7f86ff;
+		background-color: var(--color-shadow1);
+		color: var(--color-primary1);
 	}
 	.icon-past {
-		background-color: #49b58330;
-		color: #49b583;
+		background-color: var(--color-shadow2);
+		color: var(--color-primary2);
 	}
 	.icon-future {
-		background-color: #ffbd6930;
-		color: #ffbd69;
+		background-color: var(--color-shadow3);
+		color: var(--color-primary3);
+	}
+	.icon-wait {
+		background-color: var(--color-shadow4);
+		color: var(--color-primary4);
 	}
 	.icon {
 		width: 55px;

@@ -2,7 +2,6 @@
 import dayjs from 'dayjs'
 import todaySelect from '@/components/select-day/index.vue'
 import steps from './components/steps.vue'
-import { getWeekCourseApi, getformatWeekApi } from '@/api'
 import { changeTextToCN } from '@/utils/changeTextToCN'
 import getNowWeek from '@/utils/getNowWeek'
 import Mask from '@/components/mask/index.vue'
@@ -12,7 +11,7 @@ definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
 })
-
+getCurrentInstance.prototype
 let timeIndex = 0
 Taro.useDidShow(() => {
 	if (useToken.value) {
@@ -48,28 +47,27 @@ const getWeekCourse = async () => {
 		interfaceNum: '45-2',
 		parameter: '班级名称1'
 	}
-	const { data: res } = await getWeekCourseApi(param)
+	const { data: res } = await api.getWeekCourseApi(param)
 	weekList.value = res.weekCourse
 	week.value = changeTextToCN(res.weekNum)
 	setWeekCourse()
 	console.log(res)
 	maskShow.value = false
 }
+
 const setWeekCourse = () => {
 	weekList.value.forEach((item: any) => {
-		let now: any = dayjs().valueOf()
 		item.forEach((e: any) => {
-			if (now < e.endTime) {
-				if (now > e.startTime) {
-					e.activate = 'ongoing'
-				} else {
-					e.activate = 'unfinished'
-				}
-			} else {
-				e.activate = 'completed'
-			}
+			e.activate = calculateType(e)
 		})
 	})
+	console.log('weekList.value', weekList.value)
+}
+const calculateType = ({ endTime, startTime }) => {
+	let now: number = dayjs().valueOf()
+	if (now < endTime && now > startTime) return 'ongoing'
+	if (now < endTime && now < startTime) return 'unfinished'
+	if (now > endTime) return 'completed'
 }
 
 // 创建定时器
@@ -109,7 +107,6 @@ const setColor = (data: any) => {
 			}
 		})
 	})
-	console.log('[ data ] >', data)
 }
 const getFormatWeek = async () => {
 	const param = {
@@ -117,11 +114,10 @@ const getFormatWeek = async () => {
 		time: dayjs().format('YYYY-MM-DD'),
 		interfaceNum: '45-4'
 	}
-	const { data: res, statusCode } = await getformatWeekApi(param)
+	const { data: res, statusCode } = await api.getformatWeekApi(param)
 	if (statusCode === 200) {
 		weekListFormat.value = res
 		setColor(weekListFormat.value)
-		console.log(weekListFormat.value)
 	}
 }
 </script>
