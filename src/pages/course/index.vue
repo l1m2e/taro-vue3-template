@@ -54,7 +54,6 @@ const getCourseist = async () => {
 const startLongLoopTime = () => {
 	const index = setInterval(() => {
 		computeTime()
-		console.log('循环当前定时器')
 	}, 1000)
 	longLoopTimeIndex = index
 }
@@ -74,7 +73,6 @@ function computeTime() {
 	const res = courseList.value.find((item) => item.state === '待进行')
 	if (res && res.haveClass === 'FE') {
 		if (!refreshDataTimeIndex) {
-			console.log('启动定时器')
 			startRefreshDataTime()
 		}
 	} else {
@@ -95,7 +93,7 @@ let refreshDataTimeIndex: number | false = false
 const startRefreshDataTime = () => {
 	const index = setInterval(() => {
 		getRefreshData()
-	}, 5000)
+	}, 30000)
 	refreshDataTimeIndex = index
 }
 //停止刷新数据定时器

@@ -7,11 +7,12 @@ import getNowWeek from '@/utils/getNowWeek'
 import Mask from '@/components/mask/index.vue'
 import { useToken } from '@/composables'
 import empty from '@/components/empty-page/index.vue'
+
 definePageConfig({
 	navigationBarTitleText: '课程表',
 	navigationBarBackgroundColor: '#fafafa'
 })
-getCurrentInstance.prototype
+
 let timeIndex = 0
 Taro.useDidShow(() => {
 	if (useToken.value) {
@@ -29,12 +30,10 @@ Taro.useDidHide(() => {
 const maskShow = ref(true)
 //日视图
 const swiperChange = (e: any) => {
-	console.log(e.detail.current)
 	num.value = e.detail.current
 }
 
 const getIndex = (e: number) => {
-	console.log('获取index', e)
 	num.value = e
 }
 const num = ref(dayjs().day() === 0 ? 6 : dayjs().day() - 1)
@@ -51,7 +50,6 @@ const getWeekCourse = async () => {
 	weekList.value = res.weekCourse
 	week.value = changeTextToCN(res.weekNum)
 	setWeekCourse()
-	console.log(res)
 	maskShow.value = false
 }
 
@@ -61,8 +59,8 @@ const setWeekCourse = () => {
 			e.activate = calculateType(e)
 		})
 	})
-	console.log('weekList.value', weekList.value)
 }
+
 const calculateType = ({ endTime, startTime }) => {
 	let now: number = dayjs().valueOf()
 	if (now < endTime && now > startTime) return 'ongoing'
@@ -94,7 +92,8 @@ const setColor = (data: any) => {
 	let index = 0
 	const obj = {}
 	data.forEach((item: any) => {
-		item.courseName.forEach((name: any, i: number) => {
+		item.courseName.unshift('时间')
+		item.courseName.forEach((name: string, i: number) => {
 			if (!obj[name] && name) {
 				obj[name] = colorArr[index]
 				let temp = { name, textColor: colorArr[index].textColor, backgroundColor: colorArr[index].backgroundColor }
@@ -108,6 +107,7 @@ const setColor = (data: any) => {
 		})
 	})
 }
+
 const getFormatWeek = async () => {
 	const param = {
 		parameter: '班级名称1',

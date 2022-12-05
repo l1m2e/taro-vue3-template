@@ -13,6 +13,11 @@ const webpackChain = (chain) => {
 	chain.plugin('transformWeClass').use(transformWeClass())
 	chain.plugin('unplugin-auto-import').use(
 		AutoImport({
+			include: [
+				/\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+				/\.vue$/,
+				/\.vue\?vue/ // .vue
+			],
 			imports: ['vue', { '@tarojs/taro': ['showToast', ['default', 'Taro']], '@/api': [['*', 'api']], '@/assets/img/image': ['Svg'] }],
 			dts: 'auto-imports.d.ts',
 			vueTemplate: true
@@ -41,7 +46,7 @@ const config = {
 						isCustomElement: (tag) => tag.includes('ec-canvas'),
 						whitespace: 'preserve'
 					},
-					reactivityTransform: true // 开启vue3响应性语法糖
+					reactivityTransform: true // 开启vue3响应式语法糖
 				}
 			}
 		]

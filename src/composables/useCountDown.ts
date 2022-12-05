@@ -18,7 +18,6 @@ export const useCountDown = (endTime: number) => {
 			state.count = 0
 			clear()
 		}
-		console.log('[ state.count ] >', state.count)
 	}, 1000)
 	//清除倒计时
 	function clear() {

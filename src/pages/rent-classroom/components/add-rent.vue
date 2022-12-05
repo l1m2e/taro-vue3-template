@@ -82,13 +82,11 @@ const startTimeChange = (e: any) => {
 	cleanFrom('startTime')
 	from.startTime = startTimeList.value[parseInt(e.detail.value)].beginTime
 	endTimeList.value = screenSection(startTimeList.value[parseInt(e.detail.value)].curIndex)
-	console.log('e.detail.value', e.detail.value)
 }
 
 // 选择结束时间
 const endTimeChange = (e: any) => {
 	from.endTime = endTimeList.value[parseInt(e.detail.value)].endTime
-	console.log('e', e.detail.value)
 }
 //获取所有课程信息
 const getCourseList = async () => {
@@ -118,7 +116,6 @@ const screenSection = (id: string) => {
 		//如果找不到 那么就都是没问题的全部一起返回
 		return tempArr
 	}
-	console.log('[ tempArr.slice(0, index) ] >', tempArr.slice(0, index))
 	return tempArr.slice(0, index)
 }
 

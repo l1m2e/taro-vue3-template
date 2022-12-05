@@ -11,10 +11,9 @@ const fullScreen = () => {
 	player.requestFullScreen({
 		direction: 90
 	})
-	console.log('[ 1000 ] >', 10100)
 }
 const fn = (e) => {
-	console.log('direction >', e)
+	console.log('e', e)
 }
 const controlFieldShow = ref(false)
 let controlFieldTimeIndex = 0

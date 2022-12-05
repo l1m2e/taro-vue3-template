@@ -29,7 +29,6 @@ const getRentList = async (type: string, length: number = 0) => {
 	}
 	const res = await getRentListApi(param)
 	if (res.statusCode === 200) {
-		console.log('[ res.data ] >', res.data)
 		switch (type) {
 			case 'now':
 				res.data.list.forEach((item: any) => {
@@ -77,7 +76,7 @@ const tabs = ref('当天进行')
 
 // 监听下滑到底部
 const lower = (type: string) => {
-	console.log('[ type ] >', type)
+
 	switch (type) {
 		case 'now':
 			getRentList('now', nowLit.value.length)

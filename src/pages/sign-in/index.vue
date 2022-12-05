@@ -55,6 +55,7 @@ const wifiInfo = useWifi()
 //签到
 const sginIn = async () => {
 	if (wifiInfo.value) {
+		if (signInfo.state) return Taro.showToast({ icon: 'none', title: '您已签到' })
 		const res = await api.signIn(wifiInfo.value.wifi.SSID)
 		if (res.statusCode === 200) {
 			switch (res.data?.message) {
@@ -83,7 +84,7 @@ const sginIn = async () => {
 		<div class="p-10px 	box-border" v-else>
 			<div class="text-20px">{{ signInfo.className }} {{ signInfo.courseName }}</div>
 			<div class="mt-10px color-gray-400 center justify-start">
-				老师已发起签到 请在时间结束之前签到
+				{{ signInfo.state ? '您已经签到无需再次签到' : '老师已发起签到 请在时间结束之前签到' }}
 			</div>
 			<img :src="Svg.signIn" class="w-100% object-contain mt-80px mb-30px" alt="" />
 			<div v-if="!isCanSign" class="center text-24px tracking-widest color-gray-4">签到已结束</div>

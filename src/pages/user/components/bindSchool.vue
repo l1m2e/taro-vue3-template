@@ -13,6 +13,7 @@ definePageConfig({
 // 		const longitude = res.longitude
 // 	}
 // })
+
 const selectArea = (e: any) => {
 	const arr = e.detail.value
 	//格式化对齐服务器格式
@@ -85,8 +86,8 @@ const chooseSchools = (item: any) => {
 			<div class="flex justify-between w-100%">
 				<p class=" text-16px">请选择您所在的学校</p>
 				<div class="center">
-					<picker mode="region" class="btn-success p-5px px-10px" v-if="!params.school_Provinces" @change="selectArea">筛选</picker>
-					<div class="btn-success p-5px px-10px ml-10px" @click="removalFilter" v-if="params.school_Provinces">清除筛选</div>
+					<picker mode="region" class="btn-success p-5px px-30px" v-if="!params.school_Provinces" @change="selectArea">筛选</picker>
+					<div class="btn-success p-5px px-10px ml-30px" @click="removalFilter" v-if="params.school_Provinces">清除筛选</div>
 				</div>
 			</div>
 			<div class="h-400px mt-10px w-100%">

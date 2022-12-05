@@ -47,7 +47,6 @@ export const useConfirmSchool = (data: ISchoolInfo) => {
 	}
 	if (data.innerURL) {
 		setReactive(useSchoolInfo.value, data)
-		console.log('useProductionHttpUrl', useProductionHttpUrl)
 		Taro.showToast({ title: `绑定成功`, icon: 'success', duration: 2000 })
 		Taro.switchTab({ url: '/pages/user/index' })
 	} else {

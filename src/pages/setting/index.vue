@@ -15,8 +15,6 @@ const getStorageInfo = () => {
 	Taro.getStorageInfo({
 		success: function(res) {
 			storeCurrentSize.value = res.currentSize
-			console.log(res.currentSize)
-			console.log(res.limitSize)
 		}
 	})
 }

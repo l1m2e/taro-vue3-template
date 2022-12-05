@@ -17,23 +17,32 @@ const props = withDefaults(
 const stateText = ref('')
 const icon = ref('')
 const lineColor = ref('')
-switch (props.activate) {
-	case 'completed':
-		stateText.value = '已完成'
-		icon.value = 'success'
-		lineColor.value = '#49b583'
-		break
-	case 'ongoing':
-		stateText.value = '进行中'
-		icon.value = 'more-x'
-		lineColor.value = '#7f86ff'
-		break
-	case 'unfinished':
-		stateText.value = '未开始'
-		icon.value = 'clock'
-		lineColor.value = '#ffbd69'
-		break
+
+const calculateType = () => {
+	switch (props.activate) {
+		case 'completed':
+			stateText.value = '已完成'
+			icon.value = 'success'
+			lineColor.value = '#49b583'
+			break
+		case 'ongoing':
+			stateText.value = '进行中'
+			icon.value = 'more-x'
+			lineColor.value = '#7f86ff'
+			break
+		case 'unfinished':
+			stateText.value = '未开始'
+			icon.value = 'clock'
+			lineColor.value = '#ffbd69'
+			break
+	}
 }
+calculateType()
+watch(
+	() => props.activate,
+	() => calculateType()
+)
+
 const startTime = dayjs(parseInt(props.data.startTime)).format('HH:mm')
 const endTime = dayjs(parseInt(props.data.endTime)).format('HH:mm')
 </script>

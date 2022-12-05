@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { baseUrl } from '@/config/baseUrl'
-
 import { useUserInfo } from '@/composables'
 definePageConfig({
 	navigationBarTitleText: '修改头像'

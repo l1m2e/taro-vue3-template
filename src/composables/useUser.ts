@@ -53,7 +53,6 @@ export const useGetUserInfo = async () => {
 			res.data.avatarUrl = `${baseUrl.value}/applet/image/avatar/${res.data.avatarUrl}`
 			useUpdateUserInfo(res.data)
 			useUpdateUserInfo(res.data.schoolUser)
-			console.log('	res.data.schoolUser', res.data.schoolUser)
 		} else {
 			Taro.showToast({ title: '获取用户信息失败', icon: 'error', duration: 2000 })
 		}
