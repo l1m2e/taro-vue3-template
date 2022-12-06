@@ -27,9 +27,10 @@ const goToVideoView = (link: any) => {
 		Taro.showToast({ title: '无直播地址', icon: 'error', duration: 2000 })
 	}
 }
+console.log(props.data)
 const goToSign = () => {
 	Taro.navigateTo({
-		url: '/pages/sign-in/index'
+		url: `/pages/sign-in/index?id=${props.data.sid}`
 	})
 }
 </script>

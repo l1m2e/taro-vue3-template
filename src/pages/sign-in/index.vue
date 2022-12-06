@@ -4,8 +4,15 @@ import empty from '@/components/empty-page/index.vue'
 import { useWifi, useCountDown } from '@/composables'
 import { setReactive } from '@/utils/setReactive'
 import { signInIO } from '@/services'
+import { Svg } from '@/assets/img/image'
 definePageConfig({
 	navigationBarTitleText: '签到'
+})
+
+let id: any = ''
+Taro.useDidShow(() => {
+	const res = Taro.getCurrentInstance()
+	id = res.router?.params.id
 })
 
 //获取签到信息
@@ -15,7 +22,8 @@ const signInfo = reactive({
 	signEndTime: 0,
 	signStartTime: 0,
 	state: false,
-	wifiName: ''
+	wifiName: '',
+	classId: ''
 })
 const getSignInfo = async () => {
 	const res = await api.getSignList({ time: dayjs().valueOf() })
@@ -79,8 +87,8 @@ const sginIn = async () => {
 
 <template>
 	<div class="w-100vw min-h-100vh bg-white sgin-in">
-		<empty v-if="signInfo.className === ''" :img="Svg.noCourse" text="老师暂未发起签到 您暂时无需签到"></empty>
-		<empty v-else-if="!wifiInfo" type="noNetwork" text="请打开WIFI开关 , 连接教室网络进行签到"></empty>
+		<empty v-if="signInfo.classId !== id || signInfo.className === ''" :img="Svg.noCourse" text="老师暂未发起签到 您暂时无需签到"></empty>
+		<empty v-else-if="!wifiInfo" type="noNetwork" text="请打开WIFI和GPS开关 , 连接教室网络进行签到"></empty>
 		<div class="p-10px 	box-border" v-else>
 			<div class="text-20px">{{ signInfo.className }} {{ signInfo.courseName }}</div>
 			<div class="mt-10px color-gray-400 center justify-start">

@@ -113,6 +113,7 @@ const getRefreshData = async (item: any, action: string) => {
 	if (res.statusCode === 200) {
 		item.haveClass = res.data.havingClass
 		addReactive(item, res.data)
+		console.log(item)
 	}
 }
 
