@@ -35,7 +35,7 @@ const goToSign = () => {
 </script>
 
 <template>
-	<div class="course-card w-95% h-150px bg-white m-auto rounded-15px mt-10px overflow-hidden shadow-lg relative">
+	<div class="course-card w-95% h-auto bg-white m-auto rounded-15px mt-10px overflow-hidden shadow-lg relative">
 		<div :class="`w-100% h-40px  color-white px-10px box-border ${titleColor} flex `">
 			<div v-if="data.state === '已结束'" class=" h-100%  flex items-center flex-1">
 				<div class="i-ri-check-line w-22px h-22px"></div>
@@ -55,19 +55,27 @@ const goToSign = () => {
 			</div>
 			<div class="center justify-end  flex-1 mr-20px">{{ data.courseName }}</div>
 		</div>
-		<div class="text-20px font-600 mt-10px ml-10px">{{ `${data.beginTime.slice(0, 5)} ~ ${data.endTime.slice(0, 5)}` }}</div>
-		<div class="mt-5px center justify-start ml-10px">
-			<div :class="`icon ${iconColor}`">
-				<div class="i-ri-map-pin-line"></div>
+		<div class="w-100% h-100% box-border p-10px">
+			<div class="text-20px font-600 ">{{ `${data.beginTime.slice(0, 5)} ~ ${data.endTime.slice(0, 5)}` }}</div>
+			<div class="mt-5px center justify-start">
+				<div :class="`icon ${iconColor}`"><div class="i-ri-map-pin-line"></div></div>
+				<div v-if="data.newPos">
+					<div class="line-through color-gray ">{{ data.classDevicePosition }} - {{ data.classDeviceName }}</div>
+					<br />
+					<div>{{ data.newPos }} - {{ data.newName }}</div>
+				</div>
+				<div v-else>
+					<div>{{ data.classDevicePosition }} - {{ data.classDeviceName }}</div>
+				</div>
 			</div>
-			{{ `${data.newPos ? data.newPos : data.classDevicePosition} - ${data.newName ? data.newName : data.classDeviceName}` }}
-		</div>
-		<div class="mt-5px center justify-start ml-10px">
-			<div :class="`icon ${iconColor}`">
-				<div class="i-ri-user-line"></div>
+			<div class="mt-5px center justify-start ">
+				<div :class="`icon ${iconColor}`">
+					<div class="i-ri-user-line"></div>
+				</div>
+				{{ data.teacherName }}
 			</div>
-			{{ data.teacherName }}
 		</div>
+
 		<div v-if="data.state === '在进行' || data.state === '待进行'">
 			<div class="btn-info absolute right-20px top-60px " @click="goToVideoView(data.list)" v-if="data.haveClass === 'FF'">观看</div>
 			<div class="btn-info mt-10px absolute right-20px top-90px" @click="goToSign">签到</div>

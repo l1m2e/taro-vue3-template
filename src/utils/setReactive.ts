@@ -5,3 +5,9 @@ export const setReactive = (reactiveData: any, setData: any) => {
 		}
 	})
 }
+
+export const addReactive = (reactiveData: any, addData: any) => {
+	Object.keys(addData).forEach((key) => {
+		reactiveData[key] = addData[key]
+	})
+}

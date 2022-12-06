@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { useCheckSchoolBind, useToken } from '@/composables'
 import empty from '@/components/empty-page/index.vue'
 import courseCard from './components/course-card.vue'
+import { addReactive } from '@/utils/setReactive'
 
 definePageConfig({
 	navigationBarTitleText: '课程',
@@ -34,10 +35,11 @@ const getCourseist = async () => {
 			courseList.value = res.data.list
 			leadTime = res.data.atime * 1000
 			computeTime()
-			const flag = courseList.value.find((item) => item.state === '待进行')
-			if (flag) {
-				getRefreshData()
-			}
+			courseList.value.forEach((item) => {
+				if (item.nowMAC) {
+					getRefreshData(item, 'now')
+				}
+			})
 			Taro.hideLoading()
 		} else {
 			Taro.hideLoading()
@@ -60,25 +62,21 @@ const startLongLoopTime = () => {
 
 //计算当前上课状态
 const today = dayjs().format('YYYY-MM-DD')
-let classMac = ''
-let courseIndex = ''
 function computeTime() {
 	courseList.value.forEach((item: any) => {
 		item.state = computeType(item)
-		if (item.state === '待进行') {
-			classMac = item.classDeviceMac
-			courseIndex = item.sid
-		}
 	})
 	const res = courseList.value.find((item) => item.state === '待进行')
 	if (res && res.haveClass === 'FE') {
 		if (!refreshDataTimeIndex) {
-			startRefreshDataTime()
+			startRefreshDataTime(res)
 		}
 	} else {
 		stopRefreshDataTime()
 	}
 }
+
+// 计算卡片类型
 const computeType = ({ beginTime, endTime }) => {
 	const startTimestamp = dayjs(`${today} ${beginTime.slice(0, 5)}`).valueOf()
 	const endTimestamp = dayjs(`${today} ${endTime.slice(0, 5)}`).valueOf()
@@ -88,12 +86,17 @@ const computeType = ({ beginTime, endTime }) => {
 	if (nowTimestamp >= startTimestamp && nowTimestamp <= endTimestamp) return '在进行'
 	if (nowTimestamp >= endTimestamp) return '已结束'
 }
+
 //刷新数据定时器
 let refreshDataTimeIndex: number | false = false
-const startRefreshDataTime = () => {
+const startRefreshDataTime = (item: any) => {
 	const index = setInterval(() => {
-		getRefreshData()
-	}, 30000)
+		if (item.nowMAC) {
+			getRefreshData(item, 'now')
+		} else {
+			getRefreshData(item, 'old')
+		}
+	}, 5000)
 	refreshDataTimeIndex = index
 }
 //停止刷新数据定时器
@@ -104,20 +107,12 @@ const stopRefreshDataTime = () => {
 	}
 }
 // 请求刷新数据
-const getRefreshData = async () => {
-	const res = await api.getNewClassLive({ classRoomMac: classMac, id: courseIndex })
+const getRefreshData = async (item: any, action: string) => {
+	const flag = ['now'].includes(action)
+	const res = await api.getNewClassLive({ classRoomMac: flag ? item.nowMAC : item.classDeviceMac, id: item.sid, action })
 	if (res.statusCode === 200) {
-		courseList.value.forEach((item) => {
-			if (item.sid === courseIndex) {
-				item.haveClass = res.data.havingClass
-				item.newMac = res.data.newMac
-				item.newName = res.data.newName
-				item.newPos = res.data.newPos
-				if (res.data.list) {
-					item.list = res.data.list
-				}
-			}
-		})
+		item.haveClass = res.data.havingClass
+		addReactive(item, res.data)
 	}
 }
 
