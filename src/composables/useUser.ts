@@ -40,6 +40,7 @@ export const useLogin = async () => {
 		useUserInfo.value.role = res.role
 		if (res.role === '游客') return Taro.navigateTo({ url: '/pages/user/components/bindUserInfo' })
 		useGetUserInfo()
+		useUserInfoAsync()
 	} else {
 		Taro.showToast({ title: '登录失败', icon: 'error', duration: 2000 })
 	}
@@ -64,6 +65,15 @@ export const useUpdateUserInfo = (data: any) => {
 	for (let key in data) {
 		if (key in useUserInfo.value) {
 			useUserInfo.value[key] = data[key]
+		}
+	}
+}
+//同步用户信息
+export const useUserInfoAsync = async () => {
+	if (useToken.value) {
+		const res = await api.userAsync()
+		if (res.statusCode !== 200) {
+			Taro.showToast({ title: '同步失败', icon: 'error', duration: 2000 })
 		}
 	}
 }

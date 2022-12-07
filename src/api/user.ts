@@ -17,6 +17,8 @@ export const webCMSLogin = (data: string) => GET('/user/accredit', { scene: data
 export const getAvatarList = () => GET('/user/getAvatarList')
 // 修改头像
 export const changeAvatar = (data: string) => POST('/user/changeAvatar', { avatarUrl: data })
+// 同步用户信息
+export const userAsync = () => GET('/user/userAsync')
 //获取学校列表
 export const getSchoolList = (data: ISchoolList) =>
 	new Promise<Taro.request.SuccessCallbackResult>((resolve) => {

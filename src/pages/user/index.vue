@@ -3,7 +3,8 @@ import { useUserInfo, useLogin, useLogout, useToken, useIsBindUserInfo, useCheck
 
 definePageConfig({
 	navigationBarTitleText: '我的',
-	navigationBarBackgroundColor: '#fafafa'
+	navigationBarBackgroundColor: '#fafafa',
+	usingComponents: {}
 })
 
 Taro.useDidShow(() => {

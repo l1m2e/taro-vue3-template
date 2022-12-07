@@ -7,14 +7,17 @@ import empty from '@/components/empty-page/index.vue'
 import { useToken } from '@/composables'
 definePageConfig({
 	navigationBarTitleText: '借用',
-	navigationBarBackgroundColor: '#fafafa'
+	navigationBarBackgroundColor: '#fafafa',
+	usingComponents: {}
 })
 const addRent = () => {
 	Taro.navigateTo({
 		url: '/pages/rent-classroom/components/add-rent'
 	})
 }
-
+Taro.useDidShow(() => {
+	onTypeQueryList()
+})
 const nowLit = ref<any[]>([])
 const futureList = ref<any[]>([])
 const historyList = ref<any[]>([])
@@ -48,35 +51,31 @@ const getRentList = async (type: string, length: number = 0) => {
 		}
 	}
 }
-getRentList('now')
 
+const tabs = ref('当天进行')
 const handleClick = (name: string) => {
 	tabs.value = name
-	switch (name) {
+	onTypeQueryList()
+}
+const onTypeQueryList = () => {
+	switch (tabs.value) {
 		case '当天进行':
-			if (nowLit.value.length === 0) {
-				getRentList('now')
-			}
+			nowLit.value.length = 0
+			getRentList('now')
 			break
 		case '未来进行':
-			if (futureList.value.length === 0) {
-				getRentList('future')
-			}
+			futureList.value.length = 0
+			getRentList('future')
 			break
 		case '历史记录':
-			if (historyList.value.length === 0) {
-				getRentList('past')
-			}
-			break
-		default:
+			historyList.value.length = 0
+			getRentList('past')
 			break
 	}
 }
-const tabs = ref('当天进行')
 
 // 监听下滑到底部
 const lower = (type: string) => {
-
 	switch (type) {
 		case 'now':
 			getRentList('now', nowLit.value.length)
@@ -97,7 +96,7 @@ const lower = (type: string) => {
 			<!-- 添加按钮 -->
 			<div class="addBtn" @click="addRent"><div class="i-ri-add-line  color-white text-25px"></div></div>
 			<!-- tabs -->
-			<Tabs :activate="tabs" @changeTab="handleClick">
+			<Tabs v-model:activate="tabs" @changeTab="handleClick">
 				<TabPane name="当天进行" class="tab-content" @buttomLoad="lower('now')">
 					<card v-for="item in nowLit" :item="item" class="card" v-if="nowLit.length !== 0"></card>
 					<empty v-else></empty>
@@ -126,16 +125,15 @@ const lower = (type: string) => {
 		height: 100px;
 		background-color: #49b583;
 		position: fixed;
-		top: 85vh;
 		right: 5vw;
+		bottom: 120px;
 		z-index: 999;
 		border-radius: 100%;
 		@include center;
 	}
 	.tab-content {
-		height: calc(100vh - 30px);
-		box-sizing: border-box;
 		padding-top: 120px;
+		padding-bottom: 150px;
 		@include center;
 		.card {
 			width: 90%;

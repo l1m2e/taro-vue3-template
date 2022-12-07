@@ -8,8 +8,8 @@ definePageConfig({
 })
 
 const from = reactive({
-	startTime: '', // 开始时间戳
-	endTime: '', // 结束时间戳
+	startTime: 0, // 开始时间戳
+	endTime: 0, // 结束时间戳
 	classPostion: '', // 楼层名称
 	deviceName: '', //教室名称
 	classMAC: '', //教室mac
@@ -27,11 +27,11 @@ const courseListList = ref() //所有课程信息数组
 
 // api --- end
 const switchList = ref([
-	{ switch: false, name: '系统权限', index: 0 },
-	{ switch: false, name: '灯光权限', index: 1 },
-	{ switch: false, name: '空调权限', index: 2 },
-	{ switch: false, name: '窗帘权限', index: 3 },
-	{ switch: false, name: '风扇权限', index: 4 }
+	{ switch: false, name: '系统开', index: 0 },
+	{ switch: false, name: '灯光开', index: 1 },
+	{ switch: false, name: '空调开', index: 2 },
+	{ switch: false, name: '窗帘开', index: 3 },
+	{ switch: false, name: '风扇开', index: 4 }
 ])
 
 //提交
@@ -47,12 +47,24 @@ const submit = async () => {
 		}
 	})
 	from.openBit = openBit.toString().replace(/,/g, '')
-
+	//判空
+	const isNull = checkParam({ ...from, startTime, endTime })
+	console.log('isNull', isNull)
+	if (!isNull) return Taro.showToast({ title: '请填写完整信息', icon: 'error', duration: 2000 })
+	//api
 	const res = await addRentClassroomApi({ ...from, startTime, endTime })
 	if (res.statusCode == 200) {
 		Taro.showToast({ title: '提交成功', icon: 'success', duration: 2000 })
 		emptyForm()
 	}
+}
+//检查提交的参数
+type Ifrom = typeof from
+const checkParam = (obj: Ifrom) => {
+	for (let key in obj) {
+		if (!obj[key]) return false
+	}
+	return true
 }
 
 //选择日期触发
@@ -150,18 +162,18 @@ const cleanFrom = (type: string = 'all') => {
 	switch (type) {
 		case 'all':
 			from.deviceName = '' // 清空教室名称
-			from.startTime = '' //清空开始时间表单
-			from.endTime = '' // 清空结束时间表单
+			from.startTime = 0 //清空开始时间表单
+			from.endTime = 0 // 清空结束时间表单
 			classList.value.length = 0 // 清空教室选择器数组
 			startTimeList.value.length = 0 // 清空开始时间选择器数组
 			endTimeList.value.length = 0 //清空结束时间选择器数组
 			break
 		case 'class':
-			from.startTime = ''
-			from.endTime = ''
+			from.startTime = 0
+			from.endTime = 0
 			break
 		case 'startTime':
-			from.endTime = ''
+			from.endTime = 0
 			endTimeList.value.length = 0
 			break
 	}

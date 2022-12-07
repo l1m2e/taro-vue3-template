@@ -10,7 +10,8 @@ import empty from '@/components/empty-page/index.vue'
 
 definePageConfig({
 	navigationBarTitleText: '课程表',
-	navigationBarBackgroundColor: '#fafafa'
+	navigationBarBackgroundColor: '#fafafa',
+	usingComponents: {}
 })
 
 let timeIndex = 0
@@ -246,6 +247,7 @@ page {
 					box-sizing: border-box;
 					width: 100vw;
 					padding: 40px;
+					margin-bottom: 100px;
 					.card {
 						width: 600px;
 						height: 200px;

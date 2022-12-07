@@ -41,11 +41,11 @@ const touchend = (e: any) => {
 	//滑动减去结束滑动的像素
 	let difference = pageXStart - e.changedTouches[0].pageX
 	let isPullDown = pageYStart - e.changedTouches[0].pageY
-	if (isPullDown <= -100 || isPullDown >= 100) return // 监测如果是下滑操作取消切换页面
-	if (difference <= -50) {
+	if (isPullDown <= -30 || isPullDown >= 30) return // 监测如果是下滑操作取消切换页面
+	if (difference <= -100) {
 		emit('changeTab', touchChange('add'))
 	}
-	if (difference >= 50) {
+	if (difference >= 100) {
 		emit('changeTab', touchChange('reduce'))
 	}
 }
@@ -81,6 +81,7 @@ const touchChange = (type: string) => {
 	.tabs-title {
 		height: 100px;
 		width: 100%;
+		background-color: #fafafa;
 		display: flex;
 		.tabs-title-item {
 			flex: 1;

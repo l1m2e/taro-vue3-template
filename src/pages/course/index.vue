@@ -43,6 +43,7 @@ const getCourseist = async () => {
 			Taro.hideLoading()
 		} else {
 			Taro.hideLoading()
+			if (res.data.message.indexOf('no class') !== -1) return // 没有数据
 			Taro.showToast({ title: '数据更新失败', icon: 'error' })
 		}
 	} catch (error) {
