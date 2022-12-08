@@ -5,14 +5,6 @@ import empty from '@/components/empty-page/index.vue'
 import courseCard from './components/course-card.vue'
 import { addReactive } from '@/utils/setReactive'
 
-definePageConfig({
-	navigationBarTitleText: '课程',
-	navigationBarBackgroundColor: '#fafafa',
-	enablePullDownRefresh: true,
-	backgroundTextStyle: 'dark',
-	backgroundColor: '#fafafa'
-})
-
 let longLoopTimeIndex: number // 长轮询定时器索引
 Taro.useDidShow(() => {
 	useToken.value ? getCourseist() : ''
@@ -52,7 +44,7 @@ const getCourseist = async () => {
 		Taro.showToast({ title: '未知错误', icon: 'error' })
 	}
 }
-
+defineExpose({ getCourseist })
 //上课时间 轮询定时器
 const startLongLoopTime = () => {
 	const index = setInterval(() => {
@@ -117,13 +109,6 @@ const getRefreshData = async (item: any, action: string) => {
 		console.log(item)
 	}
 }
-
-//下拉刷新
-Taro.usePullDownRefresh(() => {
-	Taro.startPullDownRefresh()
-	getCourseist()
-	Taro.stopPullDownRefresh()
-})
 </script>
 
 <template>

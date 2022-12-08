@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Svg } from '@/assets/img/image'
 import { useUpdateUserInfo, useGetUserInfo } from '@/composables'
 definePageConfig({
 	navigationBarTitleText: '绑定个人信息'

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useIsBindUserInfo, useUserInfo, useSchoolInfo } from '@/composables'
+import { Svg } from '@/assets/img/image'
 definePageConfig({
 	navigationBarTitleText: '个人信息',
 	navigationBarBackgroundColor: '#f7f8fa'

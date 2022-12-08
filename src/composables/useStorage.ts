@@ -1,4 +1,4 @@
-//生成反应式本地缓存
+//生成响应式本地缓存
 export function useStorage<T>(key: string, data: T) {
 	const reactiveData = ref<T>(data)
 

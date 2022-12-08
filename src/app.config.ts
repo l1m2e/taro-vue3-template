@@ -1,6 +1,7 @@
 export default defineAppConfig({
 	pages: [
-		'pages/course/index', // 课程
+		'pages/home/index', //主页
+		// 'pages/course/index', // 课程
 		'pages/rent-classroom/components/add-rent', // 添加借用
 		'pages/rent-classroom/index', // 教室借用
 		'pages/course/components/video-view', // 查看直播
@@ -11,7 +12,6 @@ export default defineAppConfig({
 		'pages/authorization/web-csm-login', // 授权网页登录
 		'pages/user/components/bindSchool', //绑定学校
 		'pages/sign-in/index', // 签到
-		'pages/home/index', //主页
 		'pages/user/components/bindUserInfo', // 绑定用户信息
 		'pages/appointment/index', // 预约教室
 		'pages/user/components/userInfo' // 用户信息页面
@@ -30,17 +30,11 @@ export default defineAppConfig({
 		backgroundColor: '#fafafa',
 		borderStyle: 'white',
 		list: [
-			// {
-			// 	pagePath: 'pages/home/index',
-			// 	iconPath: './assets/tab-bar/home.png',
-			// 	selectedIconPath: './assets/tab-bar/home-active.png',
-			// 	text: ''
-			// },
 			{
-				pagePath: 'pages/course/index',
+				pagePath: 'pages/home/index',
 				iconPath: './assets/tab-bar/course.png',
 				selectedIconPath: './assets/tab-bar/course-active.png',
-				text: '课程'
+				text: '主页'
 			},
 			{
 				pagePath: 'pages/task-table/index',
@@ -61,12 +55,12 @@ export default defineAppConfig({
 				text: '我的'
 			}
 		]
-	},
-	// 配置开
-	requiredPrivateInfos: ['getLocation'],
-	permission: {
-		'scope.userLocation': {
-			desc: '用于筛选位置'
-		}
 	}
+	// 获取定位权限
+	// requiredPrivateInfos: ['getLocation'],
+	// permission: {
+	// 	'scope.userLocation': {
+	// 		desc: '用于筛选位置'
+	// 	}
+	// }
 })

@@ -134,7 +134,8 @@ const lower = (type: string) => {
 	.tab-content {
 		padding-top: 120px;
 		padding-bottom: 150px;
-		@include center;
+		min-height: calc(100vh - 270px);
+		// @include center;
 		.card {
 			width: 90%;
 		}

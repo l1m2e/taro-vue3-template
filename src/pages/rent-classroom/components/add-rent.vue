@@ -149,11 +149,11 @@ const getClassList = async () => {
 	const res = await getClassListApi(from.classPostion)
 	if (res.statusCode === 200) {
 		//格式化为选择器可以使用的数据结构
-		res.data.list.forEach((item: any) => {
+		res.data.forEach((item: any) => {
 			item.text = item.classDeviceName
 			item.value = item.classDeviceMac
 		})
-		classList.value = res.data.list
+		classList.value = res.data
 	}
 }
 

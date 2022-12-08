@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { Svg } from '@/assets/img/image'
 type IEmptyType = 'noNetwork' | 'noData' | 'error' | 'noLogin'
-
 interface Props {
 	type?: IEmptyType
 	text?: string

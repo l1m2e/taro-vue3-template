@@ -1,38 +1,26 @@
 <script lang="ts" setup>
-import { useSchoolInfo } from '@/composables'
-
-if (useSchoolInfo.value.innerURL === '') {
-	Taro.navigateTo({
-		url: '/pages/user/components/bindSchool'
-	})
-}
-function fn2() {
-	Taro.navigateTo({
-		url: '/pages/sign-in/index'
-	})
-}
-function fn3() {
-	Taro.navigateTo({
-		url: '/pages/rent-classroom/index'
-	})
-}
-function fn4() {
-	Taro.navigateTo({
-		url: '/pages/course/index'
-	})
-}
+import studentsHome from '@/pages/course/index.vue'
+// import teacherHome from '@/pages/rent-classroom/index.vue'
 definePageConfig({
-	navigationBarTitleText: '首页',
-	navigationBarBackgroundColor: '#fafafa'
+	navigationBarTitleText: '课程',
+	navigationBarBackgroundColor: '#fafafa',
+	enablePullDownRefresh: true,
+	backgroundTextStyle: 'dark',
+	backgroundColor: '#fafafa'
+})
+
+const studentsHomeRef = ref()
+//下拉刷新
+Taro.usePullDownRefresh(() => {
+	Taro.startPullDownRefresh()
+	studentsHomeRef.value.getCourseist()
+	Taro.stopPullDownRefresh()
 })
 </script>
 
 <template>
 	<div class="home">
-		<!-- <div class="btn-success" type="info" @click="fn">课程表</div> -->
-		<div class="btn-success" type="info" @click="fn2">签到</div>
-		<div class="btn-success" type="info" @click="fn3">借用</div>
-		<div class="btn-success" type="info" @click="fn4">直播</div>
+		<studentsHome ref="studentsHomeRef"></studentsHome>
 	</div>
 </template>
 

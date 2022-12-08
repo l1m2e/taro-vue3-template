@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useLoad } from '@tarojs/taro'
 import { useUserInfo, useIsBindUserInfo } from '@/composables'
+import { Svg } from '@/assets/img/image'
 import empty from '@/components/empty-page/index.vue'
 definePageConfig({
 	navigationBarTitleText: '授权登录',

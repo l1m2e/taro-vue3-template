@@ -10,12 +10,24 @@
 
 <script setup lang="ts">
 import { selected } from '@/store/tab-bar'
-
+import { useUserInfo } from '@/composables'
 const color = '#000000'
 const selectedColor = '#7a7af9'
-const list = ref([
+const list = computed(() => {
+	switch (useUserInfo.value.role) {
+		case '学生':
+			return studentsList
+		case '老师':
+			return teacherList
+		default:
+			return touristList
+	}
+})
+console.log('list', list)
+// 学生
+const studentsList = [
 	{
-		pagePath: '/pages/course/index',
+		pagePath: '/pages/home/index',
 		iconPath: '../assets/tab-bar/course.png',
 		selectedIconPath: '../assets/tab-bar/course-active.png',
 		text: '课程'
@@ -38,7 +50,32 @@ const list = ref([
 		selectedIconPath: '../assets/tab-bar/user-active.png',
 		text: '我的'
 	}
-])
+]
+// 老师
+const teacherList = [
+	{
+		pagePath: '/pages/home/index',
+		iconPath: '../assets/tab-bar/course.png',
+		selectedIconPath: '../assets/tab-bar/course-active.png',
+		text: '课程'
+	},
+	{
+		pagePath: '/pages/user/index',
+		iconPath: '../assets/tab-bar/user.png',
+		selectedIconPath: '../assets/tab-bar/user-active.png',
+		text: '我的'
+	}
+]
+// 游客
+const touristList = [
+	{
+		pagePath: '/pages/user/index',
+		iconPath: '../assets/tab-bar/user.png',
+		selectedIconPath: '../assets/tab-bar/user-active.png',
+		text: '我的'
+	}
+]
+
 function switchTab(index: number, url: string) {
 	selected.value = index
 	Taro.switchTab({ url })
@@ -59,6 +96,7 @@ function switchTab(index: number, url: string) {
 	margin: 0 auto;
 	box-sizing: border-box;
 	padding: 15px;
+	z-index: 999;
 }
 .tab-bar-item {
 	flex: 1;

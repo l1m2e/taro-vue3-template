@@ -19,14 +19,3 @@ export const useWifi = () => {
 	})
 	return wifiInfo
 }
-
-// promis 形式
-
-// try {
-// 	await Taro.startWifi()
-// type v = Extract<Parameters<typeof Taro.getConnectedWifi>[0], {}>
-// 	const wifiInfo = ((await Taro.getConnectedWifi()) as unknown) as Parameters<Extract<v['success'], {}>>[0]
-// 	return wifiInfo
-// } catch (error) {
-// 	return false
-// }

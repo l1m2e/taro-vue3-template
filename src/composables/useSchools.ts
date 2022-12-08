@@ -1,6 +1,5 @@
 import { useStorage } from './useStorage'
 import { setReactive } from '@/utils/setReactive'
-// import { useLogout } from './useUser'
 interface ISchoolInfo {
 	innerURL: string
 	mac: string

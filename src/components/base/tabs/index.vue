@@ -41,11 +41,13 @@ const touchend = (e: any) => {
 	//滑动减去结束滑动的像素
 	let difference = pageXStart - e.changedTouches[0].pageX
 	let isPullDown = pageYStart - e.changedTouches[0].pageY
+	console.log('difference', difference)
+	console.log('isPullDown', isPullDown)
 	if (isPullDown <= -30 || isPullDown >= 30) return // 监测如果是下滑操作取消切换页面
 	if (difference <= -100) {
 		emit('changeTab', touchChange('add'))
 	}
-	if (difference >= 100) {
+	if (difference >= 50) {
 		emit('changeTab', touchChange('reduce'))
 	}
 }

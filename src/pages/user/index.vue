@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useUserInfo, useLogin, useLogout, useToken, useIsBindUserInfo, useCheckSchoolBind } from '@/composables'
+import { Svg } from '@/assets/img/image'
 
 definePageConfig({
 	navigationBarTitleText: '我的',
