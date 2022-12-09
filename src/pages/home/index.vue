@@ -1,6 +1,9 @@
 <script lang="ts" setup>
-import studentsHome from '@/pages/course/index.vue'
+import studentsHome from '@/pages/students/course/index.vue'
 // import teacherHome from '@/pages/rent-classroom/index.vue'
+import { useIsGoToUserPage } from '@/composables'
+import { selected } from '@/store/tab-bar'
+
 definePageConfig({
 	navigationBarTitleText: '课程',
 	navigationBarBackgroundColor: '#fafafa',
@@ -8,7 +11,10 @@ definePageConfig({
 	backgroundTextStyle: 'dark',
 	backgroundColor: '#fafafa'
 })
-
+//检查是否有token 如果没有 跳转到我的页面
+useIsGoToUserPage()
+//重置选中的tabbar
+selected.value = 0
 const studentsHomeRef = ref()
 //下拉刷新
 Taro.usePullDownRefresh(() => {

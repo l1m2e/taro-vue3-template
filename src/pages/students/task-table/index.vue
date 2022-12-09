@@ -134,7 +134,7 @@ const getFormatWeek = async () => {
 				</div>
 				<div :class="viewSwitch ? 'right' : 'rightWeek'">
 					<div @click="viewSwitch = !viewSwitch">
-						<image :src="require('../../assets/icon/switch.svg')"></image>
+						<image :src="require('@/assets/icon/switch.svg')"></image>
 						&nbsp;
 						<span>{{ viewSwitch ? '周视图' : '日视图' }}</span>
 					</div>

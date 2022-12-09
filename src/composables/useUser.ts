@@ -86,6 +86,12 @@ export const useLogout = () => {
 	}
 }
 
+//无token 跳转到 我的页面
+export const useIsGoToUserPage = () => {
+	if (!useToken.value) {
+		Taro.switchTab({ url: '/pages/user/index' })
+	}
+}
 watch(baseUrl, () => {
 	useLogout()
 })

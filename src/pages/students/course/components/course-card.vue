@@ -21,7 +21,7 @@ const iconColor = computed(() => iconClass.get(props.state))
 const goToVideoView = (link: any) => {
 	if (link.length !== 0) {
 		const res = link.find((item: any) => item.bsmodel === '电脑桌面')
-		if (res) return Taro.navigateTo({ url: `/pages/course/components/video-view?link=${res.bspreSales}` })
+		if (res) return Taro.navigateTo({ url: `/pages/students/course/components/video-view?link=${res.bspreSales}` })
 		Taro.showToast({ title: '无流地址', icon: 'error', duration: 2000 })
 	} else {
 		Taro.showToast({ title: '无直播地址', icon: 'error', duration: 2000 })
@@ -30,7 +30,7 @@ const goToVideoView = (link: any) => {
 console.log(props.data)
 const goToSign = () => {
 	Taro.navigateTo({
-		url: `/pages/sign-in/index?id=${props.data.sid}`
+		url: `/pages/students/sign-in/index?id=${props.data.sid}`
 	})
 }
 </script>

@@ -2,7 +2,7 @@
 import { LivePlayer } from '@tarojs/components'
 
 definePageConfig({
-	navigationBarTitleText: '课程观看',
+	navigationBarTitleText: '',
 	navigationBarBackgroundColor: '#fafafa'
 })
 const liveStreamingAddress = Taro.getCurrentInstance().router?.params.link

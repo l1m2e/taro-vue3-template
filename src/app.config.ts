@@ -1,19 +1,18 @@
 export default defineAppConfig({
 	pages: [
+		'pages/user/pages/attendance-record', // 考勤记录
 		'pages/home/index', //主页
-		// 'pages/course/index', // 课程
 		'pages/rent-classroom/components/add-rent', // 添加借用
 		'pages/rent-classroom/index', // 教室借用
-		'pages/course/components/video-view', // 查看直播
+		'pages/students/course/components/video-view', // 查看直播
 		'pages/user/index', // 我的
-		'pages/task-table/index', // 课程表
+		'pages/students/task-table/index', // 课程表
 		'pages/setting/index', // 设置
 		'pages/user/components/change-avatar', //修改头像
 		'pages/authorization/web-csm-login', // 授权网页登录
 		'pages/user/components/bindSchool', //绑定学校
-		'pages/sign-in/index', // 签到
+		'pages/students/sign-in/index', // 签到
 		'pages/user/components/bindUserInfo', // 绑定用户信息
-		'pages/appointment/index', // 预约教室
 		'pages/user/components/userInfo' // 用户信息页面
 	],
 	window: {
@@ -37,7 +36,7 @@ export default defineAppConfig({
 				text: '主页'
 			},
 			{
-				pagePath: 'pages/task-table/index',
+				pagePath: 'pages/students/task-table/index',
 				iconPath: './assets/tab-bar/task.png',
 				selectedIconPath: './assets/tab-bar/task-active.png',
 				text: '课程表'

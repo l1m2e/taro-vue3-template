@@ -14,12 +14,17 @@ Taro.useDidShow(() => {
 
 const menuList = [
 	{
-		icon: require('../../assets/user/user.png'),
+		icon: require('../../assets/user/user.svg'),
 		text: '个人信息',
 		link: '/pages/user/components/userInfo'
 	},
 	{
-		icon: require('../../assets/user/set.png'),
+		icon: require('../../assets/user/attendance.svg'),
+		text: '考勤记录',
+		link: '/pages/user/pages/attendance-record'
+	},
+	{
+		icon: require('../../assets/user/set.svg'),
 		text: '设置',
 		link: '/pages/setting/index'
 	}
@@ -64,7 +69,7 @@ const goToChangeAvatar = () => {
 			<div class="text basis-3/4">
 				<p class="name">{{ useUserInfo.studentName ? useUserInfo.studentName : '用户' }}</p>
 				<p class="signature" v-if="useIsBindUserInfo">{{ useUserInfo.role }}</p>
-				<p class="signature" v-else>游客功能受限 请前往个人信息中绑定 {{ useIsBindUserInfo }}</p>
+				<p class="signature" v-else>游客功能受限 请前往"个人信息"中绑定</p>
 			</div>
 		</div>
 		<div class="user-card user-card-on-login" v-else>
@@ -152,8 +157,8 @@ page {
 			}
 			image {
 				object-fit: cover;
-				width: 50px;
-				height: 50px;
+				width: 40px;
+				height: 40px;
 			}
 			span {
 				font-size: 30px;

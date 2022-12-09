@@ -23,7 +23,6 @@ const list = computed(() => {
 			return touristList
 	}
 })
-console.log('list', list)
 // 学生
 const studentsList = [
 	{
@@ -33,7 +32,7 @@ const studentsList = [
 		text: '课程'
 	},
 	{
-		pagePath: '/pages/task-table/index',
+		pagePath: '/pages/students/task-table/index',
 		iconPath: '../assets/tab-bar/task.png',
 		selectedIconPath: '../assets/tab-bar/task-active.png',
 		text: '课程表'

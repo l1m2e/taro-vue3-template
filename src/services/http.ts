@@ -1,6 +1,5 @@
 import Taro from '@tarojs/taro'
-// import { isStatusCode } from './httpStatusCode'
-import { useToken } from '@/composables'
+import { useToken, useLogout, useIsGoToUserPage } from '@/composables'
 import { baseUrl } from '@/config/baseUrl'
 
 interface Response {
@@ -29,7 +28,11 @@ const Request = (method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'HEAD' 
 			header: { 'Content-Type': 'application/json;charset=UTF-8', token: useToken.value, Accept: 'application/json' },
 			dataType: 'json',
 			success: (res: Taro.request.SuccessCallbackResult) => {
-				// isStatusCode(res)
+				if (res.statusCode === 401) {
+					Taro.showToast({ title: '登录失效', icon: 'none' })
+					useLogout()
+					useIsGoToUserPage()
+				}
 				resolve(res)
 			},
 			fail: (err: TaroGeneral.CallbackResult) => {
