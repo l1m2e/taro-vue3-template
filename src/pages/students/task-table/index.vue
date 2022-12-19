@@ -237,7 +237,6 @@ page {
 
 	.task-today {
 		overflow: hidden;
-		// width: 700%;
 		height: calc(100vh - 200px - 120px);
 		swiper {
 			height: 100%;
