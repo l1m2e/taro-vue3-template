@@ -1,12 +1,14 @@
 <script lang="ts" setup>
+// import { thatDayStart, thatDayEnd } from '@/utils'
 import dayjs from 'dayjs'
-import { thatDayStart, thatDayEnd } from '@/utils'
+import popup from '@/components/base/popup/index.vue'
 definePageConfig({
 	navigationBarTitleText: '考勤记录',
 	navigationBarBackgroundColor: '#fafafa',
 	enablePullDownRefresh: true,
 	backgroundTextStyle: 'dark',
-	backgroundColor: '#fafafa'
+	backgroundColor: '#fafafa',
+	navigationStyle: 'custom'
 })
 
 //下拉刷新
@@ -30,27 +32,85 @@ const selectorType = ({ detail }) => {
 	queryType.value = attendanceRecordTypeList[parseInt(detail.value)].value
 	console.log('queryType.value', queryType.value)
 }
-//查询时间
-const startTimestamp = thatDayStart()
-const endTimestamp = thatDayEnd()
-console.log(startTimestamp, endTimestamp)
+// 选择开始时间
+const startTime = ref('')
+const selectorStartTime = ({ detail }) => {
+	startTime.value = detail.value
+}
+// 选择结束时间
+const endTime = ref('')
+const selectorEndTime = ({ detail }) => {
+	endTime.value = detail.value
+}
+
+//计算时间戳
+const startTimestamp = computed(() => dayjs(startTime.value).valueOf())
+const endTimestamp = computed(() => dayjs(endTime.value).valueOf())
 
 // 查询签到列表
+const sginList = ref([])
 const getAttendanceRecord = async () => {
-	const res = await api.getAttendanceRecord({})
+	const res = await api.getAttendanceRecord({ startTime: startTimestamp.value, endTime: endTimestamp.value })
+	if (res.statusCode === 200) {
+		sginList.value = res.data
+	}
 }
-const queryModel = ref<boolean>(true)
+// const queryModel = ref<boolean>(true)
 // 查询当周信息
 const getWeekInfo = async () => {
 	const res = await api.getCourseTime()
-	console.log(res)
+	if (res.statusCode === 200) {
+		startTime.value = res.data.startDate
+		endTime.value = res.data.endDate
+	}
+	getAttendanceRecord()
 }
 getWeekInfo()
+
+const flag = ref(false)
+const fn = () => {
+	flag.value = !flag.value
+}
+const confirmPopup = () => {
+	flag.value = false
+}
 </script>
 
 <template>
 	<div calss="attendance-record">
-		<div class="fixed top-0 w-100vw h-60px box-border p-10px bg-white flex">
+		<popup v-model="flag" @confirm="confirmPopup" :height="60">
+			<div>
+				<div class="cell">
+					<div>类型</div>
+					<picker mode="selector" :range="attendanceRecordTypeList" rangeKey="name" @change="selectorType">
+						<div class="w-150px  h-100% center relative ">
+							<div>{{ nowTypeText }}</div>
+							<div class="i-ri-arrow-right-s-line absolute right-10px"></div>
+						</div>
+					</picker>
+				</div>
+				<div class="cell">
+					<div>开始时间</div>
+					<picker mode="date" @change="selectorStartTime">
+						<div class="w-150px h-100% center relative ">
+							<div>{{ startTime }}</div>
+							<div class="i-ri-arrow-right-s-line absolute right-10px"></div>
+						</div>
+					</picker>
+				</div>
+				<div class="cell">
+					<div>结束时间</div>
+					<picker mode="date" @change="selectorEndTime">
+						<div class="w-150px h-100% center relative ">
+							<div>{{ endTime }}</div>
+							<div class="i-ri-arrow-right-s-line absolute right-10px"></div>
+						</div>
+					</picker>
+				</div>
+			</div>
+		</popup>
+
+		<!-- <div class="fixed top-0 w-100vw h-60px box-border p-10px bg-white flex">
 			<div class="flex-1 center  justify-start">
 				<picker mode="selector" :range="attendanceRecordTypeList" rangeKey="name" @change="selectorType">
 					<div class="button3">{{ nowTypeText }}</div>
@@ -67,7 +127,8 @@ getWeekInfo()
 					<div class="i-ri-arrow-left-right-line"></div>
 				</div>
 			</div>
-		</div>
+		</div> -->
+		<div class="button3" @click="fn">aa</div>
 	</div>
 </template>
 <style lang="scss">
@@ -75,7 +136,6 @@ getWeekInfo()
 	@include center;
 	color: white;
 	max-width: 120px;
-	margin-left: px;
 	height: 80px;
 	background-color: var(--color-primary2);
 	flex: 1;

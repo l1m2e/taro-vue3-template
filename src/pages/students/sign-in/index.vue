@@ -9,10 +9,10 @@ definePageConfig({
 	navigationBarTitleText: '签到'
 })
 
-let id: any = ''
+let id = ref(0)
 Taro.useDidShow(() => {
 	const res = Taro.getCurrentInstance()
-	id = res.router?.params.id
+	id.value = parseInt(res.router?.params.id as string)
 })
 
 //获取签到信息
@@ -23,7 +23,7 @@ const signInfo = reactive({
 	signStartTime: 0,
 	state: false,
 	wifiName: '',
-	classId: ''
+	classId: 0
 })
 const getSignInfo = async () => {
 	const res = await api.getSignList({ time: dayjs().valueOf() })
