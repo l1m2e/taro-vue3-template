@@ -263,6 +263,8 @@ page {
 	.week-view {
 		width: 100%;
 		height: 100%;
+		box-sizing: border-box;
+		padding-bottom: 100px;
 		.week-title {
 			display: flex;
 			.week-title-item {
@@ -283,7 +285,6 @@ page {
 				max-width: 55px;
 			}
 		}
-
 		.week-box {
 			overflow: hidden;
 			overflow-y: scroll;

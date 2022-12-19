@@ -5,8 +5,8 @@ export interface IattendanceRecord {
 	classHour?: string
 	courseName?: string
 	current?: string
-	endTime?: string
+	endTime?: number
 	size?: string
-	startTime?: string
+	startTime?: number
 	state?: string
 }
