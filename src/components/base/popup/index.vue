@@ -7,17 +7,25 @@ const props = withDefaults(defineProps<Props>(), {
 	modelValue: false,
 	height: 50
 })
-const emits = defineEmits(['update:modelValue', 'confirm'])
+const emits = defineEmits(['update:modelValue', 'confirm', 'cancel', 'beforeClose'])
 const disabled = ref(true)
 const close = () => {
+	emits('beforeClose')
 	disabled.value = false
 	setTimeout(() => {
 		emits('update:modelValue', false)
 	}, 100)
 }
+defineExpose({ close })
+
 const ok = () => {
 	emits('confirm')
 }
+const cancel = () => {
+	close()
+	emits('cancel')
+}
+
 watch(
 	() => props.modelValue,
 	() => {
@@ -34,7 +42,7 @@ const height = computed(() => props.height + 'vh')
 				<div class="line" @click="close"></div>
 				<slot></slot>
 				<div class="absolute center w-100% bottom-20px">
-					<div class="btn-info mr-20px w-150px h-40px center" @click="close">取消</div>
+					<div class="btn-info mr-20px w-150px h-40px center" @click="cancel">取消</div>
 					<div class="btn-success  w-150px h-40px center" @click="ok">确定</div>
 				</div>
 			</div>

@@ -112,10 +112,10 @@ const getRefreshData = async (item: any, action: string) => {
 </script>
 
 <template>
-	<div class="course pb-50px box-border">
+	<div class="course  box-border">
 		<empty v-if="!useToken" type="noLogin"></empty>
 		<div v-else>
-			<div v-if="courseList.length">
+			<div v-if="courseList.length" class="pb-100px">
 				<course-card v-for="item in courseList" :state="item.state" :data="item"></course-card>
 			</div>
 			<empty v-else></empty>

@@ -4,9 +4,14 @@ export interface IgetSignToDay {
 export interface IattendanceRecord {
 	classHour?: string
 	courseName?: string
-	current?: string
+	current?: number
 	endTime?: number
-	size?: string
+	size?: number
 	startTime?: number
-	state?: string
+	state?: number | string
+}
+
+export interface Iretroactive {
+	id: number
+	signCause: string
 }

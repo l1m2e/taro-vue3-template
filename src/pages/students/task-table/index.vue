@@ -263,7 +263,6 @@ page {
 		width: 100%;
 		height: 100%;
 		box-sizing: border-box;
-		padding-bottom: 100px;
 		.week-title {
 			display: flex;
 			.week-title-item {
@@ -329,6 +328,7 @@ page {
 			}
 			.week-body:last-child {
 				border-bottom: #ebebeb 1px solid;
+				padding-bottom: 150px;
 			}
 		}
 	}

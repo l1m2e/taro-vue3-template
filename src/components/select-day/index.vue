@@ -31,7 +31,7 @@ useReady(() => {
 })
 watch(
 	() => props.swiperIndex,
-	v => {
+	(v) => {
 		now.value = weekList[v].date
 		Taro.createSelectorQuery()
 			.selectAll('.item')
@@ -45,12 +45,7 @@ watch(
 </script>
 <template>
 	<div class="select-day">
-		<div
-			:class="item.date === now ? 'item onclick' : 'item'"
-			v-for="(item, index) in weekList"
-			key="item.date"
-			@click="onDay(item.date, $event, index)"
-		>
+		<div :class="item.date === now ? 'item onclick' : 'item'" v-for="(item, index) in weekList" key="item.date" @click="onDay(item.date, $event, index)">
 			<div class="week">{{ item.week }}</div>
 			<div class="date">{{ item.date.substring(8) }}</div>
 		</div>
@@ -89,7 +84,7 @@ watch(
 		}
 	}
 	.line {
-		transition: all 0.6s;
+		transition: all 0.5s;
 		position: absolute;
 		bottom: 10px;
 		left: v-bind(lineLeft);

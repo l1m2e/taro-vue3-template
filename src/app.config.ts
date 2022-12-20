@@ -1,8 +1,8 @@
 export default defineAppConfig({
 	pages: [
+		'pages/home/index', //主页
 		'pages/user/pages/attendance-record', // 考勤记录
 		'pages/user/index', // 我的
-		'pages/home/index', //主页
 		'pages/rent-classroom/components/add-rent', // 添加借用
 		'pages/rent-classroom/index', // 教室借用
 		'pages/students/course/components/video-view', // 查看直播

@@ -1,5 +1,5 @@
 <template>
-	<div class="tab-bar">
+	<div class="tab-bar ">
 		<div class="tab-bar-item" v-for="(item, index) in list" :key="index" @tap="switchTab(index, item.pagePath)">
 			<image v-show="selected === index" :src="item.selectedIconPath"></image>
 			<image v-show="selected !== index" :src="item.iconPath"></image>
@@ -87,7 +87,6 @@ function switchTab(index: number, url: string) {
 	bottom: 0px;
 	left: 0;
 	right: 0;
-	height: 110px;
 	background: #fafafacc;
 	backdrop-filter: saturate(180%) blur(20px);
 	display: flex;
@@ -96,9 +95,14 @@ function switchTab(index: number, url: string) {
 	box-sizing: border-box;
 	padding: 15px;
 	z-index: 999;
+	box-sizing: border-box;
+	padding-bottom: calc(constant(safe-area-inset-bottom) - 40px);
+	padding-bottom: calc(env(safe-area-inset-bottom) - 40px);
 }
 .tab-bar-item {
 	flex: 1;
+	box-sizing: border-box;
+	padding-bottom: 20px;
 	@include center;
 	flex-direction: column;
 	image {
